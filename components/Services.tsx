@@ -26,7 +26,7 @@ const serviceList = [
   },
   {
     title: "LaunchPad",
-    image: "https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=800",
     description: "A full website solution for businesses ready to grow.",
     gradient: "from-orange-500 via-amber-600 to-black",
     accentColor: "bg-orange-500",

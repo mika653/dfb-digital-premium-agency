@@ -118,9 +118,9 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         {/* Background */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80&w=2000"
-            alt="Rocket Launch"
-            className="w-full h-full object-cover object-bottom"
+            src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=2000"
+            alt="Space Shuttle Launch"
+            className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-orange-900/50 via-orange-800/30 to-black/70"></div>
