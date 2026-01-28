@@ -93,23 +93,28 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-white/70 hover:text-white smooth-transition"
+            className="flex items-center gap-2"
           >
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+          </button>
+
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
+            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
+            <a href="/#matchmaker" className="text-white/70 hover:text-white smooth-transition">Find Your Fit</a>
+            <a
+              href="mailto:hello@dfbdigital.com"
+              className="px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:from-pink-600 hover:to-purple-700 smooth-transition"
+            >
+              Get in Touch
+            </a>
+          </div>
+
+          <button onClick={onBack} className="md:hidden text-white/70 hover:text-white smooth-transition">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            <span className="text-sm">Back</span>
           </button>
-          <div className="flex items-center gap-3">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
-          </div>
-          <a
-            href="mailto:hello@dfbdigital.com"
-            className="px-3 sm:px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-widest rounded-full hover:from-pink-600 hover:to-purple-700 smooth-transition"
-          >
-            <span className="hidden sm:inline">Get in Touch</span>
-            <span className="sm:hidden">Contact</span>
-          </a>
         </div>
       </nav>
 

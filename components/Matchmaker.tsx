@@ -249,21 +249,31 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     <div className="min-h-screen bg-brand-black">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-white/70 hover:text-white smooth-transition"
+            className="flex items-center gap-2"
           >
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+          </button>
+
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
+            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
+            <span className="text-white">Find Your Fit</span>
+            <a
+              href="mailto:hello@dfbdigital.com"
+              className="px-5 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition"
+            >
+              Get in Touch
+            </a>
+          </div>
+
+          <button onClick={onBack} className="md:hidden text-white/70 hover:text-white smooth-transition">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-            <span className="text-sm">Back to Home</span>
           </button>
-          <div className="flex items-center gap-3">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
-            <span className="text-white font-heading font-semibold">Service Matchmaker</span>
-          </div>
-          <div className="w-24"></div>
         </div>
       </header>
 
