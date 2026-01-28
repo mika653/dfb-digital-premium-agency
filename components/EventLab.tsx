@@ -5,45 +5,81 @@ interface EventLabProps {
   onBack: () => void;
 }
 
-const benefits = [
+const eventPhases = [
   {
-    title: "End-to-End Production",
-    description: "From concept to execution, we handle every detail so you can focus on your guests.",
+    title: "Pre-event",
+    description: "Build excitement till the big day",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <polyline points="12 6 12 12 16 14"></polyline>
       </svg>
     )
   },
   {
-    title: "Technical Excellence",
-    description: "State-of-the-art sound, lighting, and AV setups that create unforgettable atmospheres.",
+    title: "Event Proper",
+    description: "Guide guests in real time and keep things running smoothly",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
       </svg>
     )
   },
   {
-    title: "Seamless Coordination",
-    description: "Real-time management and contingency planning for flawless event delivery.",
+    title: "Post-event",
+    description: "Relive the experience over and over again",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 2v6h6"></path>
+        <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+        <path d="M21 22v-6h-6"></path>
+        <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+      </svg>
+    )
+  }
+];
+
+const keyFeatures = [
+  {
+    title: "Centralized Content Management",
+    description: "Easily manage schedules, speakers, announcements, and content in one place—so attendees always see the most up-to-date event information."
+  },
+  {
+    title: "Always-On Accessibility",
+    description: "A dedicated event site that's accessible anytime, on any device, giving attendees, partners, and speakers constant access to everything they need."
+  },
+  {
+    title: "Partner & Sponsor Visibility",
+    description: "Purpose-built sections for sponsors and partners that offer visibility, credibility, and clear value—without distracting from the attendee experience."
+  }
+];
+
+const benefits = [
+  {
+    title: "Up-to-the-Minute Event Info",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
       </svg>
     )
   },
   {
-    title: "Premium Venues",
-    description: "Access to exclusive locations and partnerships with top-tier vendors.",
+    title: "24/7 Availability",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a10 10 0 0 1 0 20"></path>
+        <path d="M12 6v6l4 2"></path>
+      </svg>
+    )
+  },
+  {
+    title: "Sponsorship Opportunities",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
       </svg>
     )
   }
@@ -136,39 +172,78 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-px h-12 bg-gradient-to-b from-white/50 to-transparent"></div>
+      </section>
+
+      {/* Event Phases Section */}
+      <section id="benefits" className="py-32 px-6 lg:px-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.05)_0%,transparent_70%)]"></div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
+              Your Event, <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Every Step</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {eventPhases.map((phase, index) => (
+              <div
+                key={index}
+                className="group text-center p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-pink-500/50 hover:bg-white/10 smooth-transition"
+              >
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
+                  {phase.icon}
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white mb-3">{phase.title}</h3>
+                <p className="text-white/60 leading-relaxed">{phase.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Features Section */}
+      <section className="py-32 px-6 lg:px-12 bg-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
+              Key <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Features</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {keyFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="p-8 border-l-2 border-pink-500/50 hover:border-pink-500 smooth-transition"
+              >
+                <h3 className="text-xl font-heading font-bold text-white mb-4">{feature.title}</h3>
+                <p className="text-white/60 leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-32 px-6 lg:px-12 relative overflow-hidden">
-        {/* Background texture */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.05)_0%,transparent_70%)]"></div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-20">
+      <section className="py-32 px-6 lg:px-12 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Why <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Event Lab</span>?
+              The <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Benefits</span>
             </h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
-              We bring together creativity, precision, and experience to deliver events that exceed expectations.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="group p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-pink-500/50 hover:bg-white/10 smooth-transition"
+                className="group text-center"
               >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
+                <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
                   {benefit.icon}
                 </div>
-                <h3 className="text-xl font-heading font-bold text-white mb-3">{benefit.title}</h3>
-                <p className="text-white/60 leading-relaxed">{benefit.description}</p>
+                <h3 className="text-lg font-heading font-bold text-white">{benefit.title}</h3>
               </div>
             ))}
           </div>
