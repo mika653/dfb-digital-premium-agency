@@ -8,6 +8,7 @@ import { Reviews } from './components/Reviews';
 import { ClientRoster } from './components/ClientRoster';
 import { WhyDFB } from './components/WhyDFB';
 import { CTA } from './components/CTA';
+import { ComingSoon } from './components/ComingSoon';
 import { Footer } from './components/Footer';
 import { Matchmaker } from './components/Matchmaker';
 import { CodeRedemption } from './components/CodeRedemption';
@@ -112,6 +113,7 @@ const App: React.FC = () => {
         <Reviews />
         <ClientRoster />
         <CTA />
+        <ComingSoon />
       </main>
       <Footer onCodeClick={() => setIsCodeModalOpen(true)} />
 
