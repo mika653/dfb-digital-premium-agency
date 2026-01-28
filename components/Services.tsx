@@ -26,7 +26,7 @@ const serviceList = [
   },
   {
     title: "LaunchPad",
-    image: "https://images.unsplash.com/photo-1457364559154-aa2644600ebb?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80&w=800",
     description: "A full website solution for businesses ready to grow.",
     gradient: "from-orange-500 via-amber-600 to-black",
     accentColor: "bg-orange-500",
@@ -64,7 +64,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
             <div
               key={index}
               onClick={service.title === 'Event Lab' ? onEventLabClick : service.title === 'InstaSite' ? onInstaSiteClick : service.title === 'LaunchPad' ? onLaunchPadClick : undefined}
-              className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
+              className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-2xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
               <img
                 src={service.image}
@@ -85,7 +85,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
                 <p className="text-white/60 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 smooth-transition">
                   {service.description}
                 </p>
-                <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition`}>
+                <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition`}>
                   Learn More
                 </button>
               </div>

@@ -18,7 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onCodeClick }
           <a href="#services" className="text-white/80 hover:text-white smooth-transition">Services</a>
           <button onClick={onMatchmakerClick} className="text-white/80 hover:text-white smooth-transition">Find Your Fit</button>
           <button onClick={onCodeClick} className="text-white/80 hover:text-white smooth-transition">Redeem Code</button>
-          <button className="px-6 py-2 border border-white/30 text-white text-xs font-semibold uppercase tracking-widest hover:bg-white hover:text-brand-black smooth-transition">
+          <button className="px-6 py-2 border border-white/30 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-white hover:text-brand-black smooth-transition">
             Inquiry
           </button>
         </div>

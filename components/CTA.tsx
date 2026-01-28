@@ -18,10 +18,10 @@ export const CTA: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-8 items-start">
-            <button className="px-10 py-5 bg-brand-white text-brand-black font-heading font-bold text-xs uppercase tracking-widest hover:bg-brand-blue hover:text-white smooth-transition">
+            <button className="px-10 py-5 bg-brand-white text-brand-black font-heading font-bold text-xs uppercase tracking-widest rounded-full hover:bg-brand-blue hover:text-white smooth-transition">
               See if this is the right fit
             </button>
-            <button className="px-10 py-5 border border-white/20 text-brand-white font-heading font-bold text-xs uppercase tracking-widest hover:border-brand-blue smooth-transition">
+            <button className="px-10 py-5 border border-white/20 text-brand-white font-heading font-bold text-xs uppercase tracking-widest rounded-full hover:border-brand-blue smooth-transition">
               View the Approach
             </button>
           </div>

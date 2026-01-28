@@ -212,7 +212,7 @@ export const CodeRedemption: React.FC<CodeRedemptionProps> = ({ isOpen, onClose 
 
               <button
                 onClick={handleClose}
-                className="px-8 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 rounded-lg smooth-transition text-sm"
+                className="px-8 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 rounded-full smooth-transition text-sm"
               >
                 Close
               </button>

@@ -105,9 +105,10 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
           </div>
           <a
             href="mailto:hello@dfbdigital.com"
-            className="px-5 py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:from-orange-600 hover:to-amber-700 smooth-transition"
+            className="px-3 sm:px-5 py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-widest rounded-full hover:from-orange-600 hover:to-amber-700 smooth-transition"
           >
-            Get in Touch
+            <span className="hidden sm:inline">Get in Touch</span>
+            <span className="sm:hidden">Contact</span>
           </a>
         </div>
       </nav>
@@ -117,9 +118,9 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         {/* Background */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1457364559154-aa2644600ebb?auto=format&fit=crop&q=80&w=2000"
+            src="https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?auto=format&fit=crop&q=80&w=2000"
             alt="Rocket Launch"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-bottom"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-orange-900/40 via-amber-900/30 to-black/60"></div>
@@ -127,8 +128,8 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         </div>
 
         {/* Floating light effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/30 rounded-full blur-[128px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/25 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-orange-500/30 rounded-full blur-[100px] md:blur-[128px] animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-amber-500/25 rounded-full blur-[100px] md:blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
 
         {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
@@ -184,7 +185,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
       </section>
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-32 px-6 lg:px-12 relative overflow-hidden">
+      <section id="benefits" className="py-16 md:py-32 px-6 lg:px-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.08)_0%,transparent_70%)]"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -212,7 +213,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-32 px-6 lg:px-12 bg-white/5">
+      <section className="py-16 md:py-32 px-6 lg:px-12 bg-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
@@ -224,7 +225,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="p-8 border-l-2 border-orange-500/50 hover:border-orange-500 smooth-transition"
+                className="p-8 bg-white/5 rounded-2xl border border-white/10 hover:border-orange-500/50 smooth-transition"
               >
                 <h3 className="text-xl font-heading font-bold text-white mb-4">{feature.title}</h3>
                 <p className="text-white/60 leading-relaxed">{feature.description}</p>
@@ -235,7 +236,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
       </section>
 
       {/* Core Benefits Section */}
-      <section className="py-32 px-6 lg:px-12 relative overflow-hidden">
+      <section className="py-16 md:py-32 px-6 lg:px-12 relative overflow-hidden">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
@@ -260,7 +261,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 px-6 lg:px-12 relative overflow-hidden">
+      <section className="py-16 md:py-32 px-6 lg:px-12 relative overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
           <img

@@ -293,7 +293,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <button
                           key={idx}
                           onClick={() => handleOptionClick(option)}
-                          className="block w-full text-left px-4 py-3 bg-white/10 hover:bg-brand-blue/50 rounded-lg text-white/90 hover:text-white smooth-transition text-sm"
+                          className="block w-full text-left px-4 py-3 bg-white/10 hover:bg-brand-blue/50 rounded-xl text-white/90 hover:text-white smooth-transition text-sm"
                         >
                           {option.label}
                         </button>
@@ -327,7 +327,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-brand-blue/50 smooth-transition"
                   >
                     <div className="flex flex-col md:flex-row">
-                      <div className="md:w-1/3 aspect-video md:aspect-auto">
+                      <div className="md:w-1/3 aspect-video md:aspect-auto overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
                         <img
                           src={service.image}
                           alt={service.title}
@@ -360,7 +360,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <div className="text-center pt-8 space-y-4">
                   <button
                     onClick={restartChat}
-                    className="px-6 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 rounded-lg smooth-transition text-sm"
+                    className="px-6 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 rounded-full smooth-transition text-sm"
                   >
                     Start Over
                   </button>
