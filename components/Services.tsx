@@ -4,6 +4,7 @@ import React from 'react';
 interface ServicesProps {
   onEventLabClick: () => void;
   onInstaSiteClick: () => void;
+  onLaunchPadClick: () => void;
 }
 
 const serviceList = [
@@ -25,9 +26,9 @@ const serviceList = [
   },
   {
     title: "LaunchPad",
-    image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
-    description: "Systematic framework for new initiative market entry.",
-    gradient: "from-orange-500 via-orange-600 to-black",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+    description: "A full website solution for businesses ready to grow.",
+    gradient: "from-orange-500 via-amber-600 to-black",
     accentColor: "bg-orange-500",
     hoverColor: "#f97316"
   },
@@ -49,7 +50,7 @@ const serviceList = [
   }
 ];
 
-export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSiteClick }) => {
+export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSiteClick, onLaunchPadClick }) => {
   return (
     <section id="services" className="py-32 px-6 lg:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -62,7 +63,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
           {serviceList.map((service, index) => (
             <div
               key={index}
-              onClick={service.title === 'Event Lab' ? onEventLabClick : service.title === 'InstaSite' ? onInstaSiteClick : undefined}
+              onClick={service.title === 'Event Lab' ? onEventLabClick : service.title === 'InstaSite' ? onInstaSiteClick : service.title === 'LaunchPad' ? onLaunchPadClick : undefined}
               className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
               <img

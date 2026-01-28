@@ -13,9 +13,10 @@ import { Matchmaker } from './components/Matchmaker';
 import { CodeRedemption } from './components/CodeRedemption';
 import { EventLab } from './components/EventLab';
 import { InstaSite } from './components/InstaSite';
+import { LaunchPad } from './components/LaunchPad';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
@@ -27,6 +28,8 @@ const App: React.FC = () => {
         setCurrentPage('eventlab');
       } else if (hash === '#instasite') {
         setCurrentPage('instasite');
+      } else if (hash === '#launchpad') {
+        setCurrentPage('launchpad');
       } else {
         setCurrentPage('home');
       }
@@ -56,6 +59,20 @@ const App: React.FC = () => {
     window.location.hash = 'instasite';
     setCurrentPage('instasite');
   };
+
+  const goToLaunchPad = () => {
+    window.location.hash = 'launchpad';
+    setCurrentPage('launchpad');
+  };
+
+  if (currentPage === 'launchpad') {
+    return (
+      <>
+        <LaunchPad onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
 
   if (currentPage === 'instasite') {
     return (
@@ -90,7 +107,7 @@ const App: React.FC = () => {
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />
-        <Services onEventLabClick={goToEventLab} onInstaSiteClick={goToInstaSite} />
+        <Services onEventLabClick={goToEventLab} onInstaSiteClick={goToInstaSite} onLaunchPadClick={goToLaunchPad} />
         <WhyDFB />
         <Reviews />
         <ClientRoster />
@@ -108,7 +125,7 @@ const App: React.FC = () => {
           <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
           <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
         </svg>
-        <span className="hidden sm:inline">Have a code?</span>
+        <span className="hidden sm:inline">Met DFB in person?</span>
       </button>
 
       <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
