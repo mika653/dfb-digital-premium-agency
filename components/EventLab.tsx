@@ -113,7 +113,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto font-light">
-            Operational infrastructure for high-stakes environments. We transform visions into immersive experiences that captivate and inspire.
+            High-impact event websites that inform, engage, and convert—whether it's a conference, launch, community event, or private gathering. From schedules and speakers to registration and post-event content, everything lives in one focused digital experience.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

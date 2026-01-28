@@ -9,7 +9,7 @@ const serviceList = [
   {
     title: "Event Lab",
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
-    description: "Operational infrastructure for high-stakes environments.",
+    description: "High-impact event websites that inform, engage, and convert.",
     gradient: "from-pink-500 via-purple-500 to-purple-700",
     accentColor: "bg-pink-500",
     hoverColor: "#ec4899"
