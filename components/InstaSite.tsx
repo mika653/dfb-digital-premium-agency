@@ -115,8 +115,8 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
         {/* Background */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000"
-            alt="Professional workspace"
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=2000"
+            alt="Professional presence"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black"></div>
@@ -133,11 +133,11 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
             <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            <span className="text-white/80 text-sm font-medium tracking-wide">Professional Web Presence</span>
+            <span className="text-white/80 text-sm font-medium tracking-wide">You've Arrived</span>
           </div>
 
           <p className="text-xl md:text-2xl text-white/80 font-light tracking-wide mb-4">
-            A professional web presence—without the complexity.
+            Your digital presence starts here.
           </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.05] mb-8">
             <span className="text-white">Insta</span>
@@ -145,7 +145,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto font-light">
-            A simple, fast personal site built to get you visible and credible in no time—minus the stress, delays, and complicated setups.
+            A polished, professional site that tells the world you're here—built fast, designed to impress, zero complexity.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -271,10 +271,10 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Ready to Get <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Visible</span>?
+            Ready to <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Arrive</span>?
           </h2>
           <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto">
-            Get a professional web presence without the complexity. Let's build your InstaSite.
+            Make your mark online. Get a site that says you're here and you mean business.
           </p>
           <a
             href="mailto:hello@dfbdigital.com?subject=InstaSite Inquiry"
