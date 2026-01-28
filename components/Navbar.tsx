@@ -1,7 +1,12 @@
 
 import React from 'react';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  onMatchmakerClick?: () => void;
+  onCodeClick?: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onCodeClick }) => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-brand-white border-b border-black/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
@@ -11,11 +16,11 @@ export const Navbar: React.FC = () => {
           </div>
           <span className="font-heading font-bold tracking-tighter text-xl">DIGITAL</span>
         </div>
-        
-        <div className="hidden md:flex items-center gap-12 text-sm font-medium tracking-wide">
+
+        <div className="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide">
           <a href="#services" className="hover:text-brand-blue smooth-transition">Services</a>
-          <a href="#philosophy" className="hover:text-brand-blue smooth-transition">Philosophy</a>
-          <a href="#approach" className="hover:text-brand-blue smooth-transition">Approach</a>
+          <button onClick={onMatchmakerClick} className="hover:text-brand-blue smooth-transition">Find Your Fit</button>
+          <button onClick={onCodeClick} className="hover:text-brand-blue smooth-transition">Redeem Code</button>
           <button className="px-6 py-2 border border-black text-xs font-semibold uppercase tracking-widest hover:bg-brand-black hover:text-white smooth-transition">
             Inquiry
           </button>

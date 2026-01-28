@@ -1,7 +1,11 @@
 
 import React from 'react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onCodeClick?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onCodeClick }) => {
   return (
     <footer className="py-20 px-6 lg:px-12 bg-white border-t border-black/5">
       <div className="max-w-7xl mx-auto">
@@ -21,9 +25,9 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="font-heading font-bold text-xs uppercase tracking-widest mb-8">Navigation</h4>
             <ul className="space-y-4 text-sm text-black/60">
-              <li><a href="#" className="hover:text-brand-blue smooth-transition">Services</a></li>
-              <li><a href="#" className="hover:text-brand-blue smooth-transition">Philosophy</a></li>
-              <li><a href="#" className="hover:text-brand-blue smooth-transition">Briefings</a></li>
+              <li><a href="#services" className="hover:text-brand-blue smooth-transition">Services</a></li>
+              <li><a href="#matchmaker" className="hover:text-brand-blue smooth-transition">Find Your Fit</a></li>
+              <li><button onClick={onCodeClick} className="hover:text-brand-blue smooth-transition">Redeem Code</button></li>
               <li><a href="#" className="hover:text-brand-blue smooth-transition">Inquiry</a></li>
             </ul>
           </div>

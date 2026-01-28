@@ -1,7 +1,11 @@
 
 import React from 'react';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onMatchmakerClick?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
   return (
     <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
       {/* Background with warm city lights and professional imagery */}
@@ -46,7 +50,7 @@ export const Hero: React.FC = () => {
             Now take your business to that next level
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6">
+          <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="#services"
               className="group inline-flex items-center gap-3 px-6 py-3.5 bg-brand-blue hover:bg-blue-600 text-white font-semibold text-sm tracking-wider uppercase rounded-md smooth-transition"
@@ -58,6 +62,16 @@ export const Hero: React.FC = () => {
                 </svg>
               </span>
             </a>
+            <button
+              onClick={onMatchmakerClick}
+              className="group inline-flex items-center gap-3 px-6 py-3.5 border border-white/30 hover:border-white/60 hover:bg-white/10 text-white font-semibold text-sm tracking-wider uppercase rounded-md smooth-transition"
+            >
+              <span>Find Your Fit</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-12 smooth-transition">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
