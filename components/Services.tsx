@@ -5,27 +5,42 @@ const serviceList = [
   {
     title: "Event Lab",
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
-    description: "Operational infrastructure for high-stakes environments."
+    description: "Operational infrastructure for high-stakes environments.",
+    gradient: "from-pink-500 via-purple-500 to-purple-700",
+    accentColor: "bg-pink-500",
+    hoverColor: "#ec4899"
   },
   {
     title: "InstaSite",
-    image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&q=80&w=800",
-    description: "Precision-engineered digital properties for instant credibility."
+    image: "/InstaSite.png",
+    description: "Precision-engineered digital properties for instant credibility.",
+    gradient: "from-blue-500 via-blue-600 to-black",
+    accentColor: "bg-blue-500",
+    hoverColor: "#3b82f6"
   },
   {
     title: "LaunchPad",
     image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
-    description: "Systematic framework for new initiative market entry."
+    description: "Systematic framework for new initiative market entry.",
+    gradient: "from-orange-500 via-orange-600 to-black",
+    accentColor: "bg-orange-500",
+    hoverColor: "#f97316"
   },
   {
     title: "Digital Marketing",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-    description: "Comprehensive strategies for online presence and customer acquisition."
+    description: "Comprehensive strategies for online presence and customer acquisition.",
+    gradient: "from-blue-600 via-blue-700 to-black",
+    accentColor: "bg-brand-blue",
+    hoverColor: "#0000FF"
   },
   {
     title: "Social Media Marketing",
     image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
-    description: "Engaging content and community management for brand growth."
+    description: "Engaging content and community management for brand growth.",
+    gradient: "from-blue-600 via-blue-700 to-black",
+    accentColor: "bg-brand-blue",
+    hoverColor: "#0000FF"
   }
 ];
 
@@ -40,25 +55,30 @@ export const Services: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {serviceList.map((service, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
-              <img 
-                src={service.image} 
-                alt={service.title} 
-                className="w-full h-full object-cover opacity-50 group-hover:scale-110 group-hover:rotate-1 smooth-transition"
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover opacity-40 group-hover:scale-110 group-hover:rotate-1 smooth-transition"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent"></div>
-              
+              {/* Gradient overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-60 smooth-transition mix-blend-multiply`}></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent"></div>
+
               <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                <h3 className="text-3xl font-heading font-bold mb-4 text-white group-hover:text-brand-blue smooth-transition">
-                  {service.title}
+                {/* Accent line */}
+                <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-0 group-hover:scale-x-100 smooth-transition`}></div>
+                <h3 className="text-3xl font-heading font-bold mb-4 smooth-transition">
+                  <span className="text-white group-hover:hidden">{service.title}</span>
+                  <span className="hidden group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
                 </h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 smooth-transition">
                   {service.description}
                 </p>
-                <button className="self-start px-6 py-3 bg-brand-blue text-white text-[10px] font-bold uppercase tracking-widest translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition">
+                <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition`}>
                   Learn More
                 </button>
               </div>

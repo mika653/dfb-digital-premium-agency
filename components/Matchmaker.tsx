@@ -260,9 +260,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <span className="text-sm">Back to Home</span>
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center">
-              <span className="text-white text-xs font-bold">DFB</span>
-            </div>
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-8 w-auto" />
             <span className="text-white font-heading font-semibold">Service Matchmaker</span>
           </div>
           <div className="w-24"></div>

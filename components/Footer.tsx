@@ -11,11 +11,8 @@ export const Footer: React.FC<FooterProps> = ({ onCodeClick }) => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-20">
           <div className="col-span-1 md:col-span-2">
-             <div className="flex items-center gap-2 mb-6">
-              <div className="w-6 h-6 bg-brand-blue flex items-center justify-center">
-                <span className="text-white text-[8px] font-heading font-bold">DFB</span>
-              </div>
-              <span className="font-heading font-bold tracking-tighter text-lg uppercase">DFB Digital</span>
+            <div className="mb-6">
+              <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-8 w-auto" />
             </div>
             <p className="text-black/50 text-sm max-w-xs leading-relaxed">
               Boutique digital consultancy for established business owners. We build systems for clarity, structure, and long-term execution.

@@ -11,9 +11,10 @@ import { CTA } from './components/CTA';
 import { Footer } from './components/Footer';
 import { Matchmaker } from './components/Matchmaker';
 import { CodeRedemption } from './components/CodeRedemption';
+import { EventLab } from './components/EventLab';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
