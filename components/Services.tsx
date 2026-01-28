@@ -3,6 +3,7 @@ import React from 'react';
 
 interface ServicesProps {
   onEventLabClick: () => void;
+  onInstaSiteClick: () => void;
 }
 
 const serviceList = [
@@ -17,7 +18,7 @@ const serviceList = [
   {
     title: "InstaSite",
     image: "/InstaSite.png",
-    description: "Precision-engineered digital properties for instant credibility.",
+    description: "A professional web presence—without the complexity.",
     gradient: "from-blue-500 via-blue-600 to-black",
     accentColor: "bg-blue-500",
     hoverColor: "#3b82f6"
@@ -48,7 +49,7 @@ const serviceList = [
   }
 ];
 
-export const Services: React.FC<ServicesProps> = ({ onEventLabClick }) => {
+export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSiteClick }) => {
   return (
     <section id="services" className="py-32 px-6 lg:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -61,7 +62,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick }) => {
           {serviceList.map((service, index) => (
             <div
               key={index}
-              onClick={service.title === 'Event Lab' ? onEventLabClick : undefined}
+              onClick={service.title === 'Event Lab' ? onEventLabClick : service.title === 'InstaSite' ? onInstaSiteClick : undefined}
               className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
               <img

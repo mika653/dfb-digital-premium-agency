@@ -12,9 +12,10 @@ import { Footer } from './components/Footer';
 import { Matchmaker } from './components/Matchmaker';
 import { CodeRedemption } from './components/CodeRedemption';
 import { EventLab } from './components/EventLab';
+import { InstaSite } from './components/InstaSite';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,8 @@ const App: React.FC = () => {
         setCurrentPage('matchmaker');
       } else if (hash === '#eventlab') {
         setCurrentPage('eventlab');
+      } else if (hash === '#instasite') {
+        setCurrentPage('instasite');
       } else {
         setCurrentPage('home');
       }
@@ -49,6 +52,20 @@ const App: React.FC = () => {
     setCurrentPage('eventlab');
   };
 
+  const goToInstaSite = () => {
+    window.location.hash = 'instasite';
+    setCurrentPage('instasite');
+  };
+
+  if (currentPage === 'instasite') {
+    return (
+      <>
+        <InstaSite onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
   if (currentPage === 'eventlab') {
     return (
       <>
@@ -73,7 +90,7 @@ const App: React.FC = () => {
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />
-        <Services onEventLabClick={goToEventLab} />
+        <Services onEventLabClick={goToEventLab} onInstaSiteClick={goToInstaSite} />
         <WhyDFB />
         <Reviews />
         <ClientRoster />
