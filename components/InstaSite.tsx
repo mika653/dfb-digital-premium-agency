@@ -103,7 +103,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           </div>
           <a
             href="mailto:hello@dfbdigital.com"
-            className="px-5 py-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:from-blue-600 hover:to-blue-800 smooth-transition"
+            className="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:from-cyan-600 hover:to-blue-700 smooth-transition"
           >
             Get in Touch
           </a>
@@ -117,22 +117,22 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           <img
             src="/InstaSite.png"
             alt="InstaSite"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 via-blue-900/20 to-black/50"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/40 via-blue-900/30 to-black/60"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400"></div>
         </div>
 
         {/* Floating light effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400/20 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-[128px] animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/25 rounded-full blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
 
         {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
-            <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-pulse"></span>
             <span className="text-white/80 text-sm font-medium tracking-wide">You've Arrived</span>
           </div>
 
@@ -141,7 +141,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.05] mb-8">
             <span className="text-white">Insta</span>
-            <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 bg-clip-text text-transparent">Site</span>
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">Site</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto font-light">
@@ -151,7 +151,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="mailto:hello@dfbdigital.com?subject=InstaSite Inquiry"
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition"
             >
               <span>Get Started</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 smooth-transition">
@@ -172,8 +172,8 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
       {/* Ideal For Section */}
       <section className="py-20 px-6 lg:px-12 bg-gradient-to-b from-black to-brand-black">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/30 mb-6">
-            <span className="text-blue-400 text-sm font-medium tracking-wide">Ideal For</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 rounded-full border border-cyan-500/30 mb-6">
+            <span className="text-cyan-400 text-sm font-medium tracking-wide">Ideal For</span>
           </div>
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed">
             Consultants, professionals, small businesses, and personal brands who need a smart digital calling card.
@@ -183,12 +183,12 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
 
       {/* Benefits Section */}
       <section id="benefits" className="py-32 px-6 lg:px-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.08)_0%,transparent_70%)]"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Why <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">InstaSite</span>?
+              Why <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">InstaSite</span>?
             </h2>
           </div>
 
@@ -196,9 +196,9 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="group text-center p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-blue-500/50 hover:bg-white/10 smooth-transition"
+                className="group text-center p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-cyan-500/50 hover:bg-white/10 smooth-transition"
               >
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
+                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
                   {benefit.icon}
                 </div>
                 <h3 className="text-2xl font-heading font-bold text-white mb-3">{benefit.title}</h3>
@@ -214,7 +214,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Key <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Features</span>
+              Key <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Features</span>
             </h2>
           </div>
 
@@ -222,7 +222,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="p-8 border-l-2 border-blue-500/50 hover:border-blue-500 smooth-transition"
+                className="p-8 border-l-2 border-cyan-500/50 hover:border-cyan-500 smooth-transition"
               >
                 <h3 className="text-xl font-heading font-bold text-white mb-4">{feature.title}</h3>
                 <p className="text-white/60 leading-relaxed">{feature.description}</p>
@@ -237,7 +237,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              The <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Benefits</span>
+              The <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Benefits</span>
             </h2>
           </div>
 
@@ -247,7 +247,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
                 key={index}
                 className="group text-center"
               >
-                <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
+                <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
                   {benefit.icon}
                 </div>
                 <h3 className="text-lg font-heading font-bold text-white">{benefit.title}</h3>
@@ -271,14 +271,14 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Ready to <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Arrive</span>?
+            Ready to <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Arrive</span>?
           </h2>
           <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto">
             Make your mark online. Get a site that says you're here and you mean business.
           </p>
           <a
             href="mailto:hello@dfbdigital.com?subject=InstaSite Inquiry"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition group"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition group"
           >
             <span>Get in Touch</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 smooth-transition">
