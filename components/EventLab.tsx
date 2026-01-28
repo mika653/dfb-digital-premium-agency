@@ -101,7 +101,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
             <span className="text-sm">Back</span>
           </button>
           <div className="flex items-center gap-3">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-8 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
           </div>
           <a
             href="mailto:hello@dfbdigital.com"
@@ -333,7 +333,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
       {/* Footer */}
       <footer className="py-10 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-6 w-auto opacity-50" />
+          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-10 w-auto opacity-50" />
           <p className="text-white/30 text-sm">
             &copy; {new Date().getFullYear()} DFB Digital. All rights reserved.
           </p>
