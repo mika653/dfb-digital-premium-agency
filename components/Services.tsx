@@ -1,6 +1,10 @@
 
 import React from 'react';
 
+interface ServicesProps {
+  onEventLabClick: () => void;
+}
+
 const serviceList = [
   {
     title: "Event Lab",
@@ -44,7 +48,7 @@ const serviceList = [
   }
 ];
 
-export const Services: React.FC = () => {
+export const Services: React.FC<ServicesProps> = ({ onEventLabClick }) => {
   return (
     <section id="services" className="py-32 px-6 lg:px-12 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -57,6 +61,7 @@ export const Services: React.FC = () => {
           {serviceList.map((service, index) => (
             <div
               key={index}
+              onClick={service.title === 'Event Lab' ? onEventLabClick : undefined}
               className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
               <img

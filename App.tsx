@@ -22,6 +22,8 @@ const App: React.FC = () => {
       const hash = window.location.hash;
       if (hash === '#matchmaker') {
         setCurrentPage('matchmaker');
+      } else if (hash === '#eventlab') {
+        setCurrentPage('eventlab');
       } else {
         setCurrentPage('home');
       }
@@ -42,6 +44,20 @@ const App: React.FC = () => {
     setCurrentPage('matchmaker');
   };
 
+  const goToEventLab = () => {
+    window.location.hash = 'eventlab';
+    setCurrentPage('eventlab');
+  };
+
+  if (currentPage === 'eventlab') {
+    return (
+      <>
+        <EventLab onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
   if (currentPage === 'matchmaker') {
     return (
       <>
@@ -57,7 +73,7 @@ const App: React.FC = () => {
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />
-        <Services />
+        <Services onEventLabClick={goToEventLab} />
         <WhyDFB />
         <Reviews />
         <ClientRoster />
