@@ -123,19 +123,19 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
             className="w-full h-full object-cover object-bottom"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/40 via-amber-900/30 to-black/60"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-amber-500 to-orange-400"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/50 via-orange-800/30 to-black/70"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-white to-orange-500"></div>
         </div>
 
         {/* Floating light effects */}
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-orange-500/30 rounded-full blur-[100px] md:blur-[128px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-amber-500/25 rounded-full blur-[100px] md:blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-orange-500/40 rounded-full blur-[100px] md:blur-[128px] animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-orange-400/30 rounded-full blur-[100px] md:blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
 
         {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
-            <span className="w-2 h-2 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
             <span className="text-white/80 text-sm font-medium tracking-wide">Ready for Liftoff</span>
           </div>
 
@@ -144,7 +144,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
           </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.05] mb-8">
             <span className="text-white">Launch</span>
-            <span className="bg-gradient-to-r from-orange-400 via-amber-500 to-orange-400 bg-clip-text text-transparent">Pad</span>
+            <span className="bg-gradient-to-r from-orange-500 via-orange-300 to-white bg-clip-text text-transparent">Pad</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto font-light">
@@ -191,7 +191,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Why <span className="bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">LaunchPad</span>?
+              Why <span className="bg-gradient-to-r from-orange-500 via-orange-300 to-white bg-clip-text text-transparent">LaunchPad</span>?
             </h2>
           </div>
 
@@ -217,7 +217,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Key <span className="bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">Features</span>
+              Key <span className="bg-gradient-to-r from-orange-500 via-orange-300 to-white bg-clip-text text-transparent">Features</span>
             </h2>
           </div>
 
@@ -240,7 +240,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              The <span className="bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">Benefits</span>
+              The <span className="bg-gradient-to-r from-orange-500 via-orange-300 to-white bg-clip-text text-transparent">Benefits</span>
             </h2>
           </div>
 
@@ -274,7 +274,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Ready for <span className="bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">Liftoff</span>?
+            Ready for <span className="bg-gradient-to-r from-orange-500 via-orange-300 to-white bg-clip-text text-transparent">Liftoff</span>?
           </h2>
           <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto">
             Build a website that grows with your vision. Start with a foundation designed for long-term success.
