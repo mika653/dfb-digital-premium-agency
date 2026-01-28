@@ -115,8 +115,8 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
         {/* Background */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=2000"
-            alt="Professional presence"
+            src="/InstaSite.png"
+            alt="InstaSite"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black"></div>
