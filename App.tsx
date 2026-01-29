@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Services } from './components/Services';
-import { Reviews } from './components/Reviews';
+// import { Reviews } from './components/Reviews';
 import { ClientRoster } from './components/ClientRoster';
 import { WhyDFB } from './components/WhyDFB';
 import { CTA } from './components/CTA';
@@ -176,7 +176,7 @@ const App: React.FC = () => {
         <About />
         <Services onEventLabClick={goToEventLab} onInstaSiteClick={goToInstaSite} onLaunchPadClick={goToLaunchPad} />
         <WhyDFB />
-        <Reviews />
+        {/* <Reviews /> */}
         <ClientRoster />
         <CTA />
         <ComingSoon />
