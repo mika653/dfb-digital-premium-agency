@@ -32,9 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ onCodeClick }) => {
           <div>
             <h4 className="font-heading font-bold text-xs uppercase tracking-widest mb-8">Contact</h4>
             <ul className="space-y-4 text-sm text-black/60">
-              <li>London / New York</li>
-              <li>hello@dfbdigital.com</li>
-              <li>+44 (0) 20 7123 4567</li>
+              <li><a href="mailto:hello@dfbdigital.com" className="hover:text-brand-blue smooth-transition">hello@dfbdigital.com</a></li>
             </ul>
           </div>
         </div>

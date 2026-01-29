@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { NewsletterForm } from './NewsletterForm';
 
 const comingSoonItems = [
   {
@@ -41,7 +42,7 @@ const comingSoonItems = [
 
 export const ComingSoon: React.FC = () => {
   return (
-    <section className="py-32 px-6 lg:px-12 bg-brand-black relative overflow-hidden">
+    <section className="py-32 px-6 lg:px-12 bg-brand-black relative overflow-hidden texture-noise texture-gradient-dark">
       {/* Subtle background effect */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,0,255,0.05)_0%,transparent_50%)]"></div>
 
@@ -88,21 +89,12 @@ export const ComingSoon: React.FC = () => {
           ))}
         </div>
 
-        {/* Newsletter signup teaser */}
-        <div className="mt-16 text-center">
-          <p className="text-white/40 text-sm mb-4">
+        {/* Newsletter signup */}
+        <div className="mt-16 max-w-xl mx-auto text-center">
+          <p className="text-white/40 text-sm mb-6">
             Want to be the first to know when these launch?
           </p>
-          <a
-            href="mailto:hello@dfbdigital.com?subject=Keep me updated on DFB Digital launches"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 rounded-full smooth-transition text-sm"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <span>Get Notified</span>
-          </a>
+          <NewsletterForm variant="dark" compact />
         </div>
       </div>
     </section>

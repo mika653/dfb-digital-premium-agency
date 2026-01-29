@@ -10,7 +10,7 @@ const clients = [
 
 export const ClientRoster: React.FC = () => {
   return (
-    <section className="py-32 px-6 lg:px-12 bg-brand-black text-white">
+    <section className="py-32 px-6 lg:px-12 bg-brand-black text-white texture-noise texture-gradient-dark">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-heading font-bold mb-20">Client Roster</h2>
         
@@ -21,14 +21,9 @@ export const ClientRoster: React.FC = () => {
                 {client.name}
               </div>
               <div className="mt-4 md:mt-0 md:text-right">
-                <a 
-                  href={client.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-xs font-medium uppercase tracking-[0.2em] text-white/40 hover:text-white smooth-transition"
-                >
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-white/40">
                   {client.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                </a>
+                </span>
               </div>
             </div>
           ))}

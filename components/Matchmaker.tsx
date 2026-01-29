@@ -18,33 +18,39 @@ interface ServiceMatch {
   description: string;
   match: number;
   image: string;
+  route?: string;
 }
 
 const services = {
   eventLab: {
     title: "Event Lab",
     description: "Operational infrastructure for high-stakes environments. Perfect for conferences, launches, and corporate gatherings.",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
+    route: "#eventlab"
   },
   instaSite: {
     title: "InstaSite",
     description: "Precision-engineered digital properties for instant credibility. Get online fast with a professional presence.",
-    image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&q=80&w=800",
+    route: "#instasite"
   },
   launchPad: {
     title: "LaunchPad",
     description: "Systematic framework for new initiative market entry. Ideal for product launches and new business ventures.",
-    image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
+    route: "#launchpad"
   },
   digitalMarketing: {
     title: "Digital Marketing",
     description: "Comprehensive strategies for online presence and customer acquisition. Drive traffic, leads, and sales.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+    route: null
   },
   socialMedia: {
     title: "Social Media Marketing",
     description: "Engaging content and community management for brand growth. Build your audience and brand awareness.",
-    image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
+    route: null
   }
 };
 
@@ -193,10 +199,16 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     // Convert to array and sort by score
     const results = Object.entries(scores)
-      .map(([key, score]) => ({
-        ...services[key as keyof typeof services],
-        match: Math.min(Math.round((score / 80) * 100), 99)
-      }))
+      .map(([key, score]) => {
+        const service = services[key as keyof typeof services];
+        return {
+          title: service.title,
+          description: service.description,
+          image: service.image,
+          route: service.route,
+          match: Math.min(Math.round((score / 80) * 100), 99)
+        };
+      })
       .sort((a, b) => b.match - a.match)
       .slice(0, 3);
 
@@ -352,16 +364,27 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                           </span>
                         </div>
                         <p className="text-white/60 text-sm leading-relaxed mb-4">{service.description}</p>
-                        <a
-                          href="#services"
-                          onClick={onBack}
-                          className="inline-flex items-center gap-2 text-brand-blue text-glow-soft hover:text-blue-400 text-sm font-semibold smooth-transition"
-                        >
-                          Learn more
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="9 6 15 12 9 18"></polyline>
-                          </svg>
-                        </a>
+                        {service.route ? (
+                          <a
+                            href={service.route}
+                            className="inline-flex items-center gap-2 text-brand-blue text-glow-soft hover:text-blue-400 text-sm font-semibold smooth-transition"
+                          >
+                            View {service.title}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="9 6 15 12 9 18"></polyline>
+                            </svg>
+                          </a>
+                        ) : (
+                          <a
+                            href={`mailto:hello@dfbdigital.com?subject=Inquiry about ${service.title}`}
+                            className="inline-flex items-center gap-2 text-brand-blue text-glow-soft hover:text-blue-400 text-sm font-semibold smooth-transition"
+                          >
+                            Inquire about {service.title}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="9 6 15 12 9 18"></polyline>
+                            </svg>
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>

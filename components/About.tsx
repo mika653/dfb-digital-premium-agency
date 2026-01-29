@@ -3,7 +3,7 @@ import React from 'react';
 
 export const About: React.FC = () => {
   return (
-    <section className="py-32 px-6 lg:px-12 bg-brand-black text-white">
+    <section className="py-32 px-6 lg:px-12 bg-brand-black text-white texture-noise texture-gradient-dark">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1">

@@ -3,7 +3,7 @@ import React from 'react';
 
 export const WhyDFB: React.FC = () => {
   return (
-    <section id="philosophy" className="py-32 px-6 lg:px-12 bg-brand-black text-white text-center">
+    <section id="philosophy" className="py-32 px-6 lg:px-12 bg-brand-black text-white text-center texture-noise texture-gradient-dark">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-heading font-bold mb-12 tracking-tight leading-tight">
           Digital isn’t about doing more.<br />

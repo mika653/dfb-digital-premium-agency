@@ -3,7 +3,7 @@ import React from 'react';
 
 export const CTA: React.FC = () => {
   return (
-    <section className="py-48 px-6 lg:px-12 bg-brand-black text-brand-white relative overflow-hidden">
+    <section className="py-48 px-6 lg:px-12 bg-brand-black text-brand-white relative overflow-hidden texture-noise texture-gradient-dark">
       <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-blue/10 skew-x-12 translate-x-1/2"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">

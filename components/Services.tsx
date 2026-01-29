@@ -52,7 +52,7 @@ const serviceList = [
 
 export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSiteClick, onLaunchPadClick }) => {
   return (
-    <section id="services" className="py-32 px-6 lg:px-12 bg-white">
+    <section id="services" className="py-32 px-6 lg:px-12 bg-white texture-gradient-light">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-24">
           <h2 className="text-4xl md:text-6xl font-heading font-bold mb-6">Web Development</h2>
