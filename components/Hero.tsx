@@ -42,8 +42,9 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
           </h1>
 
           <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-4 max-w-xl font-light tracking-wide">
-            It takes experience and informed decisions<br className="hidden sm:block" />
-            to get results that matter
+            It takes experience and informed decisions
+            <br className="hidden sm:block" />
+            {' '}to get results that matter
           </p>
 
           <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-12 max-w-xl font-light tracking-wide">
