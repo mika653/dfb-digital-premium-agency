@@ -15,9 +15,13 @@ import { CodeRedemption } from './components/CodeRedemption';
 import { EventLab } from './components/EventLab';
 import { InstaSite } from './components/InstaSite';
 import { LaunchPad } from './components/LaunchPad';
+import { Blog } from './components/Blog';
+import { ArticleDigitalInsights } from './components/ArticleDigitalInsights';
+import { ArticleBoutiqueStrategy } from './components/ArticleBoutiqueStrategy';
+import { VIPAccess } from './components/VIPAccess';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
@@ -31,9 +35,18 @@ const App: React.FC = () => {
         setCurrentPage('instasite');
       } else if (hash === '#launchpad') {
         setCurrentPage('launchpad');
+      } else if (hash === '#blog') {
+        setCurrentPage('blog');
+      } else if (hash === '#article-digital-insights') {
+        setCurrentPage('article-digital-insights');
+      } else if (hash === '#article-boutique-strategy') {
+        setCurrentPage('article-boutique-strategy');
+      } else if (hash === '#vip') {
+        setCurrentPage('vip');
       } else {
         setCurrentPage('home');
       }
+      window.scrollTo(0, 0);
     };
 
     handleHashChange();
@@ -44,27 +57,80 @@ const App: React.FC = () => {
   const goToHome = () => {
     window.location.hash = '';
     setCurrentPage('home');
+    window.scrollTo(0, 0);
   };
 
   const goToMatchmaker = () => {
     window.location.hash = 'matchmaker';
     setCurrentPage('matchmaker');
+    window.scrollTo(0, 0);
   };
 
   const goToEventLab = () => {
     window.location.hash = 'eventlab';
     setCurrentPage('eventlab');
+    window.scrollTo(0, 0);
   };
 
   const goToInstaSite = () => {
     window.location.hash = 'instasite';
     setCurrentPage('instasite');
+    window.scrollTo(0, 0);
   };
 
   const goToLaunchPad = () => {
     window.location.hash = 'launchpad';
     setCurrentPage('launchpad');
+    window.scrollTo(0, 0);
   };
+
+  const goToBlog = () => {
+    window.location.hash = 'blog';
+    setCurrentPage('blog');
+    window.scrollTo(0, 0);
+  };
+
+  const goToArticle = (articleId: string) => {
+    window.location.hash = articleId;
+    setCurrentPage(articleId as 'article-digital-insights' | 'article-boutique-strategy');
+    window.scrollTo(0, 0);
+  };
+
+  if (currentPage === 'vip') {
+    return (
+      <>
+        <VIPAccess onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'article-boutique-strategy') {
+    return (
+      <>
+        <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'article-digital-insights') {
+    return (
+      <>
+        <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'blog') {
+    return (
+      <>
+        <Blog onBack={goToHome} onArticleClick={goToArticle} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
 
   if (currentPage === 'launchpad') {
     return (
@@ -104,7 +170,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-brand-white selection:bg-brand-blue selection:text-white">
-      <Navbar onMatchmakerClick={goToMatchmaker} onCodeClick={() => setIsCodeModalOpen(true)} />
+      <Navbar onMatchmakerClick={goToMatchmaker} onCodeClick={() => setIsCodeModalOpen(true)} onBlogClick={goToBlog} />
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />

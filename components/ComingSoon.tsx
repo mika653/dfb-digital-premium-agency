@@ -52,7 +52,7 @@ export const ComingSoon: React.FC = () => {
             <span className="text-white/60 text-sm font-medium tracking-wide">In Development</span>
           </div>
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Coming <span className="text-brand-blue">Soon</span>
+            Coming <span className="text-brand-blue text-glow-blue">Soon</span>
           </h2>
           <p className="text-xl text-white/50 max-w-2xl mx-auto">
             New ways to learn, grow, and do digital better. Stay tuned.

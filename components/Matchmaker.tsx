@@ -347,7 +347,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                       <div className="p-6 md:w-2/3">
                         <div className="flex items-center justify-between mb-3">
                           <h4 className="text-white text-xl font-heading font-bold">{service.title}</h4>
-                          <span className="px-3 py-1 bg-brand-blue/20 text-brand-blue text-sm font-semibold rounded-full">
+                          <span className="px-3 py-1 bg-brand-blue/20 text-brand-blue text-glow-soft text-sm font-semibold rounded-full">
                             {service.match}% match
                           </span>
                         </div>
@@ -355,7 +355,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <a
                           href="#services"
                           onClick={onBack}
-                          className="inline-flex items-center gap-2 text-brand-blue hover:text-blue-400 text-sm font-semibold smooth-transition"
+                          className="inline-flex items-center gap-2 text-brand-blue text-glow-soft hover:text-blue-400 text-sm font-semibold smooth-transition"
                         >
                           Learn more
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -375,7 +375,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     Start Over
                   </button>
                   <p className="text-white/40 text-sm">
-                    Ready to get started? <a href="mailto:hello@dfbdigital.com" className="text-brand-blue hover:underline">Contact us</a>
+                    Ready to get started? <a href="mailto:hello@dfbdigital.com" className="text-brand-blue text-glow-soft hover:underline">Contact us</a>
                   </p>
                 </div>
               </div>

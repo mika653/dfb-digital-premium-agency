@@ -35,7 +35,7 @@ export const Reviews: React.FC = () => {
                 <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
               </div>
               <h4 className="text-xl font-heading font-bold mb-2">{t.name}</h4>
-              <p className="text-[10px] uppercase tracking-widest text-brand-blue font-bold mb-6">{t.role}</p>
+              <p className="text-[10px] uppercase tracking-widest text-brand-blue text-glow-soft font-bold mb-6">{t.role}</p>
               <p className="text-white/60 text-sm leading-relaxed italic">
                 "{t.content}"
               </p>

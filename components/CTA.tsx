@@ -10,7 +10,7 @@ export const CTA: React.FC = () => {
         <div className="max-w-3xl">
           <h2 className="text-5xl md:text-7xl font-heading font-bold mb-12 tracking-tight">
             Ready for <br />
-            <span className="text-brand-blue">Absolute Clarity?</span>
+            <span className="text-brand-blue text-glow-blue">Absolute Clarity?</span>
           </h2>
           
           <p className="text-xl text-brand-white/60 mb-16 leading-relaxed max-w-xl">

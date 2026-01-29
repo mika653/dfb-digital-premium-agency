@@ -64,16 +64,17 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
             <div
               key={index}
               onClick={service.title === 'Event Lab' ? onEventLabClick : service.title === 'InstaSite' ? onInstaSiteClick : service.title === 'LaunchPad' ? onLaunchPadClick : undefined}
-              className={`relative aspect-[4/5] group overflow-hidden cursor-pointer bg-brand-black rounded-2xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
+              className={`relative aspect-[4/5] group overflow-hidden cursor-pointer rounded-2xl ${index >= 3 ? 'lg:col-span-1' : ''}`}
             >
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-full object-cover opacity-40 group-hover:scale-110 group-hover:rotate-1 smooth-transition"
+                className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
               />
-              {/* Gradient overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-60 smooth-transition mix-blend-multiply`}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent"></div>
+              {/* Subtle gradient for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              {/* Colored overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
 
               <div className="absolute inset-0 p-10 flex flex-col justify-end">
                 {/* Accent line */}
@@ -82,7 +83,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
                   <span className="text-white group-hover:hidden">{service.title}</span>
                   <span className="hidden group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 smooth-transition">
+                <p className="text-white/80 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 smooth-transition">
                   {service.description}
                 </p>
                 <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition`}>
