@@ -19,7 +19,7 @@ const serviceList = [
   {
     title: "InstaSite",
     image: "/InstaSite.png",
-    description: "A professional web presence—without the complexity.",
+    description: "A professional web presence—delivered fast.",
     gradient: "from-blue-500 via-blue-600 to-black",
     accentColor: "bg-blue-500",
     hoverColor: "#3b82f6"
