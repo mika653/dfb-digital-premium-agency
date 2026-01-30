@@ -10,9 +10,9 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onCodeClick, onBlogClick }) => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-md border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-40 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-[140px] w-auto" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-28 md:h-32 lg:h-36 flex items-center justify-between">
+        <div className="flex items-center">
+          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
         </div>
 
         <div className="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide">
