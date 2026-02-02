@@ -112,7 +112,7 @@ const serviceCategories: ServiceCategory[] = [
     services: [
       {
         title: "Digital Transformation",
-        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+        image: "/Digital Consultancy.jpeg",
         description: "End-to-end guidance for organizations embracing digital at every level.",
         gradient: "from-purple-600 via-violet-600 to-black",
         accentColor: "bg-purple-500",
@@ -122,7 +122,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "One-on-One Coaching",
-        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+        image: "/Digital Consultancy.jpeg",
         description: "Personalized sessions to sharpen your digital strategy and execution.",
         gradient: "from-violet-500 via-violet-600 to-black",
         accentColor: "bg-violet-500",
@@ -132,7 +132,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Speaking Engagements",
-        image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800",
+        image: "/Digital Consultancy.jpeg",
         description: "Keynotes and talks on digital strategy, innovation, and doing digital better.",
         gradient: "from-fuchsia-500 via-purple-600 to-black",
         accentColor: "bg-fuchsia-500",
@@ -142,7 +142,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Podcast Appearances",
-        image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=800",
+        image: "/Digital Consultancy.jpeg",
         description: "Insights on digital marketing, entrepreneurship, and building with intention.",
         gradient: "from-pink-600 via-fuchsia-600 to-black",
         accentColor: "bg-pink-600",
@@ -196,43 +196,95 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
               <div className="h-[1px] w-24 bg-brand-blue mx-auto"></div>
             </div>
 
-            {/* Service Cards Grid */}
-            <div className={`grid grid-cols-1 md:grid-cols-2 ${
-              category.services.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
-            } gap-8`}>
-              {category.services.map((service, index) => (
-                <div
-                  key={index}
-                  onClick={() => handleCardClick(service)}
-                  className="relative aspect-[4/5] group overflow-hidden cursor-pointer rounded-2xl"
-                >
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
-                  />
-                  {/* Gradient overlay — stronger on mobile */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/40 md:from-black/80 md:via-black/20 md:to-transparent"></div>
-                  {/* Colored overlay on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
-
-                  <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                    {/* Accent line */}
-                    <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 smooth-transition`}></div>
-                    <h3 className="text-2xl md:text-3xl font-heading font-bold mb-4 smooth-transition">
-                      <span className="text-white md:group-hover:hidden">{service.title}</span>
-                      <span className="hidden md:group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
-                    </h3>
-                    <p className="text-white text-sm leading-relaxed mb-8 opacity-100 md:text-white/80 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
-                      {service.description}
+            {category.id === 'digital-consultancy' ? (
+              <>
+                {/* Hero row: image + text */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+                  <div className="relative aspect-[3/4] max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden border-8 border-black/5">
+                    <img
+                      src="/Digital Consultancy.jpeg"
+                      alt="Daddy FunBuckets — Digital Consultant"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-black/60 leading-relaxed text-sm md:text-base mb-6">
+                      With 12+ years across Asia, the Middle East, and global markets, Daddy FunBuckets brings real-world digital experience to every engagement — from boardrooms to podcasts.
                     </p>
-                    <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 smooth-transition`}>
-                      {service.action === 'navigate' ? 'Learn More' : 'Inquire'}
-                    </button>
+                    <p className="text-black/60 leading-relaxed text-sm md:text-base mb-10">
+                      Whether you need strategic transformation guidance, personalized coaching, or a compelling voice for your next event or show — DFB delivers with clarity, energy, and intention.
+                    </p>
+                    <a
+                      href="mailto:hello@dfbdigital.com?subject=Digital%20Consultancy%20Inquiry"
+                      className="inline-flex items-center gap-3 px-6 py-4 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 active:bg-blue-700 smooth-transition"
+                    >
+                      <span>Get in Touch</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                {/* Compact service cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {category.services.map((service, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleCardClick(service)}
+                      className="group cursor-pointer bg-white rounded-2xl border border-black/5 p-8 hover:shadow-xl smooth-transition hover:-translate-y-1"
+                    >
+                      <div className={`w-12 h-1 ${service.accentColor} mb-6`}></div>
+                      <h3 className="text-lg font-heading font-bold text-brand-black mb-3 group-hover:text-brand-blue smooth-transition">
+                        {service.title}
+                      </h3>
+                      <p className="text-black/50 text-sm leading-relaxed mb-6">
+                        {service.description}
+                      </p>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-brand-blue">
+                        Inquire →
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* Standard image card grid for other categories */
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${
+                category.services.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+              } gap-8`}>
+                {category.services.map((service, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleCardClick(service)}
+                    className="relative aspect-[4/5] group overflow-hidden cursor-pointer rounded-2xl"
+                  >
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                    />
+                    {/* Gradient overlay — stronger on mobile */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/40 md:from-black/80 md:via-black/20 md:to-transparent"></div>
+                    {/* Colored overlay on hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
+
+                    <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                      {/* Accent line */}
+                      <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 smooth-transition`}></div>
+                      <h3 className="text-2xl md:text-3xl font-heading font-bold mb-4 smooth-transition">
+                        <span className="text-white md:group-hover:hidden">{service.title}</span>
+                        <span className="hidden md:group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
+                      </h3>
+                      <p className="text-white text-sm leading-relaxed mb-8 opacity-100 md:text-white/80 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
+                        {service.description}
+                      </p>
+                      <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 smooth-transition`}>
+                        {service.action === 'navigate' ? 'Learn More' : 'Inquire'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ))}
