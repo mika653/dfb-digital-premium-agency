@@ -84,6 +84,12 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  const goToServicePage = (route: string) => {
+    window.location.hash = route;
+    setCurrentPage(route as typeof currentPage);
+    window.scrollTo(0, 0);
+  };
+
   const goToBlog = () => {
     window.location.hash = 'blog';
     setCurrentPage('blog');
@@ -174,7 +180,7 @@ const App: React.FC = () => {
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />
-        <Services onEventLabClick={goToEventLab} onInstaSiteClick={goToInstaSite} onLaunchPadClick={goToLaunchPad} />
+        <Services onNavigate={goToServicePage} />
         <WhyDFB />
         {/* <Reviews /> */}
         <ClientRoster />

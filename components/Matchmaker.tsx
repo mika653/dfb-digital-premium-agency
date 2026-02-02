@@ -40,16 +40,46 @@ const services = {
     image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
     route: "#launchpad"
   },
-  digitalMarketing: {
-    title: "Digital Marketing",
-    description: "Comprehensive strategies for online presence and customer acquisition. Drive traffic, leads, and sales.",
+  digitalStrategy: {
+    title: "Digital Strategy & Campaign Planning",
+    description: "Comprehensive strategies for online presence, customer acquisition, and long-term digital growth.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
     route: null
   },
   socialMedia: {
-    title: "Social Media Marketing",
-    description: "Engaging content and community management for brand growth. Build your audience and brand awareness.",
+    title: "Social Media & Content Marketing",
+    description: "Engaging content and community management that builds audience and brand awareness.",
     image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  emailCRM: {
+    title: "Email & CRM-Based Marketing",
+    description: "Nurture leads and retain customers through precision email sequences and CRM-driven campaigns.",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  digitalTransformation: {
+    title: "Digital Transformation",
+    description: "End-to-end guidance for organizations embracing digital at every level of operations.",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  coaching: {
+    title: "One-on-One Coaching",
+    description: "Personalized sessions to sharpen your digital strategy, execution, and leadership.",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  speaking: {
+    title: "Speaking Engagements",
+    description: "Keynotes and talks on digital strategy, innovation, and building with intention.",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  podcast: {
+    title: "Podcast Appearances",
+    description: "Insights on digital marketing, entrepreneurship, and doing digital better.",
+    image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=800",
     route: null
   }
 };
@@ -136,65 +166,87 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       eventLab: 0,
       instaSite: 0,
       launchPad: 0,
-      digitalMarketing: 0,
-      socialMedia: 0
+      digitalStrategy: 0,
+      socialMedia: 0,
+      emailCRM: 0,
+      digitalTransformation: 0,
+      coaching: 0,
+      speaking: 0,
+      podcast: 0
     };
 
     const [goal, presence, timeline, budget] = userAnswers;
 
     // Goal-based scoring
-    if (goal === 'event') scores.eventLab += 50;
-    if (goal === 'launch') scores.launchPad += 40;
+    if (goal === 'event') { scores.eventLab += 50; scores.speaking += 10; }
+    if (goal === 'launch') { scores.launchPad += 40; scores.digitalStrategy += 20; scores.emailCRM += 10; }
     if (goal === 'awareness') {
       scores.socialMedia += 35;
-      scores.digitalMarketing += 25;
+      scores.digitalStrategy += 25;
+      scores.speaking += 15;
+      scores.podcast += 15;
     }
     if (goal === 'leads') {
-      scores.digitalMarketing += 40;
+      scores.digitalStrategy += 40;
       scores.instaSite += 20;
+      scores.emailCRM += 30;
     }
 
     // Presence-based scoring
     if (presence === 'none') {
       scores.instaSite += 40;
       scores.launchPad += 20;
+      scores.coaching += 15;
+      scores.digitalTransformation += 10;
     }
     if (presence === 'partial') {
       scores.instaSite += 25;
-      scores.digitalMarketing += 20;
+      scores.digitalStrategy += 20;
+      scores.coaching += 15;
+      scores.emailCRM += 10;
     }
     if (presence === 'established') {
-      scores.digitalMarketing += 30;
+      scores.digitalStrategy += 30;
       scores.socialMedia += 25;
+      scores.emailCRM += 20;
+      scores.digitalTransformation += 20;
     }
 
     // Timeline-based scoring
     if (timeline === 'urgent') {
       scores.instaSite += 30;
       scores.eventLab += 15;
+      scores.coaching += 10;
     }
     if (timeline === 'medium') {
       scores.launchPad += 20;
-      scores.digitalMarketing += 20;
+      scores.digitalStrategy += 20;
+      scores.emailCRM += 15;
     }
     if (timeline === 'longterm') {
       scores.socialMedia += 25;
-      scores.digitalMarketing += 25;
+      scores.digitalStrategy += 25;
+      scores.digitalTransformation += 25;
+      scores.coaching += 15;
     }
 
     // Budget-based scoring
     if (budget === 'starter') {
       scores.instaSite += 15;
       scores.socialMedia += 15;
+      scores.coaching += 10;
     }
     if (budget === 'growth') {
-      scores.digitalMarketing += 20;
+      scores.digitalStrategy += 20;
       scores.launchPad += 20;
+      scores.emailCRM += 15;
     }
     if (budget === 'enterprise') {
       scores.eventLab += 25;
       scores.launchPad += 25;
-      scores.digitalMarketing += 20;
+      scores.digitalStrategy += 20;
+      scores.digitalTransformation += 30;
+      scores.coaching += 15;
     }
 
     // Convert to array and sort by score
