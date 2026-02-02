@@ -209,10 +209,10 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <p className="text-black/60 leading-relaxed text-sm md:text-base mb-6">
-                      With 12+ years across Asia, the Middle East, and global markets, Daddy FunBuckets brings real-world digital experience to every engagement — from boardrooms to podcasts.
+                      Daddy FunBuckets brings real-world digital experience to every engagement—from boardrooms to podcasts.
                     </p>
                     <p className="text-black/60 leading-relaxed text-sm md:text-base mb-10">
-                      Whether you need strategic transformation guidance, personalized coaching, or a compelling voice for your next event or show — DFB delivers with clarity, energy, and intention.
+                      Whether you need strategic transformation guidance, personalized coaching, or a compelling voice for your next podcast—DFB delivers with clarity, energy, and intention.
                     </p>
                     <a
                       href="mailto:hello@dfbdigital.com?subject=Digital%20Consultancy%20Inquiry"
