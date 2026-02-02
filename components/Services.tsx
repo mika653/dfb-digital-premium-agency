@@ -71,8 +71,8 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
                 alt={service.title}
                 className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
               />
-              {/* Subtle gradient for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              {/* Subtle gradient for text readability — stronger on mobile */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 md:from-black/80 md:via-black/20 md:to-transparent"></div>
               {/* Colored overlay on hover */}
               <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
 
