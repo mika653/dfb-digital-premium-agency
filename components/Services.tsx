@@ -70,8 +70,8 @@ const serviceCategories: ServiceCategory[] = [
         gradient: "from-emerald-600 via-teal-600 to-black",
         accentColor: "bg-emerald-500",
         hoverColor: "#10b981",
-        action: "mailto",
-        mailSubject: "Inquiry about Digital Strategy & Campaign Planning"
+        action: "navigate",
+        route: "digitalstrategy"
       },
       {
         title: "Social Media Marketing",
@@ -80,8 +80,8 @@ const serviceCategories: ServiceCategory[] = [
         gradient: "from-teal-500 via-teal-600 to-black",
         accentColor: "bg-teal-500",
         hoverColor: "#14b8a6",
-        action: "mailto",
-        mailSubject: "Inquiry about Social Media Marketing"
+        action: "navigate",
+        route: "socialmedia"
       },
       {
         title: "Content Marketing",
@@ -90,8 +90,8 @@ const serviceCategories: ServiceCategory[] = [
         gradient: "from-cyan-500 via-teal-500 to-black",
         accentColor: "bg-cyan-500",
         hoverColor: "#06b6d4",
-        action: "mailto",
-        mailSubject: "Inquiry about Content Marketing"
+        action: "navigate",
+        route: "contentmarketing"
       },
       {
         title: "Email & CRM-Based Marketing",
@@ -100,8 +100,8 @@ const serviceCategories: ServiceCategory[] = [
         gradient: "from-green-600 via-emerald-600 to-black",
         accentColor: "bg-green-500",
         hoverColor: "#22c55e",
-        action: "mailto",
-        mailSubject: "Inquiry about Email & CRM-Based Marketing"
+        action: "navigate",
+        route: "emailcrm"
       }
     ]
   },

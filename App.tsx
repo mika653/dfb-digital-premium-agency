@@ -15,13 +15,17 @@ import { CodeRedemption } from './components/CodeRedemption';
 import { EventLab } from './components/EventLab';
 import { InstaSite } from './components/InstaSite';
 import { LaunchPad } from './components/LaunchPad';
+import { DigitalStrategy } from './components/DigitalStrategy';
+import { SocialMediaMarketing } from './components/SocialMediaMarketing';
+import { ContentMarketing } from './components/ContentMarketing';
+import { EmailCRM } from './components/EmailCRM';
 import { Blog } from './components/Blog';
 import { ArticleDigitalInsights } from './components/ArticleDigitalInsights';
 import { ArticleBoutiqueStrategy } from './components/ArticleBoutiqueStrategy';
 import { VIPAccess } from './components/VIPAccess';
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
@@ -35,6 +39,14 @@ const App: React.FC = () => {
         setCurrentPage('instasite');
       } else if (hash === '#launchpad') {
         setCurrentPage('launchpad');
+      } else if (hash === '#digitalstrategy') {
+        setCurrentPage('digitalstrategy');
+      } else if (hash === '#socialmedia') {
+        setCurrentPage('socialmedia');
+      } else if (hash === '#contentmarketing') {
+        setCurrentPage('contentmarketing');
+      } else if (hash === '#emailcrm') {
+        setCurrentPage('emailcrm');
       } else if (hash === '#blog') {
         setCurrentPage('blog');
       } else if (hash === '#article-digital-insights') {
@@ -160,6 +172,42 @@ const App: React.FC = () => {
     return (
       <>
         <EventLab onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'digitalstrategy') {
+    return (
+      <>
+        <DigitalStrategy onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'socialmedia') {
+    return (
+      <>
+        <SocialMediaMarketing onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'contentmarketing') {
+    return (
+      <>
+        <ContentMarketing onBack={goToHome} />
+        <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
+      </>
+    );
+  }
+
+  if (currentPage === 'emailcrm') {
+    return (
+      <>
+        <EmailCRM onBack={goToHome} />
         <CodeRedemption isOpen={isCodeModalOpen} onClose={() => setIsCodeModalOpen(false)} />
       </>
     );

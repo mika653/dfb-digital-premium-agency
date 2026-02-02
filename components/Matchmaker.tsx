@@ -44,25 +44,25 @@ const services = {
     title: "Digital Strategy & Campaign Planning",
     description: "Comprehensive strategies for online presence, customer acquisition, and long-term digital growth.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-    route: null
+    route: "#digitalstrategy"
   },
   socialMedia: {
     title: "Social Media Marketing",
     description: "Strategic social media management that builds audience and drives engagement.",
     image: "https://images.unsplash.com/photo-1687008943553-f7560ffea8db?auto=format&fit=crop&q=80&w=800",
-    route: null
+    route: "#socialmedia"
   },
   contentMarketing: {
     title: "Content Marketing",
     description: "Compelling content strategies that tell your brand story and attract your ideal audience.",
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800",
-    route: null
+    route: "#contentmarketing"
   },
   emailCRM: {
     title: "Email & CRM-Based Marketing",
     description: "Nurture leads and retain customers through precision email sequences and CRM-driven campaigns.",
     image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800",
-    route: null
+    route: "#emailcrm"
   },
   digitalTransformation: {
     title: "Digital Transformation",
