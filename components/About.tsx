@@ -19,7 +19,7 @@ export const About: React.FC = () => {
               </p>
             </div>
             
-            <a href="#digital-consultancy" className="mt-12 group flex items-center justify-between gap-10 px-6 py-4 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 active:bg-blue-700 smooth-transition">
+            <a href="#digital-consultancy" className="mt-12 group inline-flex items-center gap-3 px-6 py-4 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 active:bg-blue-700 smooth-transition">
               <span>Learn More</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
