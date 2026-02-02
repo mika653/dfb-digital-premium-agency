@@ -47,9 +47,15 @@ const services = {
     route: null
   },
   socialMedia: {
-    title: "Social Media & Content Marketing",
-    description: "Engaging content and community management that builds audience and brand awareness.",
-    image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
+    title: "Social Media Marketing",
+    description: "Strategic social media management that builds audience and drives engagement.",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
+    route: null
+  },
+  contentMarketing: {
+    title: "Content Marketing",
+    description: "Compelling content strategies that tell your brand story and attract your ideal audience.",
+    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800",
     route: null
   },
   emailCRM: {
@@ -168,6 +174,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       launchPad: 0,
       digitalStrategy: 0,
       socialMedia: 0,
+      contentMarketing: 0,
       emailCRM: 0,
       digitalTransformation: 0,
       coaching: 0,
@@ -179,10 +186,11 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     // Goal-based scoring
     if (goal === 'event') { scores.eventLab += 50; scores.speaking += 10; }
-    if (goal === 'launch') { scores.launchPad += 40; scores.digitalStrategy += 20; scores.emailCRM += 10; }
+    if (goal === 'launch') { scores.launchPad += 40; scores.digitalStrategy += 20; scores.emailCRM += 10; scores.contentMarketing += 10; }
     if (goal === 'awareness') {
-      scores.socialMedia += 35;
-      scores.digitalStrategy += 25;
+      scores.socialMedia += 30;
+      scores.contentMarketing += 30;
+      scores.digitalStrategy += 20;
       scores.speaking += 15;
       scores.podcast += 15;
     }
@@ -190,6 +198,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.digitalStrategy += 40;
       scores.instaSite += 20;
       scores.emailCRM += 30;
+      scores.contentMarketing += 15;
     }
 
     // Presence-based scoring
@@ -202,12 +211,14 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (presence === 'partial') {
       scores.instaSite += 25;
       scores.digitalStrategy += 20;
+      scores.contentMarketing += 15;
       scores.coaching += 15;
       scores.emailCRM += 10;
     }
     if (presence === 'established') {
       scores.digitalStrategy += 30;
       scores.socialMedia += 25;
+      scores.contentMarketing += 20;
       scores.emailCRM += 20;
       scores.digitalTransformation += 20;
     }
@@ -222,9 +233,11 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.launchPad += 20;
       scores.digitalStrategy += 20;
       scores.emailCRM += 15;
+      scores.contentMarketing += 15;
     }
     if (timeline === 'longterm') {
-      scores.socialMedia += 25;
+      scores.socialMedia += 20;
+      scores.contentMarketing += 25;
       scores.digitalStrategy += 25;
       scores.digitalTransformation += 25;
       scores.coaching += 15;
@@ -234,12 +247,14 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (budget === 'starter') {
       scores.instaSite += 15;
       scores.socialMedia += 15;
+      scores.contentMarketing += 15;
       scores.coaching += 10;
     }
     if (budget === 'growth') {
       scores.digitalStrategy += 20;
       scores.launchPad += 20;
       scores.emailCRM += 15;
+      scores.contentMarketing += 10;
     }
     if (budget === 'enterprise') {
       scores.eventLab += 25;

@@ -74,14 +74,24 @@ const serviceCategories: ServiceCategory[] = [
         mailSubject: "Inquiry about Digital Strategy & Campaign Planning"
       },
       {
-        title: "Social Media & Content Marketing",
-        image: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
-        description: "Engaging content and community management for brand growth.",
+        title: "Social Media Marketing",
+        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
+        description: "Strategic social media management that builds audience and drives engagement.",
         gradient: "from-teal-500 via-teal-600 to-black",
         accentColor: "bg-teal-500",
         hoverColor: "#14b8a6",
         action: "mailto",
-        mailSubject: "Inquiry about Social Media & Content Marketing"
+        mailSubject: "Inquiry about Social Media Marketing"
+      },
+      {
+        title: "Content Marketing",
+        image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800",
+        description: "Compelling content strategies that tell your brand story and attract your ideal audience.",
+        gradient: "from-cyan-500 via-teal-500 to-black",
+        accentColor: "bg-cyan-500",
+        hoverColor: "#06b6d4",
+        action: "mailto",
+        mailSubject: "Inquiry about Content Marketing"
       },
       {
         title: "Email & CRM-Based Marketing",
