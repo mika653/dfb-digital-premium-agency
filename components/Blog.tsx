@@ -9,7 +9,7 @@ interface BlogProps {
 
 const articles = [
   {
-    id: 'digital-insights-packages',
+    id: 'article-digital-insights',
     title: "DFB's Digital Insights",
     subtitle: "A practical resource for business owners looking to understand digital more clearly.",
     excerpt: "Subscribe to receive insights, trends, and real-world perspectives on how digital can apply to your business — without the jargon.",
@@ -19,7 +19,7 @@ const articles = [
     gradient: "from-cyan-500 to-blue-600"
   },
   {
-    id: 'boutique-agency-strategy',
+    id: 'article-boutique-strategy',
     title: "How Boutique Agencies Think About Digital Strategy",
     subtitle: "That Big Agencies Don't",
     excerpt: "Digital strategy often gets confused with execution. More channels, more tools, more activity. But strategy isn't about doing more. It's about choosing what not to do.",
