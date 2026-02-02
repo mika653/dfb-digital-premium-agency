@@ -115,8 +115,8 @@ const serviceCategories: ServiceCategory[] = [
         image: "/Digital Consultancy.jpeg",
         description: "End-to-end guidance for organizations embracing digital at every level.",
         gradient: "from-purple-600 via-violet-600 to-black",
-        accentColor: "bg-purple-500",
-        hoverColor: "#a855f7",
+        accentColor: "bg-[#bdffcf]",
+        hoverColor: "#bdffcf",
         action: "mailto",
         mailSubject: "Inquiry about Digital Transformation"
       },
@@ -125,8 +125,8 @@ const serviceCategories: ServiceCategory[] = [
         image: "/Digital Consultancy.jpeg",
         description: "Personalized sessions to sharpen your digital strategy and execution.",
         gradient: "from-violet-500 via-violet-600 to-black",
-        accentColor: "bg-violet-500",
-        hoverColor: "#8b5cf6",
+        accentColor: "bg-[#f8b18a]",
+        hoverColor: "#f8b18a",
         action: "mailto",
         mailSubject: "Inquiry about One-on-One Coaching"
       },
@@ -135,8 +135,8 @@ const serviceCategories: ServiceCategory[] = [
         image: "/Digital Consultancy.jpeg",
         description: "Keynotes and talks on digital strategy, innovation, and doing digital better.",
         gradient: "from-fuchsia-500 via-purple-600 to-black",
-        accentColor: "bg-fuchsia-500",
-        hoverColor: "#d946ef",
+        accentColor: "bg-[#bdffcf]",
+        hoverColor: "#bdffcf",
         action: "mailto",
         mailSubject: "Inquiry about Speaking Engagements"
       },
@@ -145,8 +145,8 @@ const serviceCategories: ServiceCategory[] = [
         image: "/Digital Consultancy.jpeg",
         description: "Insights on digital marketing, entrepreneurship, and building with intention.",
         gradient: "from-pink-600 via-fuchsia-600 to-black",
-        accentColor: "bg-pink-600",
-        hoverColor: "#db2777",
+        accentColor: "bg-[#f8b18a]",
+        hoverColor: "#f8b18a",
         action: "mailto",
         mailSubject: "Inquiry about Podcast Appearances"
       }
