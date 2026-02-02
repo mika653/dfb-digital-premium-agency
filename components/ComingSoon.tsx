@@ -48,15 +48,11 @@ export const ComingSoon: React.FC = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 mb-6">
-            <span className="w-2 h-2 bg-brand-blue rounded-full animate-pulse"></span>
-            <span className="text-white/60 text-sm font-medium tracking-wide">In Development</span>
-          </div>
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Coming <span className="text-brand-blue text-glow-blue">Soon</span>
+            On the <span className="text-brand-blue text-glow-blue">Horizon</span>
           </h2>
           <p className="text-xl text-white/50 max-w-2xl mx-auto">
-            New ways to learn, grow, and do digital better. Stay tuned.
+            New ways to learn, grow, and approach digital with intention.
           </p>
         </div>
 
