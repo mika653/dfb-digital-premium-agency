@@ -27,6 +27,16 @@ const serviceCategories: ServiceCategory[] = [
     subtitle: "Precision-built digital properties engineered for your goals.",
     services: [
       {
+        title: "Event Lab",
+        image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
+        description: "High-impact event websites that inform, engage, and convert.",
+        gradient: "from-pink-500 via-purple-500 to-purple-700",
+        accentColor: "bg-pink-500",
+        hoverColor: "#ec4899",
+        action: "navigate",
+        route: "eventlab"
+      },
+      {
         title: "InstaSite",
         image: "/InstaSite.png",
         description: "A professional web presence—delivered fast.",
@@ -45,16 +55,6 @@ const serviceCategories: ServiceCategory[] = [
         hoverColor: "#f97316",
         action: "navigate",
         route: "launchpad"
-      },
-      {
-        title: "Event Lab",
-        image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
-        description: "High-impact event websites that inform, engage, and convert.",
-        gradient: "from-pink-500 via-purple-500 to-purple-700",
-        accentColor: "bg-pink-500",
-        hoverColor: "#ec4899",
-        action: "navigate",
-        route: "eventlab"
       }
     ]
   },
