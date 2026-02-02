@@ -78,15 +78,15 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
 
               <div className="absolute inset-0 p-10 flex flex-col justify-end">
                 {/* Accent line */}
-                <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-0 group-hover:scale-x-100 smooth-transition`}></div>
+                <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 smooth-transition`}></div>
                 <h3 className="text-3xl font-heading font-bold mb-4 smooth-transition">
-                  <span className="text-white group-hover:hidden">{service.title}</span>
-                  <span className="hidden group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
+                  <span className="text-white md:group-hover:hidden">{service.title}</span>
+                  <span className="hidden md:group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
                 </h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-8 opacity-0 group-hover:opacity-100 smooth-transition">
+                <p className="text-white/80 text-sm leading-relaxed mb-8 opacity-100 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
                   {service.description}
                 </p>
-                <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 smooth-transition`}>
+                <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 smooth-transition`}>
                   Learn More
                 </button>
               </div>
