@@ -72,7 +72,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
                 className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
               />
               {/* Subtle gradient for text readability — stronger on mobile */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 md:from-black/80 md:via-black/20 md:to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/40 md:from-black/80 md:via-black/20 md:to-transparent"></div>
               {/* Colored overlay on hover */}
               <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
 
@@ -83,7 +83,7 @@ export const Services: React.FC<ServicesProps> = ({ onEventLabClick, onInstaSite
                   <span className="text-white md:group-hover:hidden">{service.title}</span>
                   <span className="hidden md:group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
                 </h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-8 opacity-100 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
+                <p className="text-white text-sm leading-relaxed mb-8 opacity-100 md:text-white/80 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
                   {service.description}
                 </p>
                 <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 smooth-transition`}>
