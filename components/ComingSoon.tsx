@@ -88,7 +88,7 @@ export const ComingSoon: React.FC = () => {
         {/* Newsletter signup */}
         <div className="mt-16 max-w-xl mx-auto text-center">
           <p className="text-white/40 text-sm mb-6">
-            Want to be the first to know when these launch?
+            Stay ahead with digital insights, updates, and early access—straight to your inbox.
           </p>
           <NewsletterForm variant="dark" compact />
         </div>
