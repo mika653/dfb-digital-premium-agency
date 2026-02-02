@@ -12,23 +12,23 @@ export const WhyDFB: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">
           <div className="p-10 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-blue/10 smooth-transition">
-            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Structural Clarity</h4>
+            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Clear Direction</h4>
             <p className="text-white/50 text-xs leading-relaxed">
-              We navigate the ins and outs of digital marketing to provide a clear roadmap for our clients.
+              We help you understand what to do, what not to do, and why—so you're not guessing or wasting money.
             </p>
           </div>
-          
+
           <div className="p-10 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-blue/10 smooth-transition">
-            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Bespoke Strategies</h4>
+            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Right-Fit Solutions</h4>
             <p className="text-white/50 text-xs leading-relaxed">
-              Every business is different. We conceptualize tailor-made strategies for specific and evolving needs.
+              Your business isn't generic. We recommend and build digital solutions that make sense for your goals.
             </p>
           </div>
-          
+
           <div className="p-10 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-blue/10 smooth-transition">
-            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Transparency</h4>
+            <h4 className="font-heading font-bold text-sm uppercase tracking-widest mb-6">Open Communication</h4>
             <p className="text-white/50 text-xs leading-relaxed">
-              Direct access to the team handling your work. No more feeling like you're left in the dark.
+              You'll always know what's happening every step of the way.
             </p>
           </div>
         </div>
