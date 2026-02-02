@@ -173,6 +173,7 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
       {serviceCategories.map((category, catIndex) => (
         <div
           key={category.id}
+          id={category.id}
           className={`py-32 px-6 lg:px-12 ${
             catIndex % 2 === 0
               ? 'bg-white texture-gradient-light'
