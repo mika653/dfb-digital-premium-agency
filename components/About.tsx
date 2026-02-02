@@ -8,14 +8,14 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8 text-brand-mint">
-              Daddy FunBuckets
+              Experience. Strategy. A Different Way of Thinking.
             </h2>
             <div className="space-y-6 text-white/70 leading-relaxed text-sm md:text-base max-w-xl">
               <p>
-                DFB Digital is led by <span className="text-white font-bold">Daddy FunBuckets</span>, a Digital Marketing & Strategy Consultant with 12+ years of international experience across Asia, the Middle East, and global markets.
+                DFB Digital is led by <span className="text-white font-bold">Daddy FunBuckets</span>, a digital marketing and strategy consultant with 12+ years of experience working across Asia, the Middle East, and global markets.
               </p>
               <p>
-                DFB specializes in digital marketing strategy, transformation, social media, blockchain/crypto, and AI-driven innovation.
+                "DFB" blends practical strategy, digital transformation, and emerging technologies—including AI—to help businesses, brands, and organizations move forward with clarity and confidence.
               </p>
             </div>
             
