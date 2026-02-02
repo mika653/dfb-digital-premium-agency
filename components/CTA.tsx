@@ -43,7 +43,7 @@ export const CTA: React.FC = () => {
           <div className="max-w-3xl">
             <h2 className="text-5xl md:text-7xl font-heading font-bold mb-12 tracking-tight">
               Still Not Sure <br />
-              <span className="text-brand-blue text-glow-blue">What You Need?</span>
+              <span className="text-[#bdffcf]">What You Need?</span>
             </h2>
 
             <p className="text-xl text-brand-white/60 mb-16 leading-relaxed max-w-xl">
@@ -79,7 +79,7 @@ export const CTA: React.FC = () => {
             {status === 'success' ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 rounded-full bg-brand-blue/20 flex items-center justify-center mx-auto mb-6">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-blue">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#bdffcf]">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                 </div>

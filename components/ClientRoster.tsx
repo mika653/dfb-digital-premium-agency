@@ -18,7 +18,7 @@ export const ClientRoster: React.FC = () => {
         <div className="space-y-px bg-white/10">
           {clients.map((client, idx) => (
             <div key={idx} className="grid grid-cols-1 md:grid-cols-2 py-10 border-b border-white/5 items-center group">
-              <div className="text-lg md:text-xl font-heading font-bold group-hover:text-brand-blue smooth-transition">
+              <div className="text-lg md:text-xl font-heading font-bold group-hover:text-[#bdffcf] smooth-transition">
                 {client.name}
               </div>
               <div className="mt-4 md:mt-0 md:text-right">

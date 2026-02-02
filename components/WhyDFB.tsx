@@ -7,7 +7,7 @@ export const WhyDFB: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-heading font-bold mb-12 tracking-tight leading-tight">
           Digital isn’t about doing more.<br />
-          <span className="text-brand-blue text-glow-blue">It's about doing it right.</span>
+          <span className="text-[#bdffcf]">It's about doing it right.</span>
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-24">

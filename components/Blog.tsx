@@ -69,7 +69,7 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
               <span className="text-white/60 text-sm font-medium tracking-wide">Insights & Resources</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6">
-              The <span className="text-brand-blue text-glow-blue">Blog</span>
+              The <span className="text-[#bdffcf]">Blog</span>
             </h1>
             <p className="text-xl text-white/50 leading-relaxed">
               Practical perspectives on digital strategy, marketing, and building businesses that last.
@@ -102,13 +102,13 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
                 {/* Content */}
                 <div className="p-8">
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="px-3 py-1 bg-brand-blue/20 text-brand-blue text-glow-soft text-xs font-semibold rounded-full">
+                    <span className="px-3 py-1 bg-[#bdffcf]/20 text-[#bdffcf] text-xs font-semibold rounded-full">
                       {article.category}
                     </span>
                     <span className="text-white/40 text-xs">{article.readTime}</span>
                   </div>
 
-                  <h2 className="text-2xl font-heading font-bold text-white mb-2 group-hover:text-brand-blue smooth-transition">
+                  <h2 className="text-2xl font-heading font-bold text-white mb-2 group-hover:text-[#bdffcf] smooth-transition">
                     {article.title}
                   </h2>
                   {article.subtitle && (
@@ -118,7 +118,7 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
                     {article.excerpt}
                   </p>
 
-                  <div className="flex items-center gap-2 text-brand-blue text-glow-soft text-sm font-semibold group-hover:gap-4 smooth-transition">
+                  <div className="flex items-center gap-2 text-[#bdffcf] text-sm font-semibold group-hover:gap-4 smooth-transition">
                     <span>Read Article</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="9 6 15 12 9 18"></polyline>

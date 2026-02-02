@@ -49,7 +49,7 @@ export const ComingSoon: React.FC = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            On the <span className="text-brand-blue text-glow-blue">Horizon</span>
+            On the <span className="text-[#bdffcf]">Horizon</span>
           </h2>
           <p className="text-xl text-white/50 max-w-2xl mx-auto">
             New ways to learn, grow, and approach digital with intention.

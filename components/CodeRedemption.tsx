@@ -224,7 +224,7 @@ export const CodeRedemption: React.FC<CodeRedemptionProps> = ({ isOpen, onClose 
         {step !== 'success' && (
           <div className="px-8 pb-6">
             <p className="text-white/30 text-xs text-center">
-              Don't have a code? <a href="mailto:hello@dfbdigital.com" className="text-brand-blue hover:underline">Contact us</a> to learn about our services.
+              Don't have a code? <a href="mailto:hello@dfbdigital.com" className="text-[#bdffcf] hover:underline">Contact us</a> to learn about our services.
             </p>
           </div>
         )}

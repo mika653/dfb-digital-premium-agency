@@ -214,7 +214,7 @@ export const ArticleBoutiqueStrategy: React.FC<ArticleProps> = ({ onBack, onBlog
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
                 </div>
-                <h3 className="text-lg font-heading font-bold text-brand-blue text-glow-soft uppercase tracking-wider">DFB Says</h3>
+                <h3 className="text-lg font-heading font-bold text-[#bdffcf] uppercase tracking-wider">DFB Says</h3>
               </div>
               <p className="text-white text-xl leading-relaxed mb-4">
                 Effective digital strategy isn't about doing everything. It's about doing the right things in the right order, for the right reasons.

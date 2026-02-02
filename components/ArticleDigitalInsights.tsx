@@ -116,7 +116,7 @@ export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogC
             </div>
 
             <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-              DFB's Digital <span className="text-brand-blue text-glow-blue">Insights</span>
+              DFB's Digital <span className="text-[#bdffcf]">Insights</span>
             </h1>
 
             <p className="text-xl text-white/60 leading-relaxed">
@@ -164,7 +164,7 @@ export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogC
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {pkg.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center gap-3 text-white/50 text-sm">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-blue shrink-0">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#bdffcf] shrink-0">
                               <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
                             {feature}
