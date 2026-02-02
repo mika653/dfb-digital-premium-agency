@@ -65,7 +65,7 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
             </a>
             <button
               onClick={onMatchmakerClick}
-              className="group inline-flex items-center gap-3 px-6 py-3.5 border border-white/30 hover:border-white/60 hover:bg-white/10 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition w-fit"
+              className="group inline-flex items-center gap-3 px-6 py-3.5 border border-white/50 hover:border-white/80 hover:bg-white/10 active:bg-white/20 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition w-fit"
             >
               <span>Find Your Fit</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-12 smooth-transition">

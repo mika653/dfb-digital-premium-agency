@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onCodeClick, 
           <button onClick={onBlogClick} className="text-white/80 hover:text-white smooth-transition">Blog</button>
           <button onClick={onMatchmakerClick} className="text-white/80 hover:text-white smooth-transition">Find Your Fit</button>
           <button onClick={onCodeClick} className="text-white/80 hover:text-white smooth-transition">Redeem Code</button>
-          <button className="px-6 py-2 border border-white/30 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-white hover:text-brand-black smooth-transition">
+          <button className="px-6 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition">
             Inquiry
           </button>
         </div>
@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onCodeClick, 
             <button onClick={() => handleNavClick(onBlogClick)} className="text-left text-white/80 hover:text-white smooth-transition">Blog</button>
             <button onClick={() => handleNavClick(onMatchmakerClick)} className="text-left text-white/80 hover:text-white smooth-transition">Find Your Fit</button>
             <button onClick={() => handleNavClick(onCodeClick)} className="text-left text-white/80 hover:text-white smooth-transition">Redeem Code</button>
-            <button className="mt-2 px-6 py-2 border border-white/30 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-white hover:text-brand-black smooth-transition w-fit">
+            <button className="mt-2 px-6 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full active:bg-blue-600 smooth-transition w-fit">
               Inquiry
             </button>
           </div>
