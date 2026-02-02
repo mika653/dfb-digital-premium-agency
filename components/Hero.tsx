@@ -48,7 +48,7 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
           </p>
 
           <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-12 max-w-xl font-light tracking-wide">
-            Now take your business to that next level
+            We'll help you move forward with the right strategy—not guesswork.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
