@@ -4,8 +4,19 @@ import { NewsletterForm } from './NewsletterForm';
 
 const comingSoonItems = [
   {
+    title: "Blog",
+    description: "Clear, forward-looking perspectives on digital trends and the ideas shaping smarter decisions for what comes next.",
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+      </svg>
+    ),
+    gradient: "from-orange-500 to-amber-500"
+  },
+  {
     title: "Podcast",
-    description: "Conversations on design, digital and building with intention. Stories, insights, and practical guidance for doing digital better.",
+    description: "Conversations with thought leaders on where digital marketing, AI, and emerging technologies are headed\u2014with real-world implications for businesses that want to stay ahead.",
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
@@ -18,7 +29,7 @@ const comingSoonItems = [
   },
   {
     title: "DFB Digital Academy",
-    description: "Courses, templates and training designed to help you navigate digital with clarity and confidence. Learn at your own pace, with guidance that supports real progress.",
+    description: "Courses, templates and training that help you make smarter digital decisions\u2014at your own pace.",
     icon: (
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
@@ -26,17 +37,6 @@ const comingSoonItems = [
       </svg>
     ),
     gradient: "from-cyan-500 to-blue-500"
-  },
-  {
-    title: "Insights, Tools & Ideas",
-    description: "Get inside the mind of Daddy FunBuckets—sharing real-world lessons, sharp observations, and practical wisdom from more than a decade in the digital space.",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-      </svg>
-    ),
-    gradient: "from-orange-500 to-amber-500"
   }
 ];
 
