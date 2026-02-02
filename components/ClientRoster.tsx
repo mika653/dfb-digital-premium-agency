@@ -15,9 +15,9 @@ export const ClientRoster: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-heading font-bold mb-20">Client Roster</h2>
         
-        <div className="space-y-px bg-white/10">
+        <div className="rounded-2xl overflow-hidden border border-white/10">
           {clients.map((client, idx) => (
-            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 py-10 border-b border-white/5 items-center group">
+            <div key={idx} className={`grid grid-cols-1 md:grid-cols-2 px-8 py-8 items-center group hover:bg-white/5 smooth-transition${idx < clients.length - 1 ? ' border-b border-white/5' : ''}`}>
               <div className="text-lg md:text-xl font-heading font-bold group-hover:text-[#bdffcf] smooth-transition">
                 {client.name}
               </div>
