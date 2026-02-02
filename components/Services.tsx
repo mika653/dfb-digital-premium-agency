@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { DiscoveryCallModal } from './DiscoveryCallModal';
 
 interface ServiceItem {
   title: string;
@@ -159,12 +160,15 @@ interface ServicesProps {
 }
 
 export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
+  const [showForm, setShowForm] = useState(false);
+  const [formPrefill, setFormPrefill] = useState('');
 
   const handleCardClick = (service: ServiceItem) => {
     if (service.action === 'navigate' && service.route) {
       onNavigate(service.route);
     } else if (service.action === 'mailto') {
-      window.location.href = `mailto:hello@dfbdigital.com?subject=${encodeURIComponent(service.mailSubject || 'Service Inquiry')}`;
+      setFormPrefill(service.mailSubject || '');
+      setShowForm(true);
     }
   };
 
@@ -288,6 +292,11 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
           </div>
         </div>
       ))}
+      <DiscoveryCallModal
+        isOpen={showForm}
+        onClose={() => setShowForm(false)}
+        prefillMessage={formPrefill}
+      />
     </section>
   );
 };
