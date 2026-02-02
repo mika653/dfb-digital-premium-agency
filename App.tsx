@@ -29,36 +29,32 @@ const App: React.FC = () => {
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
   useEffect(() => {
+    const pageRoutes: Record<string, typeof currentPage> = {
+      '#matchmaker': 'matchmaker',
+      '#eventlab': 'eventlab',
+      '#instasite': 'instasite',
+      '#launchpad': 'launchpad',
+      '#digitalstrategy': 'digitalstrategy',
+      '#socialmedia': 'socialmedia',
+      '#contentmarketing': 'contentmarketing',
+      '#emailcrm': 'emailcrm',
+      '#blog': 'blog',
+      '#article-digital-insights': 'article-digital-insights',
+      '#article-boutique-strategy': 'article-boutique-strategy',
+      '#vip': 'vip',
+    };
+
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#matchmaker') {
-        setCurrentPage('matchmaker');
-      } else if (hash === '#eventlab') {
-        setCurrentPage('eventlab');
-      } else if (hash === '#instasite') {
-        setCurrentPage('instasite');
-      } else if (hash === '#launchpad') {
-        setCurrentPage('launchpad');
-      } else if (hash === '#digitalstrategy') {
-        setCurrentPage('digitalstrategy');
-      } else if (hash === '#socialmedia') {
-        setCurrentPage('socialmedia');
-      } else if (hash === '#contentmarketing') {
-        setCurrentPage('contentmarketing');
-      } else if (hash === '#emailcrm') {
-        setCurrentPage('emailcrm');
-      } else if (hash === '#blog') {
-        setCurrentPage('blog');
-      } else if (hash === '#article-digital-insights') {
-        setCurrentPage('article-digital-insights');
-      } else if (hash === '#article-boutique-strategy') {
-        setCurrentPage('article-boutique-strategy');
-      } else if (hash === '#vip') {
-        setCurrentPage('vip');
-      } else {
+      const page = pageRoutes[hash];
+      if (page) {
+        setCurrentPage(page);
+        window.scrollTo(0, 0);
+      } else if (!hash || hash === '#') {
         setCurrentPage('home');
+        window.scrollTo(0, 0);
       }
-      window.scrollTo(0, 0);
+      // Other hashes (e.g. #benefits, #services) are in-page anchors — don't change page
     };
 
     handleHashChange();
