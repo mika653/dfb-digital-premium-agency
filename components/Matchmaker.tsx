@@ -49,7 +49,7 @@ const services = {
   socialMedia: {
     title: "Social Media Marketing",
     description: "Strategic social media management that builds audience and drives engagement.",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1687008943553-f7560ffea8db?auto=format&fit=crop&q=80&w=800",
     route: null
   },
   contentMarketing: {
@@ -61,7 +61,7 @@ const services = {
   emailCRM: {
     title: "Email & CRM-Based Marketing",
     description: "Nurture leads and retain customers through precision email sequences and CRM-driven campaigns.",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800",
     route: null
   },
   digitalTransformation: {

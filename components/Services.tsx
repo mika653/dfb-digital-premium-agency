@@ -75,7 +75,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Social Media Marketing",
-        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1687008943553-f7560ffea8db?auto=format&fit=crop&q=80&w=800",
         description: "Strategic social media management that builds audience and drives engagement.",
         gradient: "from-teal-500 via-teal-600 to-black",
         accentColor: "bg-teal-500",
@@ -95,7 +95,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Email & CRM-Based Marketing",
-        image: "https://images.unsplash.com/photo-1563986768609-322da13575f2?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800",
         description: "Nurture leads and retain customers with precision email and CRM campaigns.",
         gradient: "from-green-600 via-emerald-600 to-black",
         accentColor: "bg-green-500",
