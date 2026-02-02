@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/render-page.js": {
-      "includeFiles": "dist/index.html"
-    }
-  },
   "rewrites": [
     { "source": "/matchmaker", "destination": "/api/render-page" },
     { "source": "/eventlab", "destination": "/api/render-page" },

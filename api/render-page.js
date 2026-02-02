@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
 const BOT_UA = /viber|whatsapp|facebookexternalhit|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|googlebot|bingbot|yandexbot|baiduspider|duckduckbot|pinterestbot|redditbot/i;
 
 const defaultMeta = {
@@ -59,70 +56,55 @@ const pageMeta = {
   },
 };
 
-module.exports = (req, res) => {
+export default async function handler(req, res) {
   const pagePath = req.url.split('?')[0];
   const ua = req.headers['user-agent'] || '';
   const isBot = BOT_UA.test(ua);
 
-  // Read the built index.html
-  let html;
-  try {
-    html = fs.readFileSync(path.join(__dirname, '..', 'dist', 'index.html'), 'utf-8');
-  } catch {
-    try {
-      html = fs.readFileSync(path.join(process.cwd(), 'dist', 'index.html'), 'utf-8');
-    } catch {
-      // Last resort: serve a redirect to root
-      res.writeHead(302, { Location: '/' });
-      res.end();
-      return;
-    }
-  }
-
   if (isBot) {
+    // Serve minimal HTML with correct meta tags for bots
     const meta = pageMeta[pagePath] || defaultMeta;
     const ogUrl = `https://www.dfbdigital.com${pagePath}`;
+    const ogImage = 'https://www.dfbdigital.com/og-image.png';
 
-    // Replace title
-    html = html.replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`);
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${meta.title}</title>
+  <meta name="description" content="${meta.description}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="${ogUrl}">
+  <meta property="og:title" content="${meta.title}">
+  <meta property="og:description" content="${meta.description}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:site_name" content="DFB Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${meta.title}">
+  <meta name="twitter:description" content="${meta.description}">
+  <meta name="twitter:image" content="${ogImage}">
+  <link rel="canonical" href="${ogUrl}">
+</head>
+<body></body>
+</html>`;
 
-    // Replace meta description
-    html = html.replace(
-      /<meta name="description" content="[^"]*"/,
-      `<meta name="description" content="${meta.description}"`
-    );
-
-    // Replace OG tags
-    html = html.replace(
-      /<meta property="og:title" content="[^"]*"/,
-      `<meta property="og:title" content="${meta.title}"`
-    );
-    html = html.replace(
-      /<meta property="og:description" content="[^"]*"/,
-      `<meta property="og:description" content="${meta.description}"`
-    );
-    html = html.replace(
-      /<meta property="og:url" content="[^"]*"/,
-      `<meta property="og:url" content="${ogUrl}"`
-    );
-
-    // Replace Twitter tags
-    html = html.replace(
-      /<meta name="twitter:title" content="[^"]*"/,
-      `<meta name="twitter:title" content="${meta.title}"`
-    );
-    html = html.replace(
-      /<meta name="twitter:description" content="[^"]*"/,
-      `<meta name="twitter:description" content="${meta.description}"`
-    );
-
-    // Replace canonical URL
-    html = html.replace(
-      /<link rel="canonical" href="[^"]*"/,
-      `<link rel="canonical" href="${ogUrl}"`
-    );
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.end(html);
   }
 
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.end(html);
-};
+  // For regular users, fetch the static index.html and serve it
+  try {
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    const response = await fetch(`${protocol}://${host}/index.html`);
+    const html = await response.text();
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end(html);
+  } catch (err) {
+    res.writeHead(302, { Location: '/' });
+    res.end();
+  }
+}
