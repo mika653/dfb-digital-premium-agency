@@ -4,7 +4,8 @@ import React from 'react';
 const clients = [
   { name: "Professor Derek Burton Collins", link: "thederekcollins.com" },
   { name: "Dante Alighieri Society, Hong Kong", link: "https://ladante.cc/" },
-  { name: "Casa Verde Townhomes", link: "https://www.casaverdetownhomes.net/home" },
+  { name: "Casa Verde Townhomes", link: "https://casaverdetownhomes.net" },
+  { name: "Academy for International Culinary Arts (AICA)", link: "https://aicaculinary.com" },
   { name: "Aldeon Luxury Suites", link: "https://aldeonluxurysuites.com/" }
 ];
 
