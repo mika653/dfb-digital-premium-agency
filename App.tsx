@@ -155,71 +155,45 @@ const App: React.FC = () => {
     navigateTo(`/${articleId}`, articleId as 'article-digital-insights' | 'article-boutique-strategy');
   };
 
-  if (currentPage === 'vip') {
-    return <VIPAccess onBack={goToHome} />;
-  }
-
-  if (currentPage === 'article-boutique-strategy') {
-    return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
-  }
-
-  if (currentPage === 'article-digital-insights') {
-    return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />;
-  }
-
-  if (currentPage === 'blog') {
-    return <Blog onBack={goToHome} onArticleClick={goToArticle} />;
-  }
-
-  if (currentPage === 'launchpad') {
-    return <LaunchPad onBack={goToHome} />;
-  }
-
-  if (currentPage === 'instasite') {
-    return <InstaSite onBack={goToHome} />;
-  }
-
-  if (currentPage === 'eventlab') {
-    return <EventLab onBack={goToHome} />;
-  }
-
-  if (currentPage === 'digitalstrategy') {
-    return <DigitalStrategy onBack={goToHome} />;
-  }
-
-  if (currentPage === 'socialmedia') {
-    return <SocialMediaMarketing onBack={goToHome} />;
-  }
-
-  if (currentPage === 'contentmarketing') {
-    return <ContentMarketing onBack={goToHome} />;
-  }
-
-  if (currentPage === 'emailcrm') {
-    return <EmailCRM onBack={goToHome} />;
-  }
-
-  if (currentPage === 'matchmaker') {
-    return <Matchmaker onBack={goToHome} />;
-  }
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'vip': return <VIPAccess onBack={goToHome} />;
+      case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
+      case 'article-digital-insights': return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />;
+      case 'blog': return <Blog onBack={goToHome} onArticleClick={goToArticle} />;
+      case 'launchpad': return <LaunchPad onBack={goToHome} />;
+      case 'instasite': return <InstaSite onBack={goToHome} />;
+      case 'eventlab': return <EventLab onBack={goToHome} />;
+      case 'digitalstrategy': return <DigitalStrategy onBack={goToHome} />;
+      case 'socialmedia': return <SocialMediaMarketing onBack={goToHome} />;
+      case 'contentmarketing': return <ContentMarketing onBack={goToHome} />;
+      case 'emailcrm': return <EmailCRM onBack={goToHome} />;
+      case 'matchmaker': return <Matchmaker onBack={goToHome} />;
+      default:
+        return (
+          <div className="min-h-screen bg-brand-white selection:bg-brand-blue selection:text-white">
+            <Navbar onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} onHomeClick={goToHome} />
+            <main>
+              <Hero onMatchmakerClick={goToMatchmaker} />
+              <About />
+              <Services onNavigate={goToServicePage} />
+              <WhyDFB />
+              {/* <Reviews /> */}
+              <ClientRoster />
+              <CTA />
+              <ComingSoon />
+            </main>
+            <Footer onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} />
+          </div>
+        );
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-brand-white selection:bg-brand-blue selection:text-white">
-      <Navbar onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} onHomeClick={goToHome} />
-      <main>
-        <Hero onMatchmakerClick={goToMatchmaker} />
-        <About />
-        <Services onNavigate={goToServicePage} />
-        <WhyDFB />
-        {/* <Reviews /> */}
-        <ClientRoster />
-        <CTA />
-        <ComingSoon />
-      </main>
-      <Footer onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} />
-
+    <>
+      {renderPage()}
       <ChatWidget onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} />
-    </div>
+    </>
   );
 };
 
