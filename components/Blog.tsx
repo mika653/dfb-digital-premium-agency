@@ -71,8 +71,11 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
             <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6">
               Into the <span className="text-[#bdffcf]">Bucket</span>
             </h1>
-            <p className="text-xl text-white/50 leading-relaxed">
+            <p className="text-xl text-white/50 leading-relaxed mb-4">
               Clear thinking on digital for decision-makers.
+            </p>
+            <p className="text-base text-white/30 leading-relaxed">
+              Practical perspectives on strategy, marketing, and building businesses that last — written for owners who want clarity, not complexity.
             </p>
           </div>
         </div>
