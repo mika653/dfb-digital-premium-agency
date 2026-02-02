@@ -98,7 +98,7 @@ export const VIPAccess: React.FC<VIPAccessProps> = ({ onBack }) => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button onClick={onBack} className="flex items-center gap-2">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
           </button>
           <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-blue/20 to-purple-500/20 rounded-full border border-brand-blue/30">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#bdffcf]">

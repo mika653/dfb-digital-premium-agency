@@ -333,7 +333,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             onClick={onBack}
             className="flex items-center gap-2"
           >
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
           </button>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">

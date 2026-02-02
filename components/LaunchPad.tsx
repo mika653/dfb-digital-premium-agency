@@ -95,7 +95,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
             onClick={onBack}
             className="flex items-center gap-2"
           >
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
           </button>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
@@ -300,7 +300,7 @@ export const LaunchPad: React.FC<LaunchPadProps> = ({ onBack }) => {
       {/* Footer */}
       <footer className="py-10 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-10 w-auto opacity-50" />
+          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto opacity-50" />
           <p className="text-white/30 text-sm">
             &copy; {new Date().getFullYear()} DFB Digital. All rights reserved.
           </p>

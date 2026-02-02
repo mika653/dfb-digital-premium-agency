@@ -93,7 +93,7 @@ export const SocialMediaMarketing: React.FC<SocialMediaMarketingProps> = ({ onBa
       <nav className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button onClick={onBack} className="flex items-center gap-2">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
           </button>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
@@ -257,7 +257,7 @@ export const SocialMediaMarketing: React.FC<SocialMediaMarketingProps> = ({ onBa
       {/* Footer */}
       <footer className="py-10 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-10 w-auto opacity-50" />
+          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto opacity-50" />
           <p className="text-white/30 text-sm">&copy; {new Date().getFullYear()} DFB Digital. All rights reserved.</p>
           <button onClick={onBack} className="text-white/50 hover:text-white text-sm smooth-transition">Back to Home</button>
         </div>

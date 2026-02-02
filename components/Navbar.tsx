@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 interface NavbarProps {
   onMatchmakerClick?: () => void;
-  onCodeClick?: () => void;
   onBlogClick?: () => void;
   onHomeClick?: () => void;
 }

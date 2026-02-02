@@ -73,7 +73,7 @@ export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogC
       <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button onClick={onBack} className="flex items-center gap-2">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-12 w-auto" />
+            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
           </button>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
