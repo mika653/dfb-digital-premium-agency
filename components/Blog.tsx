@@ -69,10 +69,10 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
               <span className="text-white/60 text-sm font-medium tracking-wide">Insights & Resources</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6">
-              The <span className="text-[#bdffcf]">Blog</span>
+              Into the <span className="text-[#bdffcf]">Bucket</span>
             </h1>
             <p className="text-xl text-white/50 leading-relaxed">
-              Practical perspectives on digital strategy, marketing, and building businesses that last.
+              Clear thinking on digital for decision-makers.
             </p>
           </div>
         </div>

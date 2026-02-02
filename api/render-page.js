@@ -19,8 +19,8 @@ const pageMeta = {
     description: 'A full website solution for businesses ready to grow. Strategy, design, and development — all in one.',
   },
   '/blog': {
-    title: 'Blog | Insights & Resources | DFB Digital',
-    description: 'Practical perspectives on digital strategy, marketing, and building businesses that last.',
+    title: 'Into the Bucket | Clear Thinking on Digital | DFB Digital',
+    description: 'Clear thinking on digital for decision-makers. Insights, strategy, and perspectives from DFB Digital.',
   },
   '/matchmaker': {
     title: 'Get Matched | Find the Right Service for You | DFB Digital',
