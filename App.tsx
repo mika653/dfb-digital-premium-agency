@@ -24,90 +24,136 @@ import { ArticleDigitalInsights } from './components/ArticleDigitalInsights';
 import { ArticleBoutiqueStrategy } from './components/ArticleBoutiqueStrategy';
 import { VIPAccess } from './components/VIPAccess';
 
+const defaultMeta = {
+  title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
+  description: 'Boutique digital consultancy for established business owners. We build systems for clarity, structure, and long-term execution.',
+};
+
+const pageMeta: Record<string, { title: string; description: string }> = {
+  instasite: {
+    title: 'InstaSite | A Professional Web Presence — Delivered Fast | DFB Digital',
+    description: 'A professional web presence — delivered fast. No coding, no complexity. Just a clean, polished site built for you.',
+  },
+  eventlab: {
+    title: 'Event Lab | High-Impact Event Websites | DFB Digital',
+    description: 'High-impact event websites that inform, engage, and convert. Built to make your event unforgettable online.',
+  },
+  launchpad: {
+    title: 'LaunchPad | Full Website Solutions for Growing Businesses | DFB Digital',
+    description: 'A full website solution for businesses ready to grow. Strategy, design, and development — all in one.',
+  },
+  blog: {
+    title: 'Blog | Insights & Resources | DFB Digital',
+    description: 'Practical perspectives on digital strategy, marketing, and building businesses that last.',
+  },
+  matchmaker: {
+    title: 'Get Matched | Find the Right Service for You | DFB Digital',
+    description: 'Answer a few questions and get matched to the DFB Digital service that fits your needs.',
+  },
+  digitalstrategy: {
+    title: 'Digital Strategy & Campaign Planning | DFB Digital',
+    description: 'Comprehensive strategies for online presence and customer acquisition. Built for businesses ready to grow.',
+  },
+  socialmedia: {
+    title: 'Social Media Marketing | DFB Digital',
+    description: 'Strategic social media management that builds audience and drives engagement.',
+  },
+  contentmarketing: {
+    title: 'Content Marketing | DFB Digital',
+    description: 'Compelling content strategies that tell your brand story and attract your ideal audience.',
+  },
+  emailcrm: {
+    title: 'Email & CRM-Based Marketing | DFB Digital',
+    description: 'Nurture leads and retain customers with precision email and CRM campaigns.',
+  },
+  'article-digital-insights': {
+    title: 'Digital Insights for Modern Businesses | DFB Digital Blog',
+    description: 'Practical digital insights for business owners navigating strategy, marketing, and growth.',
+  },
+  'article-boutique-strategy': {
+    title: 'The Boutique Strategy Advantage | DFB Digital Blog',
+    description: 'Why boutique digital consultancy delivers more impact than big-agency overhead.',
+  },
+  vip: {
+    title: 'VIP Access | DFB Digital',
+    description: 'Exclusive access for DFB Digital VIP clients.',
+  },
+};
+
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip'>('home');
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
 
+  // Update document title and OG meta tags based on current page
+  useEffect(() => {
+    const meta = pageMeta[currentPage] || defaultMeta;
+    document.title = meta.title;
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+
+    if (ogTitle) ogTitle.setAttribute('content', meta.title);
+    if (ogDesc) ogDesc.setAttribute('content', meta.description);
+    if (metaDesc) metaDesc.setAttribute('content', meta.description);
+    if (twTitle) twTitle.setAttribute('content', meta.title);
+    if (twDesc) twDesc.setAttribute('content', meta.description);
+  }, [currentPage]);
+
   useEffect(() => {
     const pageRoutes: Record<string, typeof currentPage> = {
-      '#matchmaker': 'matchmaker',
-      '#eventlab': 'eventlab',
-      '#instasite': 'instasite',
-      '#launchpad': 'launchpad',
-      '#digitalstrategy': 'digitalstrategy',
-      '#socialmedia': 'socialmedia',
-      '#contentmarketing': 'contentmarketing',
-      '#emailcrm': 'emailcrm',
-      '#blog': 'blog',
-      '#article-digital-insights': 'article-digital-insights',
-      '#article-boutique-strategy': 'article-boutique-strategy',
-      '#vip': 'vip',
+      '/matchmaker': 'matchmaker',
+      '/eventlab': 'eventlab',
+      '/instasite': 'instasite',
+      '/launchpad': 'launchpad',
+      '/digitalstrategy': 'digitalstrategy',
+      '/socialmedia': 'socialmedia',
+      '/contentmarketing': 'contentmarketing',
+      '/emailcrm': 'emailcrm',
+      '/blog': 'blog',
+      '/article-digital-insights': 'article-digital-insights',
+      '/article-boutique-strategy': 'article-boutique-strategy',
+      '/vip': 'vip',
     };
 
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      const page = pageRoutes[hash];
+    const handleRouteChange = () => {
+      const pathname = window.location.pathname;
+      const page = pageRoutes[pathname];
       if (page) {
         setCurrentPage(page);
         window.scrollTo(0, 0);
-      } else if (!hash || hash === '#') {
+      } else if (pathname === '/') {
         setCurrentPage('home');
         window.scrollTo(0, 0);
       }
-      // Other hashes (e.g. #benefits, #services) are in-page anchors — don't change page
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    handleRouteChange();
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
   }, []);
 
-  const goToHome = () => {
-    window.location.hash = '';
-    setCurrentPage('home');
+  const navigateTo = (path: string, page: typeof currentPage) => {
+    history.pushState(null, '', path);
+    setCurrentPage(page);
     window.scrollTo(0, 0);
   };
 
-  const goToMatchmaker = () => {
-    window.location.hash = 'matchmaker';
-    setCurrentPage('matchmaker');
-    window.scrollTo(0, 0);
-  };
-
-  const goToEventLab = () => {
-    window.location.hash = 'eventlab';
-    setCurrentPage('eventlab');
-    window.scrollTo(0, 0);
-  };
-
-  const goToInstaSite = () => {
-    window.location.hash = 'instasite';
-    setCurrentPage('instasite');
-    window.scrollTo(0, 0);
-  };
-
-  const goToLaunchPad = () => {
-    window.location.hash = 'launchpad';
-    setCurrentPage('launchpad');
-    window.scrollTo(0, 0);
-  };
+  const goToHome = () => navigateTo('/', 'home');
+  const goToMatchmaker = () => navigateTo('/matchmaker', 'matchmaker');
+  const goToEventLab = () => navigateTo('/eventlab', 'eventlab');
+  const goToInstaSite = () => navigateTo('/instasite', 'instasite');
+  const goToLaunchPad = () => navigateTo('/launchpad', 'launchpad');
+  const goToBlog = () => navigateTo('/blog', 'blog');
 
   const goToServicePage = (route: string) => {
-    window.location.hash = route;
-    setCurrentPage(route as typeof currentPage);
-    window.scrollTo(0, 0);
-  };
-
-  const goToBlog = () => {
-    window.location.hash = 'blog';
-    setCurrentPage('blog');
-    window.scrollTo(0, 0);
+    navigateTo(`/${route}`, route as typeof currentPage);
   };
 
   const goToArticle = (articleId: string) => {
-    window.location.hash = articleId;
-    setCurrentPage(articleId as 'article-digital-insights' | 'article-boutique-strategy');
-    window.scrollTo(0, 0);
+    navigateTo(`/${articleId}`, articleId as 'article-digital-insights' | 'article-boutique-strategy');
   };
 
   if (currentPage === 'vip') {
@@ -220,7 +266,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-brand-white selection:bg-brand-blue selection:text-white">
-      <Navbar onMatchmakerClick={goToMatchmaker} onCodeClick={() => setIsCodeModalOpen(true)} onBlogClick={goToBlog} />
+      <Navbar onMatchmakerClick={goToMatchmaker} onCodeClick={() => setIsCodeModalOpen(true)} onBlogClick={goToBlog} onHomeClick={goToHome} />
       <main>
         <Hero onMatchmakerClick={goToMatchmaker} />
         <About />
@@ -231,7 +277,7 @@ const App: React.FC = () => {
         <CTA />
         <ComingSoon />
       </main>
-      <Footer onCodeClick={() => setIsCodeModalOpen(true)} />
+      <Footer onCodeClick={() => setIsCodeModalOpen(true)} onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} />
 
       {/* Floating code redemption button */}
       <button

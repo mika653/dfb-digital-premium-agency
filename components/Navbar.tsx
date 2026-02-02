@@ -5,6 +5,7 @@ interface NavbarProps {
   onMatchmakerClick?: () => void;
   onCodeClick?: () => void;
   onBlogClick?: () => void;
+  onHomeClick?: () => void;
 }
 
 const serviceLinks = [
@@ -13,7 +14,7 @@ const serviceLinks = [
   { label: 'Digital Consultancy', href: '#digital-consultancy' },
 ];
 
-export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onBlogClick }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onBlogClick, onHomeClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -34,6 +35,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onBlogClick }
     setMenuOpen(false);
     setMobileServicesOpen(false);
     if (action) action();
+  };
+
+  const handleSectionClick = (e: React.MouseEvent, hash: string) => {
+    e.preventDefault();
+    setServicesOpen(false);
+    setMenuOpen(false);
+    setMobileServicesOpen(false);
+    if (window.location.pathname !== '/') {
+      // Navigate home first, then scroll to section
+      if (onHomeClick) onHomeClick();
+      setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.querySelector(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -72,7 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onBlogClick }
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setServicesOpen(false)}
+                    onClick={(e) => handleSectionClick(e, link.href)}
                     className="block px-5 py-3.5 text-white/70 hover:text-white hover:bg-white/5 smooth-transition text-sm"
                   >
                     {link.label}
@@ -131,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMatchmakerClick, onBlogClick }
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => { setMenuOpen(false); setMobileServicesOpen(false); }}
+                    onClick={(e) => handleSectionClick(e, link.href)}
                     className="text-white/60 hover:text-white smooth-transition"
                   >
                     {link.label}

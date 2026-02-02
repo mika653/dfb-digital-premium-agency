@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "api/render-page.js": {
+      "includeFiles": "dist/index.html"
+    }
+  },
+  "rewrites": [
+    { "source": "/matchmaker", "destination": "/api/render-page" },
+    { "source": "/eventlab", "destination": "/api/render-page" },
+    { "source": "/instasite", "destination": "/api/render-page" },
+    { "source": "/launchpad", "destination": "/api/render-page" },
+    { "source": "/digitalstrategy", "destination": "/api/render-page" },
+    { "source": "/socialmedia", "destination": "/api/render-page" },
+    { "source": "/contentmarketing", "destination": "/api/render-page" },
+    { "source": "/emailcrm", "destination": "/api/render-page" },
+    { "source": "/blog", "destination": "/api/render-page" },
+    { "source": "/article-digital-insights", "destination": "/api/render-page" },
+    { "source": "/article-boutique-strategy", "destination": "/api/render-page" },
+    { "source": "/vip", "destination": "/api/render-page" }
+  ]
+}

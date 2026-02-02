@@ -3,9 +3,11 @@ import React from 'react';
 
 interface FooterProps {
   onCodeClick?: () => void;
+  onMatchmakerClick?: () => void;
+  onBlogClick?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onCodeClick }) => {
+export const Footer: React.FC<FooterProps> = ({ onCodeClick, onMatchmakerClick, onBlogClick }) => {
   return (
     <footer className="py-20 px-6 lg:px-12 bg-white border-t border-black/5">
       <div className="max-w-7xl mx-auto">
@@ -23,9 +25,9 @@ export const Footer: React.FC<FooterProps> = ({ onCodeClick }) => {
             <h4 className="font-heading font-bold text-xs uppercase tracking-widest mb-8">Navigation</h4>
             <ul className="space-y-4 text-sm text-black/60">
               <li><a href="#services" className="hover:text-brand-blue smooth-transition">Services</a></li>
-              <li><a href="#matchmaker" className="hover:text-brand-blue smooth-transition">Find Your Fit</a></li>
-              <li><button onClick={onCodeClick} className="hover:text-brand-blue smooth-transition">Redeem Code</button></li>
-              <li><a href="#" className="hover:text-brand-blue smooth-transition">Inquiry</a></li>
+              <li><button onClick={onBlogClick} className="hover:text-brand-blue smooth-transition text-left">Blog</button></li>
+              <li><button onClick={onMatchmakerClick} className="hover:text-brand-blue smooth-transition text-left">Get Matched</button></li>
+              <li><a href="mailto:hello@dfbdigital.com" className="hover:text-brand-blue smooth-transition">Contact</a></li>
             </ul>
           </div>
 
