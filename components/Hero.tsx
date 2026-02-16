@@ -11,29 +11,16 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
       {/* Background with warm city lights and professional imagery */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/HERO IMAGE.png"
-          alt="Professional team collaboration"
-          className="w-full h-full object-cover object-right"
+          src="/new-hero-image.png"
+          alt="Professional businesswoman reviewing analytics in a modern office"
+          className="w-full h-full object-cover object-center"
         />
         {/* Dark overlay with gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/90 to-brand-black/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/70 to-brand-black/10"></div>
         {/* Subtle warm tint overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-amber-900/20"></div>
       </div>
 
-      {/* Subtle chart/graph decoration */}
-      <div className="absolute bottom-20 left-1/4 z-[1] opacity-20">
-        <svg width="200" height="120" viewBox="0 0 200 120" fill="none">
-          <rect x="10" y="80" width="20" height="40" fill="white" fillOpacity="0.3" />
-          <rect x="40" y="60" width="20" height="60" fill="white" fillOpacity="0.4" />
-          <rect x="70" y="40" width="20" height="80" fill="white" fillOpacity="0.5" />
-          <rect x="100" y="20" width="20" height="100" fill="white" fillOpacity="0.6" />
-          <rect x="130" y="30" width="20" height="90" fill="white" fillOpacity="0.5" />
-          {/* Growth arrow */}
-          <path d="M20 75 L140 15" stroke="white" strokeWidth="2" strokeOpacity="0.4" />
-          <path d="M130 10 L145 15 L135 25" stroke="white" strokeWidth="2" strokeOpacity="0.4" fill="none" />
-        </svg>
-      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
         <div className="max-w-3xl">
