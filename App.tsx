@@ -24,6 +24,9 @@ import { Blog } from './components/Blog';
 import { ArticleDigitalInsights } from './components/ArticleDigitalInsights';
 import { ArticleBoutiqueStrategy } from './components/ArticleBoutiqueStrategy';
 import { VIPAccess } from './components/VIPAccess';
+import { InstaSiteStarter } from './components/InstaSiteStarter';
+import { InstaSitePro } from './components/InstaSitePro';
+import { InstaSiteElite } from './components/InstaSiteElite';
 
 const defaultMeta = {
   title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
@@ -79,10 +82,22 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'VIP Access | DFB Digital',
     description: 'Exclusive access for DFB Digital VIP clients.',
   },
+  'instasite-starter': {
+    title: 'InstaSite Starter Demo | Professional Presence | DFB Digital',
+    description: 'See what an InstaSite Starter looks like — a clean, professional single-page site for your digital calling card.',
+  },
+  'instasite-pro': {
+    title: 'InstaSite Pro Demo | Built to Convert | DFB Digital',
+    description: 'See what an InstaSite Pro looks like — a multi-page site designed to turn visitors into clients.',
+  },
+  'instasite-elite': {
+    title: 'InstaSite Elite Demo | Premium Digital Front Desk | DFB Digital',
+    description: 'See what an InstaSite Elite looks like — a premium, multi-page site with refined design and advanced sections.',
+  },
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite'>('home');
 
   // Update document title and OG meta tags based on current page
   useEffect(() => {
@@ -116,6 +131,9 @@ const App: React.FC = () => {
       '/article-digital-insights': 'article-digital-insights',
       '/article-boutique-strategy': 'article-boutique-strategy',
       '/vip': 'vip',
+      '/instasite/starter': 'instasite-starter',
+      '/instasite/pro': 'instasite-pro',
+      '/instasite/elite': 'instasite-elite',
     };
 
     const handleRouteChange = () => {
@@ -148,6 +166,10 @@ const App: React.FC = () => {
   const goToLaunchPad = () => navigateTo('/launchpad', 'launchpad');
   const goToBlog = () => navigateTo('/blog', 'blog');
 
+  const goToInstaSiteDemo = (tier: string) => {
+    navigateTo(`/instasite/${tier}`, `instasite-${tier}` as typeof currentPage);
+  };
+
   const goToServicePage = (route: string) => {
     navigateTo(`/${route}`, route as typeof currentPage);
   };
@@ -163,7 +185,10 @@ const App: React.FC = () => {
       case 'article-digital-insights': return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />;
       case 'blog': return <Blog onBack={goToHome} onArticleClick={goToArticle} />;
       case 'launchpad': return <LaunchPad onBack={goToHome} />;
-      case 'instasite': return <InstaSite onBack={goToHome} />;
+      case 'instasite-starter': return <InstaSiteStarter onBack={goToInstaSite} />;
+      case 'instasite-pro': return <InstaSitePro onBack={goToInstaSite} />;
+      case 'instasite-elite': return <InstaSiteElite onBack={goToInstaSite} />;
+      case 'instasite': return <InstaSite onBack={goToHome} onNavigateDemo={goToInstaSiteDemo} />;
       case 'eventlab': return <EventLab onBack={goToHome} />;
       case 'digitalstrategy': return <DigitalStrategy onBack={goToHome} />;
       case 'socialmedia': return <SocialMediaMarketing onBack={goToHome} />;

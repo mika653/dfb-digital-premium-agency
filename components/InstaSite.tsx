@@ -3,6 +3,7 @@ import React from 'react';
 
 interface InstaSiteProps {
   onBack: () => void;
+  onNavigateDemo?: (tier: string) => void;
 }
 
 const benefits = [
@@ -83,7 +84,7 @@ const coreBenefits = [
   }
 ];
 
-export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
+export const InstaSite: React.FC<InstaSiteProps> = ({ onBack, onNavigateDemo }) => {
   return (
     <div className="min-h-screen bg-brand-black">
       {/* Navigation */}
@@ -227,8 +228,126 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
         </div>
       </section>
 
+      {/* Tier Showcase Section */}
+      <section className="py-16 md:py-32 px-6 lg:px-12 bg-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(6,182,212,0.06)_0%,transparent_60%)]"></div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 rounded-full border border-cyan-500/30 mb-6">
+              <span className="text-cyan-400 text-sm font-medium tracking-wide">Choose Your Tier</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
+              Find Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Fit</span>
+            </h2>
+            <p className="text-lg text-white/60 max-w-2xl mx-auto">
+              Every business is different. Pick the tier that matches where you are — and where you're headed.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Starter */}
+            <div className="group relative p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-cyan-500/50 hover:bg-white/10 smooth-transition flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white">Starter</h3>
+              </div>
+              <p className="text-cyan-400 text-sm font-medium tracking-wide uppercase mb-4">Professional Presence</p>
+              <p className="text-white/60 leading-relaxed mb-8 flex-grow">
+                A clean, single-page site that puts your name on the map. Perfect for professionals who need a polished digital calling card — fast.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => onNavigateDemo?.('starter')}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-500/10 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
+                >
+                  <span>View Demo</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+                <a
+                  href="https://instasite-generator.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
+                >
+                  <span>Visualize Your Site</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Pro */}
+            <div className="group relative p-8 bg-white/5 backdrop-blur-sm border border-cyan-500/30 rounded-2xl hover:border-cyan-400 hover:bg-white/10 smooth-transition flex flex-col ring-1 ring-cyan-500/20">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full">
+                <span className="text-white text-xs font-semibold tracking-wider uppercase">Popular</span>
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white">Pro</h3>
+              </div>
+              <p className="text-cyan-400 text-sm font-medium tracking-wide uppercase mb-4">Built to Convert</p>
+              <p className="text-white/60 leading-relaxed mb-8 flex-grow">
+                A multi-page site designed to turn visitors into clients. Services, trust signals, and clear calls to action — all working together.
+              </p>
+              <button
+                onClick={() => onNavigateDemo?.('pro')}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
+              >
+                <span>View Demo</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            {/* Elite */}
+            <div className="group relative p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-cyan-500/50 hover:bg-white/10 smooth-transition flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white">Elite</h3>
+              </div>
+              <p className="text-cyan-400 text-sm font-medium tracking-wide uppercase mb-4">Premium Digital Front Desk</p>
+              <p className="text-white/60 leading-relaxed mb-8 flex-grow">
+                The full experience. A premium, multi-page site with refined design, advanced sections, and the polish that sets you apart from the competition.
+              </p>
+              <button
+                onClick={() => onNavigateDemo?.('elite')}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-500/10 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
+              >
+                <span>View Demo</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="py-16 md:py-32 px-6 lg:px-12 bg-white/5">
+      <section className="py-16 md:py-32 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">

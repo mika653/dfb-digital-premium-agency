@@ -158,7 +158,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -171,6 +171,18 @@
                             blue: '#0000FF',
                             mint: '#A7F3D0',
                             orange: '#FED7AA'
+                        },
+                        salmon: {
+                            50: '#fff5f3',
+                            100: '#ffe8e3',
+                            200: '#ffd0c8',
+                            300: '#ffb0a2',
+                            400: '#fa8072',
+                            500: '#f06858',
+                            600: '#d94f40',
+                            700: '#b83a2e',
+                            800: '#962f26',
+                            900: '#7a2720',
                         }
                     },
                     fontFamily: {
@@ -237,10 +249,29 @@
                 radial-gradient(at 90% 80%, rgba(0, 0, 255, 0.05) 0%, transparent 40%),
                 radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
         }
+        /* InstaSite demo styles */
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .luxury-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+        .insta-badge {
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid currentColor;
+            border-radius: 9999px;
+        }
+        .instasite-demo body, .instasite-demo {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 <script type="importmap">
 {
   "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4"

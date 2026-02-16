@@ -11,6 +11,9 @@
     { "source": "/blog", "destination": "/api/render-page" },
     { "source": "/article-digital-insights", "destination": "/api/render-page" },
     { "source": "/article-boutique-strategy", "destination": "/api/render-page" },
-    { "source": "/vip", "destination": "/api/render-page" }
+    { "source": "/vip", "destination": "/api/render-page" },
+    { "source": "/instasite/starter", "destination": "/api/render-page" },
+    { "source": "/instasite/pro", "destination": "/api/render-page" },
+    { "source": "/instasite/elite", "destination": "/api/render-page" }
   ]
 }
