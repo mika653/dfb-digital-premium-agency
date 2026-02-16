@@ -238,7 +238,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack, onNavigateDemo }) 
               <span className="text-cyan-400 text-sm font-medium tracking-wide">Choose Your Tier</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Find Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Fit</span>
+              Pick Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Plan</span>
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
               Every business is different. Pick the tier that matches where you are — and where you're headed.
@@ -305,7 +305,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack, onNavigateDemo }) 
               </p>
               <button
                 onClick={() => onNavigateDemo?.('pro')}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-500/10 text-white font-semibold text-xs tracking-wider uppercase rounded-full smooth-transition"
               >
                 <span>View Demo</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
