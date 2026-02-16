@@ -171,7 +171,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack }) => {
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-cyan-400/50 hover:border-cyan-400 hover:bg-cyan-500/10 text-white font-semibold text-sm tracking-wider uppercase rounded-full smooth-transition"
             >
-              <span>Preview Your Site</span>
+              <span>Visualize Your Site</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 smooth-transition">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
