@@ -16,7 +16,7 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
           className="w-full h-full object-cover object-[70%_center] md:object-center"
         />
         {/* Dark overlay with gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/70 to-brand-black/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/95 via-brand-black/80 to-brand-black/40 md:from-brand-black/90 md:via-brand-black/70 md:to-brand-black/10"></div>
         {/* Subtle warm tint overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-amber-900/20"></div>
       </div>
