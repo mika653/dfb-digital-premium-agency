@@ -24,7 +24,7 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
         <div className="max-w-3xl">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.1] mb-8 tracking-tight text-white">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.1] mb-6 sm:mb-8 tracking-tight text-white">
             Do Digital <span className="italic">Better.</span>
           </h1>
 
