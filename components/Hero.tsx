@@ -13,7 +13,7 @@ export const Hero: React.FC<HeroProps> = ({ onMatchmakerClick }) => {
         <img
           src="/new-hero-image.png"
           alt="Professional businesswoman reviewing analytics in a modern office"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-[70%_center] md:object-center"
         />
         {/* Dark overlay with gradient for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/70 to-brand-black/10"></div>
