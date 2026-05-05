@@ -54,6 +54,10 @@ const pageMeta = {
     title: 'VIP Access | DFB Digital',
     description: 'Exclusive access for DFB Digital VIP clients.',
   },
+  '/pmasev': {
+    title: 'For PMASEV Members | Free Digital Health Check | DFB Digital',
+    description: 'Proud digital partner of PMASEV. Free 20-minute Digital Health Check for Filipino-American physicians — modern websites, SEO, and patient acquisition.',
+  },
 };
 
 export default async function handler(req, res) {

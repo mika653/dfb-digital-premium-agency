@@ -14,6 +14,7 @@
     { "source": "/vip", "destination": "/api/render-page" },
     { "source": "/instasite/starter", "destination": "/api/render-page" },
     { "source": "/instasite/pro", "destination": "/api/render-page" },
-    { "source": "/instasite/elite", "destination": "/api/render-page" }
+    { "source": "/instasite/elite", "destination": "/api/render-page" },
+    { "source": "/pmasev", "destination": "/api/render-page" }
   ]
 }
