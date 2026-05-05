@@ -27,6 +27,7 @@ import { VIPAccess } from './components/VIPAccess';
 import { InstaSiteStarter } from './components/InstaSiteStarter';
 import { InstaSitePro } from './components/InstaSitePro';
 import { InstaSiteElite } from './components/InstaSiteElite';
+import { PMASEV } from './components/PMASEV';
 
 const defaultMeta = {
   title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
@@ -94,10 +95,14 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'InstaSite Elite Demo | Premium Digital Front Desk | DFB Digital',
     description: 'See what an InstaSite Elite looks like — a premium, multi-page site with refined design and advanced sections.',
   },
+  pmasev: {
+    title: 'For PMASEV Members | Free Digital Health Check | DFB Digital',
+    description: 'Proud digital partner of PMASEV. Free 20-minute Digital Health Check for Filipino-American physicians — modern websites, SEO, and patient acquisition.',
+  },
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev'>('home');
 
   // Update document title and OG meta tags based on current page
   useEffect(() => {
@@ -134,6 +139,7 @@ const App: React.FC = () => {
       '/instasite/starter': 'instasite-starter',
       '/instasite/pro': 'instasite-pro',
       '/instasite/elite': 'instasite-elite',
+      '/pmasev': 'pmasev',
     };
 
     const handleRouteChange = () => {
@@ -180,6 +186,7 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'pmasev': return <PMASEV onBack={goToHome} />;
       case 'vip': return <VIPAccess onBack={goToHome} />;
       case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
       case 'article-digital-insights': return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />;

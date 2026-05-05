@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DFB Digital × PMASEV — Slide</title>
+<meta name="viewport" content="width=1920">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --blue: #0000FF;
+    --mint: #bdffcf;
+    --ink: #0a0a14;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    font-family: 'Poppins', sans-serif;
+    color: var(--white);
+    overflow: hidden;
+  }
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .scaler {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Background decoration */
+  .glow-blue {
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(0,0,255,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .glow-mint {
+    position: absolute;
+    bottom: -300px;
+    left: -100px;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(189,255,207,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+  .noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  /* Layout */
+  .container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 65px 100px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 36px;
+  }
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .logomark {
+    height: 160px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 6px 20px rgba(0,0,255,0.3));
+  }
+  .brand-divider {
+    width: 1px;
+    height: 100px;
+    background: rgba(255,255,255,0.15);
+  }
+  .brand-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+  .brand-text strong {
+    display: block;
+    color: var(--mint);
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .partner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: rgba(189,255,207,0.08);
+    border: 1px solid rgba(189,255,207,0.3);
+    border-radius: 999px;
+  }
+  .partner-badge .dot {
+    width: 10px;
+    height: 10px;
+    background: var(--mint);
+    border-radius: 50%;
+  }
+  .partner-badge span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--mint);
+    text-transform: uppercase;
+  }
+  /* Body */
+  .body {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 72px;
+    align-items: stretch;
+  }
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .headline {
+    margin-bottom: 22px;
+  }
+  .headline-setup {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 14px;
+  }
+  .headline-punch {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 72px;
+    line-height: 1.02;
+    letter-spacing: -2px;
+    color: var(--mint);
+  }
+  .subhead {
+    font-size: 22px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.75);
+    font-weight: 300;
+    letter-spacing: 0.2px;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+  /* Service cards — all 4 services from original deck */
+  .services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    max-width: 920px;
+  }
+  .service {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--mint);
+    border-radius: 14px;
+  }
+  .service-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    color: var(--mint);
+    margin-top: 2px;
+  }
+  .service-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .service-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .service-desc {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.72);
+  }
+  /* CTA card */
+  .cta-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 28px;
+    padding: 32px 32px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 80px;
+    height: 4px;
+    background: var(--blue);
+    border-radius: 0 0 8px 8px;
+  }
+  .cta-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--mint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .cta-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .cta-meta {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 28px;
+  }
+  .qr-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    background: var(--white);
+    border-radius: 20px;
+  }
+  .qr-frame {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
+  }
+  .qr-frame img.qr {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .qr-frame .qr-logo-pad {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: var(--white);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+  }
+  .qr-frame .qr-logo-pad img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .qr-text {
+    flex: 1;
+  }
+  .qr-text .scan-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .qr-text .scan-cta {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+  .cta-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    background: var(--blue);
+    color: var(--white);
+    border-radius: 999px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+  }
+  .cta-button .arrow {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Signature inside CTA card, under QR */
+  .cta-signature {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    text-align: center;
+  }
+  .cta-signature .name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  .cta-signature .title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .cta-signature .email {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--mint);
+    margin-top: 8px;
+    letter-spacing: 0.2px;
+  }
+  @media print {
+    html, body { background: var(--ink); }
+    .stage { transform: none !important; }
+    .scaler { display: block; width: 1920px; height: 1080px; }
+  }
+</style>
+</head>
+<body>
+<div class="scaler" id="scaler">
+  <div class="stage" id="stage">
+    <div class="grid-bg"></div>
+    <div class="glow-blue"></div>
+    <div class="glow-mint"></div>
+    <div class="noise"></div>
+
+    <div class="container">
+      <!-- HEADER -->
+      <div class="header">
+        <div class="brand">
+          <img class="logomark" src="../DFB Blue Logomark Tight.png" alt="DFB Digital">
+          <div class="brand-divider"></div>
+          <div class="brand-text">
+            Boutique Digital Agency<br>
+            <strong>Do Digital Better.</strong>
+          </div>
+        </div>
+        <div class="partner-badge">
+          <span class="dot"></span>
+          <span>Proud Digital Partner of PMASEV</span>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="body">
+        <div class="left-col">
+          <h1 class="headline">
+            <span class="headline-setup">
+              Your patients are choosing<br>
+              their doctor on Google.
+            </span>
+            <span class="headline-punch">
+              Let's make sure they choose&nbsp;you.
+            </span>
+          </h1>
+          <p class="subhead">
+            You spent decades earning your credentials. Your digital presence should reflect that — not lag behind it.
+          </p>
+
+          <div class="services">
+            <!-- 1. Website & Online Presence -->
+            <div class="service">
+              <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <div class="service-text">
+                <div class="service-title">Website &amp; Online Presence</div>
+                <div class="service-desc">Modern, credentialed practice sites that attract and convert patients.</div>
+              </div>
+            </div>
+
+            <!-- 2. AI Automation -->
+            <div class="service">
+              <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                <circle cx="12" cy="5" r="2"></circle>
+                <path d="M12 7v4"></path>
+                <line x1="8" y1="16" x2="8" y2="16"></line>
+                <line x1="16" y1="16" x2="16" y2="16"></line>
+              </svg>
+              <div class="service-text">
+                <div class="service-title">AI Automation</div>
+                <div class="service-desc">Appointment bots, patient intake, and after-hours inquiry handling.</div>
+              </div>
+            </div>
+
+            <!-- 3. SEO & Digital Strategy -->
+            <div class="service">
+              <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <div class="service-text">
+                <div class="service-title">SEO &amp; Digital Strategy</div>
+                <div class="service-desc">Drive qualified patients and community members to your platform.</div>
+              </div>
+            </div>
+
+            <!-- 4. NGO & Org Transformation -->
+            <div class="service">
+              <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <div class="service-text">
+                <div class="service-title">NGO &amp; Org Transformation</div>
+                <div class="service-desc">Digital roadmaps for Filipino-American associations and nonprofits.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA CARD -->
+        <div class="cta-card">
+          <div class="cta-eyebrow">Exclusive · PMASEV Members</div>
+          <h2 class="cta-title">Free 20-Min<br>Digital Health Check</h2>
+          <p class="cta-meta">
+            We'll review your online presence and send you a one-page action plan. Yours to keep — work with us or not.
+          </p>
+
+          <div class="qr-row">
+            <div class="qr-frame">
+              <img class="qr" src="../qr/pmasev-qr.svg" alt="Scan to request your Digital Health Check">
+              <div class="qr-logo-pad">
+                <img src="../DFB Blue Logomark Tight.png" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-signature">
+            <div class="name">Joe Flores</div>
+            <div class="title">Chief Marketing &amp; Innovation Officer</div>
+            <div class="email">joe@dfbdigital.com</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function fit() {
+    const stage = document.getElementById('stage');
+    const scaler = document.getElementById('scaler');
+    const sw = scaler.clientWidth;
+    const sh = scaler.clientHeight;
+    const scale = Math.min(sw / 1920, sh / 1080);
+    stage.style.transform = `scale(${scale})`;
+    const offsetX = (sw - 1920 * scale) / 2;
+    const offsetY = (sh - 1080 * scale) / 2;
+    stage.style.position = 'absolute';
+    stage.style.left = offsetX + 'px';
+    stage.style.top = offsetY + 'px';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+</script>
+</body>
+</html>
