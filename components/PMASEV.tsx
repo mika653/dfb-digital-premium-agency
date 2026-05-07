@@ -5,40 +5,44 @@ interface PMASEVProps {
   onBack: () => void;
 }
 
-const outcomes = [
+const services = [
   {
-    title: 'More new patients',
-    description: 'A modern, credentialed practice site that ranks on Google and converts visitors into appointments.',
+    title: 'Website & Social Media Marketing',
+    description: 'A polished website plus an active presence on Facebook, Instagram, and LinkedIn — so patients find you and trust you.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-        <path d="M22 11h-6"></path>
-        <path d="M19 8v6"></path>
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
       </svg>
     ),
   },
   {
-    title: 'Five-star reviews, on autopilot',
-    description: 'Automated review requests after visits. Build the online reputation your practice deserves.',
+    title: 'AI Automation',
+    description: 'Smart tools that book appointments and answer patient questions — even after hours.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+        <circle cx="12" cy="5" r="2"></circle>
+        <path d="M12 7v4"></path>
+        <line x1="8" y1="16" x2="8" y2="16"></line>
+        <line x1="16" y1="16" x2="16" y2="16"></line>
       </svg>
     ),
   },
   {
-    title: 'After-hours inquiries, handled',
-    description: 'A smart intake assistant answers patient questions 24/7 — so you stop losing leads after office hours.',
+    title: 'SEO, AEO, and Paid Media',
+    description: 'Be the first name patients see — on Google, on AI assistants like ChatGPT, and in the ads that actually pay off.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+        <polyline points="17 6 23 6 23 12"></polyline>
       </svg>
     ),
   },
   {
-    title: 'A digital roadmap for your association',
-    description: 'For PMASEV leadership: a clear plan to modernize member communications, events, and community engagement.',
+    title: 'Digital Transformation',
+    description: 'A clear, step-by-step plan to bring your practice fully into the digital age.',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="3 6 3 19 8 16 16 19 21 16 21 3 16 6 8 3 3 6"></polyline>
@@ -102,9 +106,9 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-brand-black text-brand-white selection:bg-brand-blue selection:text-white">
+    <div className="min-h-screen bg-[#FAFAF7] text-brand-black selection:bg-brand-blue selection:text-white">
       {/* Slim navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-brand-black/80 backdrop-blur-md border-b border-white/10">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-[#FAFAF7]/85 backdrop-blur-md border-b border-black/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <button onClick={onBack} className="flex items-center gap-3">
             <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-10 w-auto" />
@@ -119,30 +123,31 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-24 overflow-hidden texture-noise texture-gradient-dark">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-blue/10 skew-x-12 translate-x-1/3"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#bdffcf]/5 rounded-full blur-[120px]"></div>
+      <section className="relative min-h-screen flex items-center pt-24 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-brand-blue/[0.06] rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#2dd180]/[0.05] rounded-full blur-[120px] translate-y-1/3 -translate-x-1/4"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full py-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full border border-[#bdffcf]/30 mb-10">
-            <span className="w-2 h-2 bg-[#bdffcf] rounded-full"></span>
-            <span className="text-[#bdffcf] text-xs font-semibold tracking-widest uppercase">Proud Digital Partner of PMASEV</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-black/5 shadow-sm rounded-full mb-10">
+            <span className="w-2 h-2 bg-[#2dd180] rounded-full"></span>
+            <span className="text-brand-black text-xs font-bold tracking-widest uppercase">Proud Digital Partner of PMASEV</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.05] mb-8 tracking-tight max-w-4xl">
-            Your patients are choosing their doctor on Google.
-            <br />
-            <span className="text-[#bdffcf]">Let's make sure they choose you.</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold leading-[1.04] mb-8 tracking-tight max-w-4xl">
+            Your medical expertise deserves a digital presence{' '}
+            <span className="text-brand-blue">to match.</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-12 max-w-2xl font-light tracking-wide">
-            You spent decades earning your credentials. Your digital presence should reflect that — not lag behind it. We help Filipino-American physicians turn Google searches into booked appointments.
+          <p className="text-lg md:text-2xl text-black/70 leading-snug mb-12 max-w-3xl font-medium">
+            Your patients are choosing their doctor on Google.
+            <br className="hidden sm:block" />
+            <span className="text-brand-blue font-bold"> Let's make sure they choose you.</span>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="#connect"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-brand-blue hover:bg-blue-600 text-white font-semibold text-sm tracking-widest uppercase rounded-full smooth-transition w-fit"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-brand-blue hover:bg-blue-600 text-white font-semibold text-sm tracking-widest uppercase rounded-full smooth-transition w-fit shadow-lg shadow-brand-blue/20"
             >
               <span>Free 20-Min Digital Health Check</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -151,37 +156,36 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
             </a>
             <a
               href="#what-we-do"
-              className="inline-flex items-center gap-3 px-8 py-4 border border-white/30 hover:border-white/60 text-white font-semibold text-sm tracking-widest uppercase rounded-full smooth-transition w-fit"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-black/20 hover:border-black/40 hover:bg-white text-brand-black font-semibold text-sm tracking-widest uppercase rounded-full smooth-transition w-fit"
             >
               See What We Do
             </a>
           </div>
 
-          <p className="mt-10 text-xs text-white/40 tracking-widest uppercase">
+          <p className="mt-10 text-xs text-black/40 tracking-widest uppercase font-medium">
             PMASEV members only · No obligation · 20 minutes
           </p>
         </div>
       </section>
 
       {/* What we do */}
-      <section id="what-we-do" className="py-32 px-6 lg:px-12 bg-brand-black border-t border-white/5">
+      <section id="what-we-do" className="py-32 px-6 lg:px-12 bg-white border-t border-black/5">
         <div className="max-w-7xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase text-[#bdffcf] mb-6">What we do for the medical community</p>
-          <h2 className="text-4xl md:text-6xl font-heading font-bold mb-20 tracking-tight max-w-4xl">
-            Four problems we solve, <br />
-            <span className="text-white/40">in plain English.</span>
+          <p className="text-xs font-bold tracking-widest uppercase text-brand-blue mb-6">Services for the medical community</p>
+          <h2 className="text-4xl md:text-6xl font-heading font-extrabold mb-20 tracking-tight max-w-4xl leading-[1.05]">
+            Four ways we help you{' '}
+            <span className="text-brand-blue">do digital better.</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {outcomes.map((item, idx) => (
+            {services.map((item, idx) => (
               <div
                 key={idx}
-                className="group relative p-10 bg-white/[0.03] border border-white/10 rounded-3xl hover:border-[#bdffcf]/40 hover:bg-white/[0.05] smooth-transition"
+                className="group relative p-10 bg-[#FAFAF7] border border-black/5 border-l-4 border-l-brand-blue rounded-3xl hover:shadow-lg hover:bg-white smooth-transition"
               >
-                <div className="absolute top-0 left-10 w-12 h-1 bg-[#bdffcf] rounded-b-full"></div>
-                <div className="text-[#bdffcf] mb-8 mt-4">{item.icon}</div>
-                <h3 className="text-2xl font-heading font-bold mb-4 tracking-tight">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">{item.description}</p>
+                <div className="text-brand-blue mb-8">{item.icon}</div>
+                <h3 className="text-2xl font-heading font-bold mb-4 tracking-tight text-brand-black">{item.title}</h3>
+                <p className="text-black/65 leading-relaxed text-base md:text-lg">{item.description}</p>
               </div>
             ))}
           </div>
@@ -189,23 +193,23 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
       </section>
 
       {/* Connect form */}
-      <section id="connect" className="py-32 px-6 lg:px-12 bg-brand-black border-t border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-blue/10 skew-x-12 translate-x-1/2"></div>
+      <section id="connect" className="py-32 px-6 lg:px-12 bg-[#FAFAF7] border-t border-black/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-blue/5 skew-x-12 translate-x-1/2"></div>
 
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Left: pitch */}
             <div>
-              <p className="text-xs font-semibold tracking-widest uppercase text-[#bdffcf] mb-6">Free Digital Health Check</p>
-              <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8 tracking-tight leading-[1.1]">
+              <p className="text-xs font-bold tracking-widest uppercase text-brand-blue mb-6">Free Digital Health Check</p>
+              <h2 className="text-4xl md:text-5xl font-heading font-extrabold mb-8 tracking-tight leading-[1.1] text-brand-black">
                 A 20-minute call. <br />
-                <span className="text-[#bdffcf]">No pitch deck. No pressure.</span>
+                <span className="text-brand-blue">No pitch. No pressure.</span>
               </h2>
-              <p className="text-white/60 leading-relaxed mb-8 text-lg">
+              <p className="text-black/70 leading-relaxed mb-8 text-lg">
                 Tell us about your practice. We'll review your current online presence and send you a one-page action plan — yours to keep, whether you work with us or not.
               </p>
 
-              <ul className="space-y-4 text-white/70">
+              <ul className="space-y-4 text-black/75 text-base md:text-lg">
                 {[
                   'Google ranking review for your specialty + city',
                   'Website credibility & conversion audit',
@@ -213,7 +217,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                   'Three concrete next steps, prioritized',
                 ].map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#bdffcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-1">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-1 text-brand-blue">
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                     <span>{item}</span>
@@ -222,8 +226,10 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
               </ul>
             </div>
 
-            {/* Right: form */}
-            <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 md:p-10">
+            {/* Right: form — DARK inverted card for conversion focus */}
+            <div className="bg-brand-black border border-black/10 rounded-3xl p-8 md:p-10 shadow-2xl shadow-black/15 relative">
+              <div className="absolute top-0 left-12 w-20 h-1 bg-brand-blue rounded-b-full"></div>
+
               {status === 'success' ? (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full bg-[#bdffcf]/20 flex items-center justify-center mx-auto mb-6">
@@ -238,13 +244,14 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                 </div>
               ) : (
                 <>
-                  <h3 className="text-2xl font-heading font-bold text-white mb-2">Request your Digital Health Check</h3>
-                  <p className="text-white/40 text-sm mb-8">All fields with * are required.</p>
+                  <p className="text-[#bdffcf] text-xs font-bold tracking-widest uppercase mb-3">Exclusive · PMASEV Members</p>
+                  <h3 className="text-2xl font-heading font-extrabold text-white mb-2">Request your Digital Health Check</h3>
+                  <p className="text-white/50 text-sm mb-8">All fields with * are required.</p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">Name *</label>
+                        <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Name *</label>
                         <input
                           type="text"
                           required
@@ -255,7 +262,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                         />
                       </div>
                       <div>
-                        <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">Practice / Clinic</label>
+                        <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Practice / Clinic</label>
                         <input
                           type="text"
                           value={formData.practice}
@@ -267,7 +274,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                     </div>
 
                     <div>
-                      <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">Email *</label>
+                      <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Email *</label>
                       <input
                         type="email"
                         required
@@ -280,7 +287,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">Phone</label>
+                        <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Phone</label>
                         <input
                           type="tel"
                           value={formData.phone}
@@ -290,7 +297,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                         />
                       </div>
                       <div>
-                        <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">Specialty</label>
+                        <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">Specialty</label>
                         <input
                           type="text"
                           value={formData.specialty}
@@ -302,8 +309,8 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                     </div>
 
                     <div>
-                      <label className="block text-white/60 text-xs font-medium uppercase tracking-widest mb-2">
-                        Your #1 digital frustration
+                      <label className="block text-white/60 text-xs font-semibold uppercase tracking-widest mb-2">
+                        Your biggest digital headache
                       </label>
                       <textarea
                         value={formData.challenge}
@@ -338,7 +345,7 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
                       )}
                     </button>
 
-                    <p className="text-[10px] text-white/30 text-center tracking-widest uppercase pt-2">
+                    <p className="text-[10px] text-white/40 text-center tracking-widest uppercase pt-2">
                       We respect your inbox. No spam, ever.
                     </p>
                   </form>
@@ -350,15 +357,15 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 lg:px-12 bg-brand-black border-t border-white/5">
+      <footer className="py-12 px-6 lg:px-12 bg-white border-t border-black/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="h-10 w-auto" />
-            <span className="text-white/30 text-xs tracking-widest uppercase">Boutique Digital Agency</span>
+            <span className="text-black/40 text-xs tracking-widest uppercase font-medium">Boutique Digital Agency</span>
           </div>
-          <div className="flex items-center gap-8 text-xs text-white/40 tracking-widest uppercase">
-            <a href="mailto:hello@dfbdigital.com" className="hover:text-white smooth-transition">hello@dfbdigital.com</a>
-            <button onClick={onBack} className="hover:text-white smooth-transition">Main Site</button>
+          <div className="flex items-center gap-8 text-xs text-black/50 tracking-widest uppercase font-medium">
+            <a href="mailto:joe@dfbdigital.com" className="hover:text-brand-blue smooth-transition">joe@dfbdigital.com</a>
+            <button onClick={onBack} className="hover:text-brand-blue smooth-transition">Main Site</button>
           </div>
         </div>
       </footer>
