@@ -78,23 +78,39 @@ export const PMASEV: React.FC<PMASEVProps> = ({ onBack }) => {
     e.preventDefault();
     setStatus('sending');
 
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/joe@dfbdigital.com', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          practice: formData.practice || 'Not provided',
-          email: formData.email,
-          phone: formData.phone || 'Not provided',
-          specialty: formData.specialty || 'Not provided',
-          challenge: formData.challenge || 'No details provided',
-          source: `PMASEV deck — ${utm.source}/${utm.medium}/${utm.campaign}`,
-          _subject: `PMASEV Lead — ${formData.name}`,
-        }),
-      });
+    const payload = {
+      timestamp: new Date().toISOString(),
+      name: formData.name,
+      practice: formData.practice || 'Not provided',
+      email: formData.email,
+      phone: formData.phone || 'Not provided',
+      specialty: formData.specialty || 'Not provided',
+      challenge: formData.challenge || 'No details provided',
+      source: `PMASEV deck — ${utm.source}/${utm.medium}/${utm.campaign}`,
+    };
 
-      if (response.ok) {
+    const sheetsUrl = import.meta.env.VITE_PMASEV_SHEETS_URL;
+
+    try {
+      // Fire to email and sheet in parallel. Sheet append is best-effort —
+      // if it fails, we still want the email path (Joe's inbox) to count as success.
+      const [emailResponse] = await Promise.all([
+        fetch('https://formsubmit.co/ajax/joe@dfbdigital.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...payload, _subject: `PMASEV Lead — ${formData.name}` }),
+        }),
+        sheetsUrl
+          ? fetch(sheetsUrl, {
+              method: 'POST',
+              // text/plain avoids the CORS preflight that Apps Script Web Apps don't handle.
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify(payload),
+            }).catch(() => null)
+          : Promise.resolve(null),
+      ]);
+
+      if (emailResponse.ok) {
         setStatus('success');
         setFormData({ name: '', practice: '', email: '', phone: '', specialty: '', challenge: '' });
       } else {
