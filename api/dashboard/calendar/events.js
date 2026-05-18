@@ -62,16 +62,32 @@ export default async function handler(req, res) {
     }
   }
 
-  // Fetch events from today through 7 days out
-  const now = new Date();
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const horizon = new Date(startOfToday.getTime() + 7 * 24 * 60 * 60 * 1000);
+  // Fetch events for a configurable window.
+  // Default: the visible month grid (6 weeks centered on the current month)
+  // Optional ?month=YYYY-MM lets the frontend page through months.
+  const monthParam = String(req.query.month || '').trim();
+  let baseDate;
+  if (/^\d{4}-\d{2}$/.test(monthParam)) {
+    const [y, m] = monthParam.split('-').map(Number);
+    baseDate = new Date(y, m - 1, 1);
+  } else {
+    const now = new Date();
+    baseDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  }
+
+  // Start of the calendar grid: the Sunday on or before the 1st of the month.
+  const gridStart = new Date(baseDate);
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay());
+  // End of the calendar grid: 42 days later (6 full weeks).
+  const gridEnd = new Date(gridStart);
+  gridEnd.setDate(gridEnd.getDate() + 42);
+
   const params = new URLSearchParams({
-    timeMin: startOfToday.toISOString(),
-    timeMax: horizon.toISOString(),
+    timeMin: gridStart.toISOString(),
+    timeMax: gridEnd.toISOString(),
     singleEvents: 'true',
     orderBy: 'startTime',
-    maxResults: '50',
+    maxResults: '250',
   });
 
   try {
@@ -100,6 +116,7 @@ export default async function handler(req, res) {
       ok: true,
       connected: true,
       email: stored.email || '',
+      month: `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, '0')}`,
       events,
     });
   } catch (err) {

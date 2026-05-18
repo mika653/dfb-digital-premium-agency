@@ -67,6 +67,7 @@ interface CalendarResponse {
   ok: boolean;
   connected: boolean;
   email?: string;
+  month?: string; // "YYYY-MM"
   events?: CalendarEvent[];
   needsReconnect?: boolean;
   error?: string;
@@ -294,10 +295,16 @@ const DashboardHome: React.FC<{
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
   const [calStatus, setCalStatus] = useState<'connected' | 'error' | null>(null);
+  const [calMonth, setCalMonth] = useState<string>(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  });
 
-  const loadCalendar = useCallback(async (gid: string) => {
+  const loadCalendar = useCallback(async (gid: string, month?: string) => {
     try {
-      const resp = await fetch(`/api/dashboard/calendar/events?viewerGid=${encodeURIComponent(gid)}`, {
+      const params = new URLSearchParams({ viewerGid: gid });
+      if (month) params.set('month', month);
+      const resp = await fetch(`/api/dashboard/calendar/events?${params.toString()}`, {
         credentials: 'include',
       });
       const json: CalendarResponse = await resp.json();
@@ -308,8 +315,8 @@ const DashboardHome: React.FC<{
   }, []);
 
   useEffect(() => {
-    if (viewerGid) loadCalendar(viewerGid);
-  }, [viewerGid, loadCalendar]);
+    if (viewerGid) loadCalendar(viewerGid, calMonth);
+  }, [viewerGid, calMonth, loadCalendar]);
 
   // Handle OAuth callback redirect status banners
   useEffect(() => {
@@ -320,14 +327,14 @@ const DashboardHome: React.FC<{
       setCalStatus('connected');
       // clear URL
       window.history.replaceState({}, '', window.location.pathname);
-      if (viewerGid) loadCalendar(viewerGid);
+      if (viewerGid) loadCalendar(viewerGid, calMonth);
       setTimeout(() => setCalStatus(null), 4000);
     } else if (calError) {
       setCalStatus('error');
       window.history.replaceState({}, '', window.location.pathname);
       setTimeout(() => setCalStatus(null), 5000);
     }
-  }, [viewerGid, loadCalendar]);
+  }, [viewerGid, calMonth, loadCalendar]);
 
   const connectCalendar = () => {
     if (!viewerGid) return;
@@ -408,10 +415,12 @@ const DashboardHome: React.FC<{
           <Greeting viewer={viewer} buckets={buckets} onChangeViewer={onChangeViewer} />
         )}
 
-        {/* Today's calendar strip */}
+        {/* Calendar — monthly view */}
         {viewerGid && calendar && (
-          <CalendarStrip
+          <CalendarMonth
             calendar={calendar}
+            month={calMonth}
+            onMonthChange={setCalMonth}
             onConnect={connectCalendar}
             onDisconnect={disconnectCalendar}
           />
@@ -648,13 +657,27 @@ const Stat: React.FC<{ label: string; value: number; accent: 'red' | 'blue' | 'b
 };
 
 // ───────────────────────────────────────────────────────────────────────────
-// Today's Calendar — Google Calendar overlay
+// Monthly Calendar — Google Calendar overlay
 
-const CalendarStrip: React.FC<{
+const CalendarMonth: React.FC<{
   calendar: CalendarResponse;
+  month: string; // "YYYY-MM"
+  onMonthChange: (next: string) => void;
   onConnect: () => void;
   onDisconnect: () => void;
-}> = ({ calendar, onConnect, onDisconnect }) => {
+}> = ({ calendar, month, onMonthChange, onConnect, onDisconnect }) => {
+  // Selected day (defaults to today if visible in this month, otherwise the 1st)
+  const todayKey = startOfTodayJs().toISOString().slice(0, 10);
+  const [selectedKey, setSelectedKey] = useState<string>(todayKey);
+
+  // Reset selection when month changes
+  useEffect(() => {
+    const [y, m] = month.split('-').map(Number);
+    const [ty, tm] = todayKey.split('-').map(Number);
+    if (y === ty && m === tm) setSelectedKey(todayKey);
+    else setSelectedKey(`${month}-01`);
+  }, [month, todayKey]);
+
   // Not connected → CTA card
   if (!calendar.connected) {
     return (
@@ -678,81 +701,211 @@ const CalendarStrip: React.FC<{
     );
   }
 
-  const events = calendar.events || [];
+  const [yearStr, monthStr] = month.split('-');
+  const year = parseInt(yearStr, 10);
+  const monthIdx = parseInt(monthStr, 10) - 1;
+  const monthName = new Date(year, monthIdx, 1).toLocaleDateString(undefined, {
+    month: 'long',
+    year: 'numeric',
+  });
 
-  // Split today vs upcoming
-  const todayKey = startOfTodayJs().toISOString().slice(0, 10);
-  const todayEvents = events.filter((e) => (e.start || '').slice(0, 10) === todayKey);
-  const upcomingEvents = events.filter((e) => (e.start || '').slice(0, 10) !== todayKey).slice(0, 5);
+  // Build a 6-week grid starting from the Sunday on or before the 1st
+  const first = new Date(year, monthIdx, 1);
+  const gridStart = new Date(first);
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay());
+  const days: { date: Date; key: string; inMonth: boolean; isToday: boolean }[] = [];
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(gridStart);
+    d.setDate(gridStart.getDate() + i);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    days.push({
+      date: d,
+      key,
+      inMonth: d.getMonth() === monthIdx,
+      isToday: key === todayKey,
+    });
+  }
+
+  // Group events by day key
+  const events = calendar.events || [];
+  const eventsByDay = new Map<string, CalendarEvent[]>();
+  for (const e of events) {
+    if (!e.start) continue;
+    const key = e.start.slice(0, 10);
+    if (!eventsByDay.has(key)) eventsByDay.set(key, []);
+    eventsByDay.get(key)!.push(e);
+  }
+
+  // Month navigation
+  const stepMonth = (delta: number) => {
+    const d = new Date(year, monthIdx + delta, 1);
+    onMonthChange(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+  };
+  const goToday = () => {
+    const t = new Date();
+    onMonthChange(`${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`);
+    setSelectedKey(todayKey);
+  };
+
+  const selectedEvents = (eventsByDay.get(selectedKey) || []).sort((a, b) =>
+    (a.start || '').localeCompare(b.start || '')
+  );
+
+  const weekdayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <section className="bg-white border border-black/5 rounded-2xl p-5 sm:p-6">
-      <div className="flex items-baseline justify-between mb-4 sm:mb-5 gap-3">
+    <section className="bg-white border border-black/5 rounded-2xl p-4 sm:p-6">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 mb-4">
         <div className="min-w-0">
-          <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">📅 Today's calendar</h2>
+          <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">📅 {monthName}</h2>
           {calendar.email && (
             <div className="text-[11px] tracking-wide text-black/40 mt-0.5 truncate">{calendar.email}</div>
           )}
         </div>
-        <button
-          onClick={onDisconnect}
-          className="text-[10px] tracking-widest uppercase text-black/40 hover:text-red-600 smooth-transition whitespace-nowrap"
-          title="Disconnect Google Calendar"
-        >
-          Disconnect
-        </button>
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <button
+            onClick={() => stepMonth(-1)}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-black/60 hover:bg-black/5 hover:text-brand-blue smooth-transition"
+            aria-label="Previous month"
+          >
+            ‹
+          </button>
+          <button
+            onClick={goToday}
+            className="px-3 py-1.5 text-[10px] sm:text-xs font-bold tracking-widest uppercase text-black/60 border border-black/10 rounded-full hover:border-brand-blue hover:text-brand-blue smooth-transition"
+          >
+            Today
+          </button>
+          <button
+            onClick={() => stepMonth(1)}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-black/60 hover:bg-black/5 hover:text-brand-blue smooth-transition"
+            aria-label="Next month"
+          >
+            ›
+          </button>
+          <button
+            onClick={onDisconnect}
+            className="hidden sm:inline ml-2 text-[10px] tracking-widest uppercase text-black/40 hover:text-red-600 smooth-transition whitespace-nowrap"
+            title="Disconnect Google Calendar"
+          >
+            Disconnect
+          </button>
+        </div>
       </div>
 
-      {todayEvents.length === 0 ? (
-        <p className="text-sm text-black/50 italic">No meetings today. ⛱️</p>
-      ) : (
-        <ul className="space-y-2">
-          {todayEvents.map((e) => (
-            <li key={e.id}>
-              <a
-                href={e.htmlLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF7] hover:bg-brand-blue/[0.04] border border-transparent hover:border-brand-blue/20 smooth-transition"
-              >
-                <div className="flex-shrink-0 w-16 text-xs font-bold tracking-tight text-brand-blue tabular-nums">
-                  {formatEventTime(e)}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-sm leading-snug truncate">{e.summary}</div>
-                  <div className="flex items-center gap-2 text-[11px] text-black/45 mt-0.5">
-                    {e.location && <span className="truncate">{e.location}</span>}
-                    {e.attendees > 1 && (
-                      <span>{e.attendees} {e.attendees === 1 ? 'person' : 'people'}</span>
-                    )}
-                  </div>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* Weekday header */}
+      <div className="grid grid-cols-7 mb-1">
+        {weekdayLabels.map((label) => (
+          <div
+            key={label}
+            className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-black/40 text-center py-1.5"
+          >
+            <span className="hidden sm:inline">{label}</span>
+            <span className="sm:hidden">{label[0]}</span>
+          </div>
+        ))}
+      </div>
 
-      {upcomingEvents.length > 0 && (
-        <div className="mt-5 pt-5 border-t border-black/5">
-          <div className="text-[10px] tracking-widest uppercase font-bold text-black/40 mb-2">Next 7 days</div>
-          <ul className="space-y-1.5">
-            {upcomingEvents.map((e) => (
+      {/* Grid */}
+      <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+        {days.map((d) => {
+          const dayEvents = eventsByDay.get(d.key) || [];
+          const isSelected = d.key === selectedKey;
+          const dim = !d.inMonth;
+          return (
+            <button
+              key={d.key}
+              onClick={() => setSelectedKey(d.key)}
+              className={`relative aspect-square sm:aspect-auto sm:min-h-[68px] p-1 sm:p-2 rounded-lg sm:rounded-xl text-left smooth-transition border ${
+                isSelected
+                  ? 'bg-brand-blue/[0.05] border-brand-blue/40 ring-1 ring-brand-blue/30'
+                  : d.isToday
+                  ? 'bg-brand-blue/[0.03] border-brand-blue/15'
+                  : 'bg-[#FAFAF7] border-transparent hover:bg-white hover:border-black/10'
+              } ${dim ? 'opacity-40' : ''}`}
+            >
+              <div className={`text-xs sm:text-sm font-bold leading-none ${d.isToday ? 'text-brand-blue' : ''}`}>
+                {d.date.getDate()}
+              </div>
+
+              {/* Desktop: show up to 2 event titles */}
+              <div className="hidden sm:block mt-1.5 space-y-0.5">
+                {dayEvents.slice(0, 2).map((e) => (
+                  <div
+                    key={e.id}
+                    className="text-[10px] leading-tight truncate text-brand-blue bg-brand-blue/[0.08] rounded px-1 py-0.5"
+                    title={e.summary}
+                  >
+                    {!e.allDay && <span className="font-semibold mr-1">{formatEventTimeShort(e)}</span>}
+                    {e.summary}
+                  </div>
+                ))}
+                {dayEvents.length > 2 && (
+                  <div className="text-[9px] text-black/45 px-1">+ {dayEvents.length - 2} more</div>
+                )}
+              </div>
+
+              {/* Mobile: just dots */}
+              <div className="sm:hidden absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+                {dayEvents.slice(0, 3).map((e, idx) => (
+                  <span
+                    key={e.id + idx}
+                    className="w-1 h-1 rounded-full bg-brand-blue"
+                  ></span>
+                ))}
+                {dayEvents.length > 3 && (
+                  <span className="w-1 h-1 rounded-full bg-brand-blue/50"></span>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Selected day events */}
+      <div className="mt-5 pt-5 border-t border-black/5">
+        <div className="text-[11px] tracking-widest uppercase font-bold text-black/40 mb-3">
+          {formatSelectedDayLabel(selectedKey, todayKey)}
+        </div>
+        {selectedEvents.length === 0 ? (
+          <p className="text-sm text-black/50 italic">No meetings.</p>
+        ) : (
+          <ul className="space-y-2">
+            {selectedEvents.map((e) => (
               <li key={e.id}>
                 <a
                   href={e.htmlLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm hover:text-brand-blue smooth-transition"
+                  className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF7] hover:bg-brand-blue/[0.04] border border-transparent hover:border-brand-blue/20 smooth-transition"
                 >
-                  <span className="text-xs text-black/40 w-20 flex-shrink-0 tabular-nums">{formatEventDay(e)}</span>
-                  <span className="truncate flex-1">{e.summary}</span>
+                  <div className="flex-shrink-0 w-16 sm:w-20 text-xs font-bold tracking-tight text-brand-blue tabular-nums">
+                    {formatEventTime(e)}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-sm leading-snug truncate">{e.summary}</div>
+                    <div className="flex items-center gap-2 text-[11px] text-black/45 mt-0.5">
+                      {e.location && <span className="truncate">{e.location}</span>}
+                      {e.attendees > 1 && <span>{e.attendees} ppl</span>}
+                    </div>
+                  </div>
                 </a>
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* Mobile disconnect (header hides it on small) */}
+      <div className="sm:hidden mt-4 pt-4 border-t border-black/5 text-right">
+        <button
+          onClick={onDisconnect}
+          className="text-[10px] tracking-widest uppercase text-black/40 hover:text-red-600 smooth-transition"
+        >
+          Disconnect Calendar
+        </button>
+      </div>
     </section>
   );
 };
@@ -767,15 +920,31 @@ function formatEventTime(e: CalendarEvent): string {
   }
 }
 
-function formatEventDay(e: CalendarEvent): string {
+function formatEventTimeShort(e: CalendarEvent): string {
+  if (e.allDay) return '';
   try {
     const start = new Date(e.start);
-    const dayLabel = start.toLocaleDateString(undefined, { weekday: 'short' });
-    const time = e.allDay ? '' : ' ' + start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    return `${dayLabel}${time}`;
+    const h = start.getHours();
+    const m = start.getMinutes();
+    const ampm = h >= 12 ? 'p' : 'a';
+    const hh = h % 12 || 12;
+    return m === 0 ? `${hh}${ampm}` : `${hh}:${String(m).padStart(2, '0')}${ampm}`;
   } catch {
     return '';
   }
+}
+
+function formatSelectedDayLabel(selected: string, todayKey: string): string {
+  if (!selected) return '';
+  const [y, m, d] = selected.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const isToday = selected === todayKey;
+  const label = date.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+  return isToday ? `Today · ${label}` : label;
 }
 
 // ───────────────────────────────────────────────────────────────────────────
