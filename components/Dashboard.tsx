@@ -52,6 +52,26 @@ interface WinTask {
   url: string;
 }
 
+interface CalendarEvent {
+  id: string;
+  summary: string;
+  start: string;
+  end: string;
+  location: string;
+  htmlLink: string;
+  allDay: boolean;
+  attendees: number;
+}
+
+interface CalendarResponse {
+  ok: boolean;
+  connected: boolean;
+  email?: string;
+  events?: CalendarEvent[];
+  needsReconnect?: boolean;
+  error?: string;
+}
+
 interface TasksResponse {
   ok: boolean;
   me?: { gid: string; name: string; email: string };
@@ -271,6 +291,61 @@ const DashboardHome: React.FC<{
   const viewer = data?.capacity?.find((c) => c.gid === viewerGid) || null;
   const [weeklyOpen, setWeeklyOpen] = useState(false);
 
+  // Google Calendar state — fetched per viewer
+  const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
+  const [calStatus, setCalStatus] = useState<'connected' | 'error' | null>(null);
+
+  const loadCalendar = useCallback(async (gid: string) => {
+    try {
+      const resp = await fetch(`/api/dashboard/calendar/events?viewerGid=${encodeURIComponent(gid)}`, {
+        credentials: 'include',
+      });
+      const json: CalendarResponse = await resp.json();
+      setCalendar(json);
+    } catch {
+      setCalendar({ ok: false, connected: false, error: 'Failed to fetch calendar' });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (viewerGid) loadCalendar(viewerGid);
+  }, [viewerGid, loadCalendar]);
+
+  // Handle OAuth callback redirect status banners
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const connected = params.get('cal_connected');
+    const calError = params.get('cal_error');
+    if (connected) {
+      setCalStatus('connected');
+      // clear URL
+      window.history.replaceState({}, '', window.location.pathname);
+      if (viewerGid) loadCalendar(viewerGid);
+      setTimeout(() => setCalStatus(null), 4000);
+    } else if (calError) {
+      setCalStatus('error');
+      window.history.replaceState({}, '', window.location.pathname);
+      setTimeout(() => setCalStatus(null), 5000);
+    }
+  }, [viewerGid, loadCalendar]);
+
+  const connectCalendar = () => {
+    if (!viewerGid) return;
+    window.location.href = `/api/dashboard/calendar/authorize?viewerGid=${encodeURIComponent(viewerGid)}`;
+  };
+
+  const disconnectCalendar = async () => {
+    if (!viewerGid) return;
+    if (!window.confirm('Disconnect Google Calendar from this dashboard? You can reconnect anytime.')) return;
+    await fetch(`/api/dashboard/calendar/disconnect`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ viewerGid }),
+    });
+    setCalendar({ ok: true, connected: false });
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-brand-black">
       {/* Header — mobile-friendly */}
@@ -316,9 +391,30 @@ const DashboardHome: React.FC<{
           </div>
         )}
 
+        {/* Calendar OAuth status toasts */}
+        {calStatus === 'connected' && (
+          <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl px-5 py-3 text-sm">
+            ✓ Google Calendar connected.
+          </div>
+        )}
+        {calStatus === 'error' && (
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-3 text-sm">
+            Calendar connection failed. Try again or check the OAuth setup.
+          </div>
+        )}
+
         {/* Good morning — personalized greeting */}
         {viewer && buckets && (
           <Greeting viewer={viewer} buckets={buckets} onChangeViewer={onChangeViewer} />
+        )}
+
+        {/* Today's calendar strip */}
+        {viewerGid && calendar && (
+          <CalendarStrip
+            calendar={calendar}
+            onConnect={connectCalendar}
+            onDisconnect={disconnectCalendar}
+          />
         )}
 
         {/* Quick-add — TOP of the page so Joe can add on the go */}
@@ -550,6 +646,137 @@ const Stat: React.FC<{ label: string; value: number; accent: 'red' | 'blue' | 'b
     </div>
   );
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// Today's Calendar — Google Calendar overlay
+
+const CalendarStrip: React.FC<{
+  calendar: CalendarResponse;
+  onConnect: () => void;
+  onDisconnect: () => void;
+}> = ({ calendar, onConnect, onDisconnect }) => {
+  // Not connected → CTA card
+  if (!calendar.connected) {
+    return (
+      <section className="bg-white border border-black/5 rounded-2xl p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">📅 Connect Google Calendar</h2>
+            <p className="text-sm text-black/55 mt-1 max-w-xl">
+              See your meetings alongside your tasks so you don't double-book. Read-only — we never edit your calendar.
+              {calendar.needsReconnect && ' Your previous connection expired — please reconnect.'}
+            </p>
+          </div>
+          <button
+            onClick={onConnect}
+            className="px-5 py-3 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition shadow-sm shadow-brand-blue/20"
+          >
+            {calendar.needsReconnect ? 'Reconnect' : 'Connect calendar'}
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  const events = calendar.events || [];
+
+  // Split today vs upcoming
+  const todayKey = startOfTodayJs().toISOString().slice(0, 10);
+  const todayEvents = events.filter((e) => (e.start || '').slice(0, 10) === todayKey);
+  const upcomingEvents = events.filter((e) => (e.start || '').slice(0, 10) !== todayKey).slice(0, 5);
+
+  return (
+    <section className="bg-white border border-black/5 rounded-2xl p-5 sm:p-6">
+      <div className="flex items-baseline justify-between mb-4 sm:mb-5 gap-3">
+        <div className="min-w-0">
+          <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">📅 Today's calendar</h2>
+          {calendar.email && (
+            <div className="text-[11px] tracking-wide text-black/40 mt-0.5 truncate">{calendar.email}</div>
+          )}
+        </div>
+        <button
+          onClick={onDisconnect}
+          className="text-[10px] tracking-widest uppercase text-black/40 hover:text-red-600 smooth-transition whitespace-nowrap"
+          title="Disconnect Google Calendar"
+        >
+          Disconnect
+        </button>
+      </div>
+
+      {todayEvents.length === 0 ? (
+        <p className="text-sm text-black/50 italic">No meetings today. ⛱️</p>
+      ) : (
+        <ul className="space-y-2">
+          {todayEvents.map((e) => (
+            <li key={e.id}>
+              <a
+                href={e.htmlLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 p-3 rounded-xl bg-[#FAFAF7] hover:bg-brand-blue/[0.04] border border-transparent hover:border-brand-blue/20 smooth-transition"
+              >
+                <div className="flex-shrink-0 w-16 text-xs font-bold tracking-tight text-brand-blue tabular-nums">
+                  {formatEventTime(e)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-sm leading-snug truncate">{e.summary}</div>
+                  <div className="flex items-center gap-2 text-[11px] text-black/45 mt-0.5">
+                    {e.location && <span className="truncate">{e.location}</span>}
+                    {e.attendees > 1 && (
+                      <span>{e.attendees} {e.attendees === 1 ? 'person' : 'people'}</span>
+                    )}
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {upcomingEvents.length > 0 && (
+        <div className="mt-5 pt-5 border-t border-black/5">
+          <div className="text-[10px] tracking-widest uppercase font-bold text-black/40 mb-2">Next 7 days</div>
+          <ul className="space-y-1.5">
+            {upcomingEvents.map((e) => (
+              <li key={e.id}>
+                <a
+                  href={e.htmlLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm hover:text-brand-blue smooth-transition"
+                >
+                  <span className="text-xs text-black/40 w-20 flex-shrink-0 tabular-nums">{formatEventDay(e)}</span>
+                  <span className="truncate flex-1">{e.summary}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+};
+
+function formatEventTime(e: CalendarEvent): string {
+  if (e.allDay) return 'all day';
+  try {
+    const start = new Date(e.start);
+    return start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+  } catch {
+    return '';
+  }
+}
+
+function formatEventDay(e: CalendarEvent): string {
+  try {
+    const start = new Date(e.start);
+    const dayLabel = start.toLocaleDateString(undefined, { weekday: 'short' });
+    const time = e.allDay ? '' : ' ' + start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    return `${dayLabel}${time}`;
+  } catch {
+    return '';
+  }
+}
 
 // ───────────────────────────────────────────────────────────────────────────
 // Side by side — "Who's blocking who" for a 2-person team
