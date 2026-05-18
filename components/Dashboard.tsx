@@ -1369,16 +1369,17 @@ const AddClientModal: React.FC<{
                       placeholder="Task name"
                       className="flex-1 min-w-0 px-3 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-sm focus:outline-none focus:border-brand-blue smooth-transition"
                     />
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 flex-shrink-0 text-[11px] text-black/55">
+                      <span>Due in</span>
                       <input
                         type="number"
                         value={t.daysFromNow}
                         onChange={(e) => updateTask(idx, { daysFromNow: Number(e.target.value) || 0 })}
-                        className="w-14 px-2 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-sm text-center focus:outline-none focus:border-brand-blue smooth-transition"
+                        className="w-12 px-1.5 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-sm text-center text-brand-black focus:outline-none focus:border-brand-blue smooth-transition"
                         min="0"
                         max="365"
                       />
-                      <span className="text-[10px] tracking-widest uppercase text-black/40 mr-2">d</span>
+                      <span>days</span>
                     </div>
                     <select
                       value={t.assigneeGid}
