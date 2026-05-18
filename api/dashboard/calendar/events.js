@@ -3,7 +3,8 @@
 // Returns {connected: false} if the viewer hasn't authorized Google yet.
 // Refreshes the access token automatically when it's near expiry.
 import { isAuthenticated } from '../auth.js';
-import { kvGet, kvSet } from '../_upstash.js';
+import { kvGet } from '../_upstash.js';
+import { getValidAccessToken } from './_helpers.js';
 
 export default async function handler(req, res) {
   if (!isAuthenticated(req)) {
@@ -23,43 +24,23 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Refresh access token if missing or near expiry
-  let accessToken = stored.access_token;
-  if (!accessToken || !stored.expires_at || Date.now() >= Number(stored.expires_at) - 60_000) {
-    try {
-      const refreshResp = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          client_id: process.env.GOOGLE_CLIENT_ID || '',
-          client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
-          refresh_token: stored.refresh_token,
-          grant_type: 'refresh_token',
-        }).toString(),
+  // Refresh access token if missing or near expiry. The helper handles
+  // updating KV when it gets a fresh access_token.
+  let accessToken;
+  try {
+    accessToken = await getValidAccessToken(viewerGid);
+  } catch (err) {
+    if (err.code === 'NEEDS_RECONNECT') {
+      res.status(200).json({
+        ok: true,
+        connected: false,
+        needsReconnect: true,
+        error: err.message,
       });
-      if (!refreshResp.ok) {
-        const body = await refreshResp.text().catch(() => '');
-        // If refresh token was revoked, surface that so the UI can prompt reconnect
-        const isRevoked = refreshResp.status === 400 || refreshResp.status === 401;
-        res.status(200).json({
-          ok: true,
-          connected: false,
-          needsReconnect: isRevoked,
-          error: `Refresh failed (${refreshResp.status}): ${body.slice(0, 200)}`,
-        });
-        return;
-      }
-      const refreshed = await refreshResp.json();
-      accessToken = refreshed.access_token;
-      await kvSet(`calendar:${viewerGid}`, {
-        ...stored,
-        access_token: accessToken,
-        expires_at: Date.now() + Number(refreshed.expires_in || 0) * 1000,
-      });
-    } catch (err) {
-      res.status(500).json({ ok: false, error: String(err.message || err) });
       return;
     }
+    res.status(500).json({ ok: false, error: String(err.message || err) });
+    return;
   }
 
   // Fetch events for a configurable window.

@@ -423,6 +423,8 @@ const DashboardHome: React.FC<{
             onMonthChange={setCalMonth}
             onConnect={connectCalendar}
             onDisconnect={disconnectCalendar}
+            viewerGid={viewerGid}
+            onEventCreated={() => loadCalendar(viewerGid, calMonth)}
           />
         )}
 
@@ -665,10 +667,13 @@ const CalendarMonth: React.FC<{
   onMonthChange: (next: string) => void;
   onConnect: () => void;
   onDisconnect: () => void;
-}> = ({ calendar, month, onMonthChange, onConnect, onDisconnect }) => {
+  viewerGid: string;
+  onEventCreated: () => void;
+}> = ({ calendar, month, onMonthChange, onConnect, onDisconnect, viewerGid, onEventCreated }) => {
   // Selected day (defaults to today if visible in this month, otherwise the 1st)
   const todayKey = startOfTodayJs().toISOString().slice(0, 10);
   const [selectedKey, setSelectedKey] = useState<string>(todayKey);
+  const [addOpen, setAddOpen] = useState(false);
 
   // Reset selection when month changes
   useEffect(() => {
@@ -764,6 +769,12 @@ const CalendarMonth: React.FC<{
           )}
         </div>
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <button
+            onClick={() => setAddOpen(true)}
+            className="px-3 sm:px-4 py-1.5 bg-brand-blue text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition"
+          >
+            + Add
+          </button>
           <button
             onClick={() => stepMonth(-1)}
             className="w-9 h-9 rounded-full flex items-center justify-center text-black/60 hover:bg-black/5 hover:text-brand-blue smooth-transition"
@@ -906,9 +917,252 @@ const CalendarMonth: React.FC<{
           Disconnect Calendar
         </button>
       </div>
+
+      {/* Add event modal */}
+      {addOpen && (
+        <AddEventModal
+          viewerGid={viewerGid}
+          defaultDate={selectedKey}
+          onClose={() => setAddOpen(false)}
+          onCreated={() => {
+            setAddOpen(false);
+            onEventCreated();
+          }}
+        />
+      )}
     </section>
   );
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// Add Event modal
+
+const AddEventModal: React.FC<{
+  viewerGid: string;
+  defaultDate: string; // "YYYY-MM-DD"
+  onClose: () => void;
+  onCreated: () => void;
+}> = ({ viewerGid, defaultDate, onClose, onCreated }) => {
+  // Default start: next round hour today (or noon if it's tomorrow+)
+  const defaultStartTime = () => {
+    const now = new Date();
+    if (defaultDate === todayKeyJs()) {
+      const h = now.getHours() + 1;
+      return `${String(Math.min(h, 23)).padStart(2, '0')}:00`;
+    }
+    return '09:00';
+  };
+  const defaultEndTime = (start: string) => {
+    const [h, m] = start.split(':').map(Number);
+    return `${String(Math.min(h + 1, 23)).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  };
+
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState(defaultDate);
+  const [allDay, setAllDay] = useState(false);
+  const [startTime, setStartTime] = useState(defaultStartTime());
+  const [endTime, setEndTime] = useState(defaultEndTime(defaultStartTime()));
+  const [location, setLocation] = useState('');
+  const [notes, setNotes] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [needsReconnect, setNeedsReconnect] = useState(false);
+
+  // Auto-update end time when start changes
+  const onStartChange = (val: string) => {
+    setStartTime(val);
+    setEndTime(defaultEndTime(val));
+  };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+    setStatus('sending');
+    setErrorMsg('');
+    setNeedsReconnect(false);
+
+    try {
+      let body: Record<string, unknown> = {
+        viewerGid,
+        summary: title.trim(),
+        location: location.trim(),
+        description: notes.trim(),
+        allDay,
+      };
+
+      if (allDay) {
+        // Google's all-day events use exclusive end date (next day)
+        const startDate = date;
+        const endDateObj = new Date(date + 'T00:00:00');
+        endDateObj.setDate(endDateObj.getDate() + 1);
+        const endDate = endDateObj.toISOString().slice(0, 10);
+        body.start = startDate;
+        body.end = endDate;
+      } else {
+        // Build local-time ISO with timezone offset
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        body.start = `${date}T${startTime}:00`;
+        body.end = `${date}T${endTime}:00`;
+        body.timeZone = tz;
+      }
+
+      const resp = await fetch('/api/dashboard/calendar/create-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(body),
+      });
+      const json = await resp.json();
+      if (!json.ok) {
+        if (json.needsReconnect) setNeedsReconnect(true);
+        throw new Error(json.error || 'Failed to create event');
+      }
+      onCreated();
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to create event');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-md bg-white sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[90vh] shadow-2xl">
+        <div className="flex items-start justify-between p-5 sm:p-6 border-b border-black/5">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">New event</div>
+            <h2 className="text-xl sm:text-2xl font-heading font-extrabold tracking-tight">Add to calendar</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={submit} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4">
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">Title *</label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              autoFocus
+              placeholder="e.g. Call with Reyes Medical"
+              className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">Date</label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            />
+          </div>
+
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={allDay}
+              onChange={(e) => setAllDay(e.target.checked)}
+              className="w-4 h-4 accent-brand-blue"
+            />
+            All-day event
+          </label>
+
+          {!allDay && (
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">Start</label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => onStartChange(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">End</label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+                />
+              </div>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">Location</label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Optional"
+              className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">Notes</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={3}
+              placeholder="Optional"
+              className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition resize-none"
+            />
+          </div>
+
+          {status === 'error' && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+              {needsReconnect ? (
+                <>
+                  <div className="font-semibold mb-1">Calendar needs to be reconnected.</div>
+                  <div className="text-xs">We expanded permissions to allow adding events. Disconnect and reconnect Google Calendar to grant write access.</div>
+                </>
+              ) : (
+                errorMsg
+              )}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={status === 'sending' || !title.trim()}
+              className="px-6 py-3.5 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed flex-1 shadow-sm shadow-brand-blue/20"
+            >
+              {status === 'sending' ? 'Adding…' : 'Add to Google Calendar'}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-black/60 hover:text-brand-blue smooth-transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+function todayKeyJs(): string {
+  const d = startOfTodayJs();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 function formatEventTime(e: CalendarEvent): string {
   if (e.allDay) return 'all day';
