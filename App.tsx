@@ -28,6 +28,7 @@ import { InstaSiteStarter } from './components/InstaSiteStarter';
 import { InstaSitePro } from './components/InstaSitePro';
 import { InstaSiteElite } from './components/InstaSiteElite';
 import { PMASEV } from './components/PMASEV';
+import { Dashboard } from './components/Dashboard';
 
 const defaultMeta = {
   title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
@@ -99,10 +100,14 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'For PMASEV Members | Free Digital Health Check | DFB Digital',
     description: 'Proud digital partner of PMASEV. Free 20-minute Digital Health Check for Filipino-American physicians — modern websites, SEO, and patient acquisition.',
   },
+  dashboard: {
+    title: 'Internal Dashboard | DFB Digital',
+    description: 'Internal team dashboard.',
+  },
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard'>('home');
 
   // Update document title and OG meta tags based on current page
   useEffect(() => {
@@ -140,6 +145,7 @@ const App: React.FC = () => {
       '/instasite/pro': 'instasite-pro',
       '/instasite/elite': 'instasite-elite',
       '/pmasev': 'pmasev',
+      '/dashboard': 'dashboard',
     };
 
     const handleRouteChange = () => {
@@ -186,6 +192,7 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'dashboard': return <Dashboard onBack={goToHome} />;
       case 'pmasev': return <PMASEV onBack={goToHome} />;
       case 'vip': return <VIPAccess onBack={goToHome} />;
       case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
