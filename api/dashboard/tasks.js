@@ -1,6 +1,10 @@
 // GET /api/dashboard/tasks
-// Returns tasks for the authenticated Asana user (which is whoever
-// owns the ASANA_PAT), grouped by overdue / today / this-week / upcoming.
+// Returns incomplete tasks for everyone in the workspace, grouped by
+// overdue / today / this-week / upcoming.
+//
+// NOTE: We deliberately avoid the /workspaces/{gid}/tasks/search endpoint
+// because it requires Asana Premium. Instead we iterate workspace users
+// and fetch each user's incomplete tasks via /tasks (free-tier available).
 import { isAuthenticated } from './auth.js';
 import { asanaFetch, getMe, getWorkspaceGid } from './_asana.js';
 
@@ -19,9 +23,6 @@ export default async function handler(req, res) {
     const me = await getMe();
     const workspaceGid = await getWorkspaceGid();
 
-    // Pull incomplete tasks assigned to anyone, scoped to the workspace.
-    // For a 2-person agency this is small enough to fetch in one page.
-    // opt_fields keeps the response lean.
     const fields = [
       'name',
       'completed',
@@ -35,10 +36,33 @@ export default async function handler(req, res) {
       'notes',
     ].join(',');
 
-    const search = await asanaFetch(
-      `/workspaces/${workspaceGid}/tasks/search?completed=false&limit=100&opt_fields=${fields}&sort_by=due_date&sort_ascending=true`
+    // Fetch workspace users (capped for safety; tiny agency teams).
+    const usersResp = await asanaFetch(
+      `/workspaces/${workspaceGid}/users?limit=25&opt_fields=name`
     );
-    const tasks = search?.data || [];
+    const users = usersResp?.data || [];
+
+    // Per-user task fetch in parallel. completed_since=now is the
+    // Asana idiom for "only incomplete tasks."
+    const perUser = await Promise.all(
+      users.map((u) =>
+        asanaFetch(
+          `/tasks?workspace=${workspaceGid}&assignee=${u.gid}&completed_since=now&limit=100&opt_fields=${fields}`
+        ).catch(() => ({ data: [] }))
+      )
+    );
+
+    // Combine + dedupe (a task assigned to one user can technically show
+    // up only once, but dedupe defensively in case of collaborator queries).
+    const seen = new Set();
+    const tasks = [];
+    for (const result of perUser) {
+      for (const t of result?.data || []) {
+        if (seen.has(t.gid)) continue;
+        seen.add(t.gid);
+        tasks.push(t);
+      }
+    }
 
     const today = startOfDay(new Date());
     const tomorrow = addDays(today, 1);
