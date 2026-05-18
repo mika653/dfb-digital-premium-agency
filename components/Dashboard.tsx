@@ -62,6 +62,8 @@ interface MetaResponse {
   error?: string;
 }
 
+const VIEWER_GID_KEY = 'dfb_dash_viewer_gid';
+
 export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   const [authed, setAuthed] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -69,6 +71,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   const [meta, setMeta] = useState<MetaResponse | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [viewerGid, setViewerGidState] = useState<string | null>(null);
+
+  // Load viewer choice from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(VIEWER_GID_KEY);
+      if (stored) setViewerGidState(stored);
+    } catch {
+      // localStorage blocked — silently ignore
+    }
+  }, []);
+
+  const setViewerGid = (gid: string | null) => {
+    setViewerGidState(gid);
+    try {
+      if (gid) window.localStorage.setItem(VIEWER_GID_KEY, gid);
+      else window.localStorage.removeItem(VIEWER_GID_KEY);
+    } catch {
+      // ignore
+    }
+  };
 
   // Try fetching tasks immediately. If 401, show login.
   const loadTasks = useCallback(async () => {
@@ -115,6 +138,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
     return <DashboardLogin onSuccess={loadTasks} onBack={onBack} />;
   }
 
+  // After auth, if viewer hasn't picked who they are yet, show picker
+  const viewerOptions = data?.capacity || [];
+  if (!viewerGid && viewerOptions.length > 0) {
+    return (
+      <ViewerPicker
+        options={viewerOptions}
+        onPick={(gid) => setViewerGid(gid)}
+      />
+    );
+  }
+
   return (
     <DashboardHome
       data={data}
@@ -123,6 +157,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
       refreshing={refreshing}
       error={error}
       onBack={onBack}
+      viewerGid={viewerGid}
+      onChangeViewer={() => setViewerGid(null)}
     />
   );
 };
@@ -218,42 +254,62 @@ const DashboardHome: React.FC<{
   refreshing: boolean;
   error: string | null;
   onBack: () => void;
-}> = ({ data, meta, onRefresh, refreshing, error, onBack }) => {
+  viewerGid: string | null;
+  onChangeViewer: () => void;
+}> = ({ data, meta, onRefresh, refreshing, error, onBack, viewerGid, onChangeViewer }) => {
   const buckets = data?.buckets;
   const counts = data?.counts;
+  const viewer = data?.capacity?.find((c) => c.gid === viewerGid) || null;
 
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-brand-black">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-[#FAFAF7]/90 backdrop-blur-md border-b border-black/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/DFB Blue Logomark Tight.png" alt="DFB Digital" className="h-8 w-auto" />
-            <span className="text-xs tracking-widest uppercase text-black/50 font-bold">Dashboard</span>
+      {/* Header — mobile-friendly */}
+      <header className="sticky top-0 z-40 bg-[#FAFAF7]/95 backdrop-blur-md border-b border-black/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-14 sm:h-16 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <img src="/DFB Blue Logomark Tight.png" alt="DFB Digital" className="h-7 sm:h-8 w-auto flex-shrink-0" />
+            <span className="text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-bold truncate">Dashboard</span>
           </div>
-          <div className="flex items-center gap-4 text-xs tracking-widest uppercase text-black/50 font-medium">
+          <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-medium">
+            {viewer && (
+              <button
+                onClick={onChangeViewer}
+                className="hidden sm:inline hover:text-brand-blue smooth-transition"
+                title="Switch user"
+              >
+                {viewer.name.split(' ')[0]} ↻
+              </button>
+            )}
             <button
               onClick={onRefresh}
               disabled={refreshing}
               className="hover:text-brand-blue smooth-transition disabled:opacity-50"
             >
-              {refreshing ? 'Refreshing…' : 'Refresh'}
+              {refreshing ? '…' : 'Refresh'}
             </button>
-            <button onClick={onBack} className="hover:text-brand-blue smooth-transition">Main site</button>
+            <button onClick={onBack} className="hover:text-brand-blue smooth-transition">Site</button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-12 py-10 space-y-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 sm:py-10 space-y-6 sm:space-y-10">
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-4 text-sm">
             {error}
           </div>
         )}
 
+        {/* Good morning — personalized greeting */}
+        {viewer && buckets && (
+          <Greeting viewer={viewer} buckets={buckets} onChangeViewer={onChangeViewer} />
+        )}
+
+        {/* Quick-add — TOP of the page so Joe can add on the go */}
+        {meta && <QuickAdd meta={meta} onCreated={onRefresh} viewer={viewer} />}
+
         {/* Counts strip */}
         {counts && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             <Stat label="Overdue" value={counts.overdue} accent="red" />
             <Stat label="Today" value={counts.today} accent="blue" />
             <Stat label="This week" value={counts.thisWeek} accent="black" />
@@ -263,7 +319,7 @@ const DashboardHome: React.FC<{
 
         {/* Team capacity */}
         {data?.capacity && data.capacity.length > 0 && (
-          <CapacityStrip rows={data.capacity} />
+          <CapacityStrip rows={data.capacity} viewerGid={viewerGid} />
         )}
 
         {/* Clients */}
@@ -271,12 +327,9 @@ const DashboardHome: React.FC<{
           <ClientsGrid clients={data.clients} />
         )}
 
-        {/* Quick-add */}
-        {meta && <QuickAdd meta={meta} onCreated={onRefresh} />}
-
         {/* Lists */}
         {buckets && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <TaskBucket title="Overdue" tone="red" tasks={buckets.overdue} />
             <TaskBucket title="Due today" tone="blue" tasks={buckets.today} />
             <TaskBucket title="This week" tone="neutral" tasks={buckets.thisWeek} />
@@ -287,6 +340,164 @@ const DashboardHome: React.FC<{
     </div>
   );
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// Viewer picker (shown once, choice stored in localStorage)
+
+const ViewerPicker: React.FC<{
+  options: CapacityRow[];
+  onPick: (gid: string) => void;
+}> = ({ options, onPick }) => {
+  return (
+    <div className="min-h-screen bg-[#FAFAF7] flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-sm text-center">
+        <div className="text-xs tracking-widest uppercase text-brand-blue font-bold mb-4">Welcome</div>
+        <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-brand-black mb-8 leading-tight">
+          Who's using this dashboard?
+        </h1>
+        <div className="space-y-3">
+          {options.map((u) => (
+            <button
+              key={u.gid}
+              onClick={() => onPick(u.gid)}
+              className="w-full bg-white border border-black/10 rounded-2xl px-6 py-5 text-left hover:border-brand-blue hover:bg-brand-blue/[0.03] smooth-transition active:scale-[0.98]"
+            >
+              <div className="font-bold text-lg tracking-tight">{u.name}</div>
+              <div className="text-xs text-black/50 mt-1">
+                {u.total} open · {u.overdue > 0 ? `${u.overdue} overdue` : 'on track'}
+              </div>
+            </button>
+          ))}
+        </div>
+        <p className="mt-8 text-[10px] tracking-widest uppercase text-black/30">
+          We remember on this device.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ───────────────────────────────────────────────────────────────────────────
+// Good Morning greeting
+
+const Greeting: React.FC<{
+  viewer: CapacityRow;
+  buckets: Buckets;
+  onChangeViewer: () => void;
+}> = ({ viewer, buckets, onChangeViewer }) => {
+  const firstName = viewer.name.split(' ')[0];
+  const hour = new Date().getHours();
+  const salute =
+    hour < 5 ? 'Burning the midnight oil' :
+    hour < 12 ? 'Good morning' :
+    hour < 18 ? 'Good afternoon' :
+    hour < 22 ? 'Good evening' :
+    'Working late';
+  const emoji =
+    hour < 5 ? '🌙' :
+    hour < 12 ? '☀️' :
+    hour < 18 ? '👋' :
+    hour < 22 ? '🌆' :
+    '🌙';
+
+  const today = new Date().toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  // Filter my tasks
+  const myToday = buckets.today.filter((t) => t.assignee?.gid === viewer.gid);
+  const myOverdue = buckets.overdue.filter((t) => t.assignee?.gid === viewer.gid);
+  // Top 3 priorities: overdue first, then today
+  const priorities = [...myOverdue, ...myToday].slice(0, 3);
+
+  return (
+    <section className="bg-gradient-to-br from-white to-[#FAFAF7] border border-black/5 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div className="flex items-start justify-between gap-4 mb-2">
+        <div className="text-xs tracking-widest uppercase text-black/40 font-bold">{today}</div>
+        <button
+          onClick={onChangeViewer}
+          className="sm:hidden text-[10px] tracking-widest uppercase text-black/40 hover:text-brand-blue smooth-transition"
+        >
+          Not {firstName}?
+        </button>
+      </div>
+      <h1 className="text-2xl sm:text-4xl font-heading font-extrabold tracking-tight leading-tight mb-3">
+        {salute}, {firstName} <span className="inline-block">{emoji}</span>
+      </h1>
+
+      {/* At-a-glance */}
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-6">
+        <span className="text-black/70">
+          You have <strong className="text-brand-black">{viewer.total} open</strong>
+        </span>
+        {viewer.overdue > 0 && (
+          <span className="text-red-600">
+            <strong>{viewer.overdue} overdue</strong>
+          </span>
+        )}
+        {viewer.today > 0 && (
+          <span className="text-brand-blue">
+            <strong>{viewer.today} today</strong>
+          </span>
+        )}
+        {viewer.thisWeek > 0 && (
+          <span className="text-black/55">
+            {viewer.thisWeek} this week
+          </span>
+        )}
+      </div>
+
+      {/* Top 3 priorities */}
+      {priorities.length > 0 ? (
+        <div>
+          <div className="text-[11px] tracking-widest uppercase font-bold text-black/40 mb-3">
+            Your focus today
+          </div>
+          <ul className="space-y-2">
+            {priorities.map((t, idx) => {
+              const isOver = !!t.due && new Date(t.due) < startOfTodayJs();
+              return (
+                <li key={t.gid}>
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-3 p-3 rounded-xl bg-white border border-black/5 hover:border-brand-blue hover:shadow-sm smooth-transition"
+                  >
+                    <div className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                      isOver ? 'bg-red-100 text-red-700' : 'bg-brand-blue/10 text-brand-blue'
+                    }`}>
+                      {idx + 1}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold text-sm leading-snug">{t.name}</div>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-black/50 mt-1">
+                        {t.projects?.[0] && <span className="truncate">{t.projects[0].name}</span>}
+                        {isOver && <span className="text-red-600 font-semibold">overdue</span>}
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : (
+        <div className="bg-[#FAFAF7] border border-black/5 rounded-xl px-4 py-3 text-sm text-black/60">
+          🎉 Nothing urgent for you today. Plan ahead in the lists below.
+        </div>
+      )}
+    </section>
+  );
+};
+
+function startOfTodayJs() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
 
 // ───────────────────────────────────────────────────────────────────────────
 // Subcomponents
@@ -305,36 +516,51 @@ const Stat: React.FC<{ label: string; value: number; accent: 'red' | 'blue' | 'b
   );
 };
 
-const CapacityStrip: React.FC<{ rows: CapacityRow[] }> = ({ rows }) => {
+const CapacityStrip: React.FC<{ rows: CapacityRow[]; viewerGid: string | null }> = ({ rows, viewerGid }) => {
   return (
-    <section className="bg-white border border-black/5 rounded-2xl p-6">
-      <div className="flex items-baseline justify-between mb-5">
-        <h2 className="text-lg font-heading font-bold tracking-tight">Team capacity</h2>
-        <span className="text-[10px] tracking-widest uppercase font-bold text-black/40">
+    <section className="bg-white border border-black/5 rounded-2xl p-5 sm:p-6">
+      <div className="flex items-baseline justify-between mb-4 sm:mb-5">
+        <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">Team capacity</h2>
+        <span className="text-[10px] tracking-widest uppercase font-bold text-black/40 hidden sm:inline">
           open tasks per person
         </span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {rows.map((r) => (
-          <div key={r.gid} className="flex items-center justify-between p-4 rounded-xl bg-[#FAFAF7] border border-black/5">
-            <div className="min-w-0">
-              <div className="text-sm font-bold tracking-tight truncate">{r.name}</div>
-              <div className="text-[11px] tracking-wide text-black/50 mt-1">
-                {r.overdue > 0 && <span className="text-red-600 font-semibold">{r.overdue} overdue</span>}
-                {r.overdue > 0 && (r.today > 0 || r.thisWeek > 0) && <span> · </span>}
-                {r.today > 0 && <span className="text-brand-blue font-semibold">{r.today} today</span>}
-                {r.today > 0 && r.thisWeek > 0 && <span> · </span>}
-                {r.thisWeek > 0 && <span>{r.thisWeek} this week</span>}
-                {r.overdue === 0 && r.today === 0 && r.thisWeek === 0 && (
-                  <span className="text-black/40">on track</span>
-                )}
+        {rows.map((r) => {
+          const isViewer = r.gid === viewerGid;
+          return (
+            <div
+              key={r.gid}
+              className={`flex items-center justify-between p-4 rounded-xl border ${
+                isViewer
+                  ? 'bg-brand-blue/[0.04] border-brand-blue/30 ring-1 ring-brand-blue/20'
+                  : 'bg-[#FAFAF7] border-black/5'
+              }`}
+            >
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <div className="text-sm font-bold tracking-tight truncate">{r.name}</div>
+                  {isViewer && (
+                    <span className="text-[9px] tracking-widest uppercase font-bold text-brand-blue px-1.5 py-0.5 rounded bg-brand-blue/10">You</span>
+                  )}
+                </div>
+                <div className="text-[11px] tracking-wide text-black/50 mt-1">
+                  {r.overdue > 0 && <span className="text-red-600 font-semibold">{r.overdue} overdue</span>}
+                  {r.overdue > 0 && (r.today > 0 || r.thisWeek > 0) && <span> · </span>}
+                  {r.today > 0 && <span className="text-brand-blue font-semibold">{r.today} today</span>}
+                  {r.today > 0 && r.thisWeek > 0 && <span> · </span>}
+                  {r.thisWeek > 0 && <span>{r.thisWeek} this week</span>}
+                  {r.overdue === 0 && r.today === 0 && r.thisWeek === 0 && (
+                    <span className="text-black/40">on track</span>
+                  )}
+                </div>
+              </div>
+              <div className="text-3xl font-heading font-extrabold text-brand-black ml-3 flex-shrink-0">
+                {r.total}
               </div>
             </div>
-            <div className="text-3xl font-heading font-extrabold text-brand-black ml-3 flex-shrink-0">
-              {r.total}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -398,15 +624,15 @@ const TaskBucket: React.FC<{ title: string; tone: 'red' | 'blue' | 'neutral' | '
     tone === 'neutral' ? 'border-l-black/30' :
     'border-l-black/10';
   return (
-    <div className={`bg-white border border-black/5 ${borderTone} border-l-4 rounded-2xl p-6`}>
-      <div className="flex items-baseline justify-between mb-5">
-        <h2 className="text-lg font-heading font-bold tracking-tight">{title}</h2>
+    <div className={`bg-white border border-black/5 ${borderTone} border-l-4 rounded-2xl p-5 sm:p-6`}>
+      <div className="flex items-baseline justify-between mb-4 sm:mb-5">
+        <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">{title}</h2>
         <span className="text-[10px] tracking-widest uppercase font-bold text-black/40">{tasks.length}</span>
       </div>
       {tasks.length === 0 ? (
         <p className="text-sm text-black/40 italic">Nothing here. 🎉</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-2 sm:space-y-3">
           {tasks.map((t) => <TaskRow key={t.gid} task={t} />)}
         </ul>
       )}
@@ -435,14 +661,20 @@ const TaskRow: React.FC<{ task: Task }> = ({ task }) => {
   );
 };
 
-const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ meta, onCreated }) => {
+const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void; viewer: CapacityRow | null }> = ({ meta, onCreated, viewer }) => {
   const [name, setName] = useState('');
-  const [assigneeGid, setAssigneeGid] = useState('');
+  // Default assignee to whoever is viewing (handy for "add a task for myself")
+  const [assigneeGid, setAssigneeGid] = useState(viewer?.gid || '');
   const [projectGid, setProjectGid] = useState('');
   const [dueOn, setDueOn] = useState('');
   const [notes, setNotes] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  // Keep assignee in sync if the viewer changes
+  useEffect(() => {
+    if (viewer && !assigneeGid) setAssigneeGid(viewer.gid);
+  }, [viewer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -485,14 +717,17 @@ const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ met
   ];
 
   return (
-    <div className="bg-white border border-black/5 rounded-2xl p-6">
-      <div className="flex items-baseline justify-between mb-5">
-        <h2 className="text-lg font-heading font-bold tracking-tight">Quick add</h2>
+    <div className="bg-white border border-black/5 rounded-2xl p-5 sm:p-6 shadow-sm">
+      <div className="flex items-baseline justify-between mb-4 sm:mb-5 gap-3">
+        <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">
+          Quick add
+          <span className="hidden sm:inline text-xs font-normal text-black/40 ml-2">— creates a task in Asana</span>
+        </h2>
         {status === 'success' && (
-          <span className="text-xs text-green-700 font-semibold">{message}</span>
+          <span className="text-xs text-green-700 font-semibold truncate">✓ {message}</span>
         )}
         {status === 'error' && (
-          <span className="text-xs text-red-600 font-semibold">{message}</span>
+          <span className="text-xs text-red-600 font-semibold truncate">{message}</span>
         )}
       </div>
 
@@ -503,25 +738,25 @@ const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ met
           onChange={(e) => setName(e.target.value)}
           required
           placeholder="What needs to happen?"
-          className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition"
+          className="w-full px-4 py-3.5 sm:py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
           <select
             value={assigneeGid}
             onChange={(e) => setAssigneeGid(e.target.value)}
-            className="px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            className="px-4 py-3.5 sm:py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
           >
             <option value="">Assignee · anyone</option>
             {(meta.users || []).map((u) => (
-              <option key={u.gid} value={u.gid}>{u.name}</option>
+              <option key={u.gid} value={u.gid}>{u.name}{u.gid === viewer?.gid ? ' (me)' : ''}</option>
             ))}
           </select>
 
           <select
             value={projectGid}
             onChange={(e) => setProjectGid(e.target.value)}
-            className="px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            className="px-4 py-3.5 sm:py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
           >
             <option value="">Project · none</option>
             {(meta.projects || []).map((p) => (
@@ -533,7 +768,7 @@ const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ met
             type="date"
             value={dueOn}
             onChange={(e) => setDueOn(e.target.value)}
-            className="px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            className="px-4 py-3.5 sm:py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
           />
         </div>
 
@@ -543,7 +778,7 @@ const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ met
               type="button"
               key={s.label}
               onClick={() => setDueOn(s.value())}
-              className="px-3 py-1.5 text-[11px] font-bold tracking-widest uppercase text-black/60 border border-black/10 rounded-full hover:border-brand-blue hover:text-brand-blue smooth-transition"
+              className="px-3 py-2 text-[11px] font-bold tracking-widest uppercase text-black/60 border border-black/10 rounded-full hover:border-brand-blue hover:text-brand-blue active:bg-brand-blue/5 smooth-transition"
             >
               {s.label}
             </button>
@@ -555,13 +790,13 @@ const QuickAdd: React.FC<{ meta: MetaResponse; onCreated: () => void }> = ({ met
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
           placeholder="Notes (optional)"
-          className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition resize-none"
+          className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition resize-none"
         />
 
         <button
           type="submit"
           disabled={status === 'sending' || !name.trim()}
-          className="px-6 py-3 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto px-8 py-3.5 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 active:bg-blue-700 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shadow-brand-blue/20"
         >
           {status === 'sending' ? 'Adding…' : 'Add to Asana'}
         </button>
