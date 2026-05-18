@@ -58,6 +58,10 @@ const pageMeta = {
     title: 'For PMASEV Members | Free Digital Health Check | DFB Digital',
     description: 'Proud digital partner of PMASEV. Free 20-minute Digital Health Check for Filipino-American physicians — modern websites, SEO, and patient acquisition.',
   },
+  '/intake': {
+    title: 'Welcome to DFB Digital — Let\'s Make It Official',
+    description: 'Client intake form. Fill in your details and we\'ll kick off your project within 1 business day.',
+  },
 };
 
 export default async function handler(req, res) {

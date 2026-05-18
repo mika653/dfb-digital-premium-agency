@@ -29,6 +29,7 @@ import { InstaSitePro } from './components/InstaSitePro';
 import { InstaSiteElite } from './components/InstaSiteElite';
 import { PMASEV } from './components/PMASEV';
 import { Dashboard } from './components/Dashboard';
+import { Intake } from './components/Intake';
 
 const defaultMeta = {
   title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
@@ -104,10 +105,14 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'Internal Dashboard | DFB Digital',
     description: 'Internal team dashboard.',
   },
+  intake: {
+    title: 'Welcome to DFB Digital — Let\'s Make It Official',
+    description: 'Fill in our intake form and we\'ll kick off your project within 1 business day.',
+  },
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard' | 'intake'>('home');
 
   // Update document title and OG meta tags based on current page
   useEffect(() => {
@@ -146,6 +151,7 @@ const App: React.FC = () => {
       '/instasite/elite': 'instasite-elite',
       '/pmasev': 'pmasev',
       '/dashboard': 'dashboard',
+      '/intake': 'intake',
     };
 
     const handleRouteChange = () => {
@@ -193,6 +199,7 @@ const App: React.FC = () => {
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard': return <Dashboard onBack={goToHome} />;
+      case 'intake': return <Intake onBack={goToHome} />;
       case 'pmasev': return <PMASEV onBack={goToHome} />;
       case 'vip': return <VIPAccess onBack={goToHome} />;
       case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;

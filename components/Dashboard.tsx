@@ -293,6 +293,7 @@ const DashboardHome: React.FC<{
   const [weeklyOpen, setWeeklyOpen] = useState(false);
   const [allClientsOpen, setAllClientsOpen] = useState(false);
   const [addClientOpen, setAddClientOpen] = useState(false);
+  const [intakeOpen, setIntakeOpen] = useState(false);
 
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
@@ -371,6 +372,13 @@ const DashboardHome: React.FC<{
               title="Add a new client"
             >
               + Client
+            </button>
+            <button
+              onClick={() => setIntakeOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="Send intake form"
+            >
+              Send Intake
             </button>
             <button
               onClick={() => setAllClientsOpen(true)}
@@ -515,6 +523,11 @@ const DashboardHome: React.FC<{
             onRefresh();
           }}
         />
+      )}
+
+      {/* Send Intake modal */}
+      {intakeOpen && (
+        <SendIntakeModal onClose={() => setIntakeOpen(false)} />
       )}
     </div>
   );
@@ -1200,6 +1213,180 @@ function todayKeyJs(): string {
   const d = startOfTodayJs();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// Send Intake modal — shares the DFB intake form via copy/email/share
+
+const INTAKE_URL = 'https://dfbdigital.com/intake';
+const INTAKE_FALLBACK_URL = 'https://form.jotform.com/261293633350050';
+
+const SendIntakeModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [copied, setCopied] = useState(false);
+  const [recipientName, setRecipientName] = useState('');
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [canNativeShare, setCanNativeShare] = useState(false);
+
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== 'undefined' && !!navigator.share);
+  }, []);
+
+  const copy = async (url: string) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // older browsers — fall back to selecting an input
+    }
+  };
+
+  const firstName = recipientName.trim().split(' ')[0] || 'there';
+  const emailSubject = encodeURIComponent('Next step: DFB Digital intake form');
+  const emailBody = encodeURIComponent(
+    `Hi ${firstName},\n\nThanks for the chat. To officially get started, please take a few minutes to fill in our intake form here:\n\n${INTAKE_URL}\n\nOnce we have your responses we'll be in touch within 1 business day to kick things off.\n\n— Joe\nDFB Digital`
+  );
+  const mailtoHref = `mailto:${encodeURIComponent(recipientEmail)}?subject=${emailSubject}&body=${emailBody}`;
+
+  const smsBody = encodeURIComponent(
+    `Hi ${firstName} — to get started with DFB Digital, fill in our intake form here: ${INTAKE_URL}`
+  );
+  const smsHref = `sms:?body=${smsBody}`;
+
+  const nativeShare = async () => {
+    if (typeof navigator === 'undefined' || !navigator.share) return;
+    try {
+      await navigator.share({
+        title: 'DFB Digital — Intake Form',
+        text: 'Fill in our intake form to get started',
+        url: INTAKE_URL,
+      });
+    } catch {
+      // user cancelled — ignore
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-lg bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[92vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-7 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">Onboarding</div>
+            <h2 className="text-xl sm:text-2xl font-heading font-extrabold tracking-tight">Send intake form</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div className="overflow-y-auto flex-1 p-5 sm:p-7 space-y-6">
+          {/* Quick copy */}
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+              Branded link
+            </label>
+            <div className="flex items-center gap-2 bg-white border border-black/10 rounded-xl px-4 py-3">
+              <code className="text-sm text-brand-black truncate flex-1">{INTAKE_URL}</code>
+              <button
+                onClick={() => copy(INTAKE_URL)}
+                className="px-3 py-1.5 bg-brand-blue text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition whitespace-nowrap"
+              >
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+            <p className="text-[11px] text-black/45 mt-2">
+              Same form, hosted on dfbdigital.com so the URL looks like ours.
+              {' '}<button onClick={() => copy(INTAKE_FALLBACK_URL)} className="text-brand-blue hover:underline">Copy direct JotForm link instead</button>
+            </p>
+          </div>
+
+          {/* Personalize and send */}
+          <div>
+            <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+              Who's it for?
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                type="text"
+                value={recipientName}
+                onChange={(e) => setRecipientName(e.target.value)}
+                placeholder="Their name (for the greeting)"
+                className="px-4 py-3 bg-white border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+              />
+              <input
+                type="email"
+                value={recipientEmail}
+                onChange={(e) => setRecipientEmail(e.target.value)}
+                placeholder="Their email"
+                className="px-4 py-3 bg-white border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+              />
+            </div>
+            <p className="text-[11px] text-black/45 mt-2">
+              These just pre-fill the email body — nothing is sent until you press the button.
+            </p>
+          </div>
+
+          {/* Send options */}
+          <div className="space-y-2">
+            <a
+              href={mailtoHref}
+              className={`w-full flex items-center justify-between px-5 py-4 rounded-xl smooth-transition ${
+                recipientEmail
+                  ? 'bg-brand-blue text-white hover:bg-blue-600 shadow-sm shadow-brand-blue/20'
+                  : 'bg-white border border-black/10 text-black/55 pointer-events-none opacity-60'
+              }`}
+            >
+              <span className="text-sm font-bold tracking-wide">
+                ✉️&nbsp; Open in email{recipientName ? ` for ${recipientName.split(' ')[0]}` : ''}
+              </span>
+              <span className="text-[11px] tracking-widest uppercase opacity-80">Send</span>
+            </a>
+
+            <a
+              href={smsHref}
+              className="w-full flex items-center justify-between px-5 py-4 bg-white border border-black/10 hover:border-brand-blue hover:bg-brand-blue/[0.03] rounded-xl smooth-transition"
+            >
+              <span className="text-sm font-bold tracking-wide">💬&nbsp; Text it (mobile)</span>
+              <span className="text-[11px] tracking-widest uppercase text-black/40">SMS</span>
+            </a>
+
+            {canNativeShare && (
+              <button
+                onClick={nativeShare}
+                className="w-full flex items-center justify-between px-5 py-4 bg-white border border-black/10 hover:border-brand-blue hover:bg-brand-blue/[0.03] rounded-xl smooth-transition"
+              >
+                <span className="text-sm font-bold tracking-wide">📤&nbsp; Share via…</span>
+                <span className="text-[11px] tracking-widest uppercase text-black/40">Native</span>
+              </button>
+            )}
+
+            <a
+              href={INTAKE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between px-5 py-4 bg-white border border-black/10 hover:border-brand-blue hover:bg-brand-blue/[0.03] rounded-xl smooth-transition"
+            >
+              <span className="text-sm font-bold tracking-wide">👀&nbsp; Preview the form</span>
+              <span className="text-[11px] tracking-widest uppercase text-black/40">Open</span>
+            </a>
+          </div>
+
+          <p className="text-[11px] text-black/40 text-center pt-2">
+            Submissions land in your JotForm dashboard (existing setup). Joe's notification settings there control who gets pinged.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ───────────────────────────────────────────────────────────────────────────
 // Add Client modal — creates a new Asana project (= new client)
