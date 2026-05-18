@@ -294,6 +294,7 @@ const DashboardHome: React.FC<{
   const [allClientsOpen, setAllClientsOpen] = useState(false);
   const [addClientOpen, setAddClientOpen] = useState(false);
   const [intakeOpen, setIntakeOpen] = useState(false);
+  const [notesProject, setNotesProject] = useState<ClientTile | null>(null);
 
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
@@ -481,7 +482,10 @@ const DashboardHome: React.FC<{
 
         {/* Clients */}
         {data?.clients && data.clients.length > 0 && (
-          <ClientsGrid clients={data.clients} />
+          <ClientsGrid
+            clients={data.clients}
+            onOpenNotes={(client) => setNotesProject(client)}
+          />
         )}
 
         {/* Lists */}
@@ -528,6 +532,15 @@ const DashboardHome: React.FC<{
       {/* Send Intake modal */}
       {intakeOpen && (
         <SendIntakeModal onClose={() => setIntakeOpen(false)} />
+      )}
+
+      {/* Notes drawer */}
+      {notesProject && viewer && (
+        <NotesDrawer
+          project={notesProject}
+          viewerName={viewer.name}
+          onClose={() => setNotesProject(null)}
+        />
       )}
     </div>
   );
@@ -2176,13 +2189,16 @@ const CapacityStrip: React.FC<{ rows: CapacityRow[]; viewerGid: string | null }>
   );
 };
 
-const ClientsGrid: React.FC<{ clients: ClientTile[] }> = ({ clients }) => {
+const ClientsGrid: React.FC<{
+  clients: ClientTile[];
+  onOpenNotes: (c: ClientTile) => void;
+}> = ({ clients, onOpenNotes }) => {
   return (
     <section>
       <div className="flex items-baseline justify-between mb-5">
         <h2 className="text-lg font-heading font-bold tracking-tight">Clients · Projects</h2>
         <span className="text-[10px] tracking-widest uppercase font-bold text-black/40">
-          at-risk first
+          tap a tile for notes
         </span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -2193,9 +2209,10 @@ const ClientsGrid: React.FC<{ clients: ClientTile[] }> = ({ clients }) => {
             c.atRisk ? 'border-l-amber-500' :
             'border-l-black/10';
           return (
-            <div
+            <button
               key={c.gid}
-              className={`bg-white border border-black/5 ${ringTone} border-l-4 rounded-2xl p-5`}
+              onClick={() => onOpenNotes(c)}
+              className={`text-left bg-white border border-black/5 ${ringTone} border-l-4 rounded-2xl p-5 hover:shadow-md hover:border-brand-blue/30 smooth-transition active:scale-[0.99]`}
             >
               <div className="flex items-baseline justify-between gap-3 mb-3">
                 <div className="text-sm font-bold tracking-tight leading-snug truncate" title={c.name}>
@@ -2219,13 +2236,169 @@ const ClientsGrid: React.FC<{ clients: ClientTile[] }> = ({ clients }) => {
                   <span className="text-amber-600 font-semibold">stalled · {c.oldestAgeDays}d old</span>
                 )}
               </div>
-            </div>
+              <div className="mt-3 text-[10px] tracking-widest uppercase text-black/35 font-bold">
+                📝 Notes →
+              </div>
+            </button>
           );
         })}
       </div>
     </section>
   );
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// Notes drawer — per-client scratchpad, auto-saves to Upstash on blur
+
+const NotesDrawer: React.FC<{
+  project: ClientTile;
+  viewerName: string;
+  onClose: () => void;
+}> = ({ project, viewerName, onClose }) => {
+  const [content, setContent] = useState('');
+  const [originalContent, setOriginalContent] = useState('');
+  const [updatedAt, setUpdatedAt] = useState<number | null>(null);
+  const [updatedBy, setUpdatedBy] = useState<string | null>(null);
+  const [status, setStatus] = useState<'loading' | 'idle' | 'saving' | 'saved' | 'error'>('loading');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  // Load existing notes
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await fetch(
+          `/api/dashboard/notes?projectGid=${encodeURIComponent(project.gid)}`,
+          { credentials: 'include' }
+        );
+        const json = await resp.json();
+        if (cancelled) return;
+        if (!json.ok) throw new Error(json.error || 'Failed to load notes');
+        setContent(json.content || '');
+        setOriginalContent(json.content || '');
+        setUpdatedAt(json.updatedAt);
+        setUpdatedBy(json.updatedBy);
+        setStatus('idle');
+      } catch (err) {
+        if (!cancelled) {
+          setErrorMsg(err instanceof Error ? err.message : 'Failed to load');
+          setStatus('error');
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [project.gid]);
+
+  const save = useCallback(async () => {
+    if (content === originalContent) return;
+    setStatus('saving');
+    setErrorMsg('');
+    try {
+      const resp = await fetch('/api/dashboard/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          projectGid: project.gid,
+          content,
+          viewerName,
+        }),
+      });
+      const json = await resp.json();
+      if (!json.ok) throw new Error(json.error || 'Save failed');
+      setOriginalContent(content);
+      setUpdatedAt(json.updatedAt);
+      setUpdatedBy(json.updatedBy);
+      setStatus('saved');
+      setTimeout(() => setStatus('idle'), 2000);
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : 'Save failed');
+      setStatus('error');
+    }
+  }, [content, originalContent, project.gid, viewerName]);
+
+  const isDirty = content !== originalContent;
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full sm:max-w-lg bg-[#FAFAF7] flex flex-col h-screen shadow-2xl animate-slide-in-right">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-6 border-b border-black/5 bg-white">
+          <div className="min-w-0">
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">Notes · {project.name.length > 30 ? project.name.slice(0, 30) + '…' : project.name}</div>
+            <h2 className="text-lg sm:text-xl font-heading font-extrabold tracking-tight truncate">
+              {project.name}
+            </h2>
+            <div className="flex items-center gap-2 mt-1 text-[11px] text-black/45">
+              <span>{project.total} open</span>
+              {project.overdue > 0 && <span className="text-red-600 font-semibold">· {project.overdue} overdue</span>}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Save status strip */}
+        <div className="px-5 sm:px-6 py-2 border-b border-black/5 bg-white text-[11px] tracking-wide flex items-center justify-between">
+          <span className="text-black/45">
+            {status === 'loading' && 'Loading…'}
+            {status === 'saving' && 'Saving…'}
+            {status === 'saved' && <span className="text-green-700 font-semibold">✓ Saved</span>}
+            {status === 'error' && <span className="text-red-600 font-semibold">{errorMsg}</span>}
+            {status === 'idle' && updatedAt && (
+              <>Last edit {timeAgo(updatedAt)}{updatedBy ? ` by ${updatedBy.split(' ')[0]}` : ''}</>
+            )}
+            {status === 'idle' && !updatedAt && 'Start typing — saves on blur.'}
+          </span>
+          {isDirty && status !== 'saving' && (
+            <button
+              onClick={save}
+              className="px-3 py-1 text-[10px] tracking-widest uppercase font-bold text-white bg-brand-blue rounded-full hover:bg-blue-600 smooth-transition"
+            >
+              Save now
+            </button>
+          )}
+        </div>
+
+        {/* Editor */}
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          onBlur={save}
+          disabled={status === 'loading'}
+          placeholder={`Drop call notes, decisions, questions, anything…\n\n• Call recap\n• Decisions made\n• Followups\n\n(saves automatically when you click outside)`}
+          className="flex-1 w-full p-5 sm:p-6 bg-[#FAFAF7] resize-none focus:outline-none text-sm sm:text-base leading-relaxed text-brand-black placeholder:text-black/30 font-mono"
+        />
+
+        {/* Footer hint */}
+        <div className="px-5 sm:px-6 py-3 border-t border-black/5 bg-white text-[10px] tracking-widest uppercase text-black/35 text-center">
+          Shared with the team · Visible to anyone with dashboard access
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function timeAgo(ts: number): string {
+  const secs = Math.floor((Date.now() - ts) / 1000);
+  if (secs < 60) return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  return new Date(ts).toLocaleDateString();
+}
 
 const TaskBucket: React.FC<{ title: string; tone: 'red' | 'blue' | 'neutral' | 'muted'; tasks: Task[] }> = ({ title, tone, tasks }) => {
   const borderTone =
