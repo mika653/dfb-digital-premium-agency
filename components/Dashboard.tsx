@@ -52,6 +52,15 @@ interface WinTask {
   url: string;
 }
 
+interface DateEntry {
+  id: string;
+  name: string;
+  monthDay: string; // "MM-DD"
+  type: string;     // 'birthday' | 'anniversary' | 'contract-start' | 'other'
+  notes: string;
+  createdAt: number;
+}
+
 interface CalendarEvent {
   id: string;
   summary: string;
@@ -295,6 +304,22 @@ const DashboardHome: React.FC<{
   const [addClientOpen, setAddClientOpen] = useState(false);
   const [intakeOpen, setIntakeOpen] = useState(false);
   const [notesProject, setNotesProject] = useState<ClientTile | null>(null);
+  const [dates, setDates] = useState<DateEntry[]>([]);
+  const [datesOpen, setDatesOpen] = useState(false);
+
+  const loadDates = useCallback(async () => {
+    try {
+      const resp = await fetch('/api/dashboard/dates', { credentials: 'include' });
+      const json = await resp.json();
+      if (json.ok) setDates(Array.isArray(json.entries) ? json.entries : []);
+    } catch {
+      // ignore — feature is best-effort
+    }
+  }, []);
+
+  useEffect(() => {
+    if (viewerGid) loadDates();
+  }, [viewerGid, loadDates]);
 
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
@@ -382,6 +407,13 @@ const DashboardHome: React.FC<{
               Send Intake
             </button>
             <button
+              onClick={() => setDatesOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="Birthdays + anniversaries"
+            >
+              Dates
+            </button>
+            <button
               onClick={() => setAllClientsOpen(true)}
               className="hover:text-brand-blue smooth-transition"
               title="All clients"
@@ -437,7 +469,7 @@ const DashboardHome: React.FC<{
 
         {/* Good morning — personalized greeting */}
         {viewer && buckets && (
-          <Greeting viewer={viewer} buckets={buckets} onChangeViewer={onChangeViewer} />
+          <Greeting viewer={viewer} buckets={buckets} dates={dates} onChangeViewer={onChangeViewer} />
         )}
 
         {/* Calendar — monthly view */}
@@ -542,6 +574,15 @@ const DashboardHome: React.FC<{
           onClose={() => setNotesProject(null)}
         />
       )}
+
+      {/* Dates manager modal */}
+      {datesOpen && (
+        <DatesManager
+          dates={dates}
+          onClose={() => setDatesOpen(false)}
+          onChanged={loadDates}
+        />
+      )}
     </div>
   );
 };
@@ -588,8 +629,9 @@ const ViewerPicker: React.FC<{
 const Greeting: React.FC<{
   viewer: CapacityRow;
   buckets: Buckets;
+  dates: DateEntry[];
   onChangeViewer: () => void;
-}> = ({ viewer, buckets, onChangeViewer }) => {
+}> = ({ viewer, buckets, dates, onChangeViewer }) => {
   const firstName = viewer.name.split(' ')[0];
   const hour = new Date().getHours();
   const salute =
@@ -654,6 +696,27 @@ const Greeting: React.FC<{
         )}
       </div>
 
+      {/* Upcoming dates (birthdays + anniversaries in next 14 days) */}
+      {(() => {
+        const upcoming = upcomingDates(dates, 14);
+        if (upcoming.length === 0) return null;
+        return (
+          <div className="mb-5 flex flex-wrap gap-2">
+            {upcoming.slice(0, 3).map((d) => (
+              <span
+                key={d.id}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-[12px]"
+                title={d.notes || ''}
+              >
+                <span>{emojiForType(d.type)}</span>
+                <span className="font-semibold text-amber-900">{d.name}</span>
+                <span className="text-amber-700">· {dateLabelForUpcoming(d.monthDay)}</span>
+              </span>
+            ))}
+          </div>
+        );
+      })()}
+
       {/* Top 3 priorities */}
       {priorities.length > 0 ? (
         <div>
@@ -702,6 +765,44 @@ function startOfTodayJs() {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   return d;
+}
+
+function daysUntilMonthDay(monthDay: string): number {
+  // monthDay = "MM-DD" — returns # of days from today until next occurrence
+  const [m, d] = monthDay.split('-').map(Number);
+  if (!m || !d) return 9999;
+  const today = startOfTodayJs();
+  const thisYear = new Date(today.getFullYear(), m - 1, d);
+  if (thisYear >= today) {
+    return Math.round((thisYear.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  }
+  const nextYear = new Date(today.getFullYear() + 1, m - 1, d);
+  return Math.round((nextYear.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+}
+
+function upcomingDates(entries: DateEntry[], withinDays: number): (DateEntry & { _daysAway: number })[] {
+  return entries
+    .map((e) => ({ ...e, _daysAway: daysUntilMonthDay(e.monthDay) }))
+    .filter((e) => e._daysAway <= withinDays)
+    .sort((a, b) => a._daysAway - b._daysAway);
+}
+
+function emojiForType(type: string): string {
+  switch (type) {
+    case 'birthday': return '🎂';
+    case 'anniversary': return '💐';
+    case 'contract-start': return '🤝';
+    default: return '📅';
+  }
+}
+
+function dateLabelForUpcoming(monthDay: string): string {
+  const days = daysUntilMonthDay(monthDay);
+  if (days === 0) return 'today';
+  if (days === 1) return 'tomorrow';
+  if (days < 7) return `in ${days}d`;
+  const [m, d] = monthDay.split('-').map(Number);
+  return new Date(2000, m - 1, d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -2399,6 +2500,206 @@ const NotesDrawer: React.FC<{
         {/* Footer hint */}
         <div className="px-5 sm:px-6 py-3 border-t border-black/5 bg-white text-[10px] tracking-widest uppercase text-black/35 text-center">
           Shared with the team · Visible to anyone with dashboard access
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ───────────────────────────────────────────────────────────────────────────
+// Dates manager — birthdays, anniversaries, contract starts
+
+const DatesManager: React.FC<{
+  dates: DateEntry[];
+  onClose: () => void;
+  onChanged: () => void;
+}> = ({ dates, onClose, onChanged }) => {
+  const [name, setName] = useState('');
+  const [monthDay, setMonthDay] = useState('');
+  const [type, setType] = useState<'birthday' | 'anniversary' | 'contract-start' | 'other'>('birthday');
+  const [notes, setNotes] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !monthDay) return;
+    setStatus('sending');
+    setErrorMsg('');
+    try {
+      const resp = await fetch('/api/dashboard/dates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ name: name.trim(), monthDay, type, notes: notes.trim() }),
+      });
+      const json = await resp.json();
+      if (!json.ok) throw new Error(json.error || 'Failed to save');
+      setName('');
+      setMonthDay('');
+      setNotes('');
+      onChanged();
+      setStatus('idle');
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to save');
+      setStatus('error');
+    }
+  };
+
+  const remove = async (id: string) => {
+    if (!window.confirm('Remove this date?')) return;
+    await fetch(`/api/dashboard/dates?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    onChanged();
+  };
+
+  // Sort by next occurrence
+  const sorted = [...dates]
+    .map((e) => ({ ...e, _daysAway: daysUntilMonthDay(e.monthDay) }))
+    .sort((a, b) => a._daysAway - b._daysAway);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-2xl bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[92vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-7 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">Relationship calendar</div>
+            <h2 className="text-xl sm:text-2xl font-heading font-extrabold tracking-tight">Birthdays + anniversaries</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div className="overflow-y-auto flex-1 p-5 sm:p-7 space-y-6">
+          {/* Add form */}
+          <form onSubmit={submit} className="bg-white border border-black/5 rounded-2xl p-5 space-y-3">
+            <div className="text-[11px] tracking-widest uppercase font-bold text-black/55">Add new</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Name (e.g. Dr. Reyes)"
+                required
+                className="px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+              />
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value as 'birthday' | 'anniversary' | 'contract-start' | 'other')}
+                className="px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+              >
+                <option value="birthday">🎂 Birthday</option>
+                <option value="anniversary">💐 Anniversary</option>
+                <option value="contract-start">🤝 Contract started</option>
+                <option value="other">📅 Other</option>
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[10px] tracking-widest uppercase font-bold text-black/45 mb-1">Month</label>
+                <select
+                  value={monthDay.split('-')[0] || ''}
+                  onChange={(e) => {
+                    const m = e.target.value;
+                    const d = monthDay.split('-')[1] || '';
+                    setMonthDay(m && d ? `${m}-${d}` : m ? `${m}-01` : '');
+                  }}
+                  required
+                  className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+                >
+                  <option value="">—</option>
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                    <option key={m} value={String(m).padStart(2, '0')}>
+                      {new Date(2000, m - 1, 1).toLocaleDateString(undefined, { month: 'long' })}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] tracking-widest uppercase font-bold text-black/45 mb-1">Day</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="31"
+                  value={monthDay.split('-')[1] || ''}
+                  onChange={(e) => {
+                    const m = monthDay.split('-')[0] || '01';
+                    const d = String(Math.max(1, Math.min(31, Number(e.target.value) || 0))).padStart(2, '0');
+                    setMonthDay(`${m}-${d}`);
+                  }}
+                  required
+                  className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+                />
+              </div>
+            </div>
+            <input
+              type="text"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Notes (optional — e.g. 'sent flowers last year, do something different')"
+              className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+            />
+            {status === 'error' && (
+              <p className="text-sm text-red-600">{errorMsg}</p>
+            )}
+            <button
+              type="submit"
+              disabled={status === 'sending' || !name.trim() || !monthDay}
+              className="px-5 py-2.5 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {status === 'sending' ? 'Saving…' : '+ Add'}
+            </button>
+          </form>
+
+          {/* List */}
+          <div>
+            <div className="text-[11px] tracking-widest uppercase font-bold text-black/55 mb-3">
+              All dates ({sorted.length})
+            </div>
+            {sorted.length === 0 ? (
+              <p className="text-sm text-black/45 italic">
+                Nothing yet. Add a client's birthday or contract anniversary to start getting nudges in your morning briefing.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {sorted.map((e) => (
+                  <li
+                    key={e.id}
+                    className="flex items-center justify-between gap-3 bg-white border border-black/5 rounded-xl px-4 py-3"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span>{emojiForType(e.type)}</span>
+                        <span className="font-semibold text-sm">{e.name}</span>
+                      </div>
+                      <div className="text-[11px] text-black/45 mt-0.5">
+                        {dateLabelForUpcoming(e.monthDay)}{e.notes ? ` · ${e.notes}` : ''}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => remove(e.id)}
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-black/35 hover:text-red-600 hover:bg-red-50 smooth-transition"
+                      aria-label="Remove"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
