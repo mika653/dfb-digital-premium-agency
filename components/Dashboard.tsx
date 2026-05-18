@@ -292,6 +292,7 @@ const DashboardHome: React.FC<{
   const viewer = data?.capacity?.find((c) => c.gid === viewerGid) || null;
   const [weeklyOpen, setWeeklyOpen] = useState(false);
   const [allClientsOpen, setAllClientsOpen] = useState(false);
+  const [addClientOpen, setAddClientOpen] = useState(false);
 
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
@@ -364,6 +365,13 @@ const DashboardHome: React.FC<{
             <span className="text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-bold truncate">Dashboard</span>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-medium">
+            <button
+              onClick={() => setAddClientOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="Add a new client"
+            >
+              + Client
+            </button>
             <button
               onClick={() => setAllClientsOpen(true)}
               className="hover:text-brand-blue smooth-transition"
@@ -493,6 +501,19 @@ const DashboardHome: React.FC<{
         <AllClientsView
           data={data}
           onClose={() => setAllClientsOpen(false)}
+        />
+      )}
+
+      {/* Add Client modal */}
+      {addClientOpen && (
+        <AddClientModal
+          meta={meta}
+          viewer={viewer}
+          onClose={() => setAddClientOpen(false)}
+          onCreated={() => {
+            setAddClientOpen(false);
+            onRefresh();
+          }}
         />
       )}
     </div>
@@ -1179,6 +1200,247 @@ function todayKeyJs(): string {
   const d = startOfTodayJs();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// Add Client modal — creates a new Asana project (= new client)
+// with optional onboarding template tasks.
+
+interface TemplateTask {
+  name: string;
+  daysFromNow: number;
+  assigneeGid: string;
+}
+
+const DEFAULT_TEMPLATE: TemplateTask[] = [
+  { name: 'Send intake form to client',          daysFromNow: 1,  assigneeGid: '' },
+  { name: 'Send + sign engagement letter',       daysFromNow: 3,  assigneeGid: '' },
+  { name: 'Kickoff call scheduled',              daysFromNow: 7,  assigneeGid: '' },
+  { name: 'Collect brand assets (logo, fonts)',  daysFromNow: 10, assigneeGid: '' },
+  { name: 'Set up project folder + access',      daysFromNow: 7,  assigneeGid: '' },
+  { name: 'Welcome email sent',                  daysFromNow: 1,  assigneeGid: '' },
+  { name: 'First milestone defined',             daysFromNow: 14, assigneeGid: '' },
+];
+
+const AddClientModal: React.FC<{
+  meta: MetaResponse | null;
+  viewer: CapacityRow | null;
+  onClose: () => void;
+  onCreated: () => void;
+}> = ({ meta, viewer, onClose, onCreated }) => {
+  const [name, setName] = useState('');
+  const [notes, setNotes] = useState('');
+  const [applyTemplate, setApplyTemplate] = useState(true);
+  const [templateTasks, setTemplateTasks] = useState<TemplateTask[]>(
+    DEFAULT_TEMPLATE.map((t) => ({ ...t, assigneeGid: viewer?.gid || '' }))
+  );
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const updateTask = (idx: number, patch: Partial<TemplateTask>) => {
+    setTemplateTasks((prev) => prev.map((t, i) => (i === idx ? { ...t, ...patch } : t)));
+  };
+  const removeTask = (idx: number) => {
+    setTemplateTasks((prev) => prev.filter((_, i) => i !== idx));
+  };
+  const addTask = () => {
+    setTemplateTasks((prev) => [...prev, { name: '', daysFromNow: 7, assigneeGid: viewer?.gid || '' }]);
+  };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    setStatus('sending');
+    setErrorMsg('');
+
+    try {
+      const cleanTasks = applyTemplate
+        ? templateTasks
+            .filter((t) => t.name.trim().length > 0)
+            .map((t) => ({
+              name: t.name.trim(),
+              daysFromNow: Number.isFinite(Number(t.daysFromNow)) ? Number(t.daysFromNow) : 7,
+              assigneeGid: t.assigneeGid || undefined,
+            }))
+        : [];
+
+      const resp = await fetch('/api/dashboard/clients/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name: name.trim(),
+          notes: notes.trim(),
+          applyTemplate,
+          templateTasks: cleanTasks,
+        }),
+      });
+      const json = await resp.json();
+      if (!resp.ok || !json.ok) throw new Error(json.error || 'Failed to create client');
+      onCreated();
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to create client');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-2xl bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[92vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-8 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">New client</div>
+            <h2 className="text-xl sm:text-3xl font-heading font-extrabold tracking-tight">Onboard a client</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <form onSubmit={submit} className="overflow-y-auto flex-1 p-5 sm:p-8 space-y-6">
+          {/* Client basics */}
+          <section className="space-y-4">
+            <div>
+              <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+                Client / Project Name *
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoFocus
+                placeholder="e.g. Reyes Medical Group"
+                className="w-full px-4 py-3 bg-white border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition"
+              />
+              <p className="text-[11px] text-black/45 mt-2">
+                Creates a new Asana project with this name in your DFB workspace.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+                Notes
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+                placeholder="Industry, contact name, scope notes — anything Joe should see when he opens the project."
+                className="w-full px-4 py-3 bg-white border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition resize-none"
+              />
+            </div>
+          </section>
+
+          {/* Onboarding template */}
+          <section>
+            <label className="flex items-start gap-2 text-sm cursor-pointer mb-4">
+              <input
+                type="checkbox"
+                checked={applyTemplate}
+                onChange={(e) => setApplyTemplate(e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-brand-blue"
+              />
+              <span>
+                <span className="font-bold">Apply onboarding template</span>
+                <span className="block text-xs text-black/55 mt-0.5">
+                  Seeds standard tasks in the new project so onboarding starts the same way every time.
+                </span>
+              </span>
+            </label>
+
+            {applyTemplate && (
+              <div className="bg-white border border-black/5 rounded-2xl p-4 sm:p-5 space-y-2">
+                {templateTasks.map((t, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={t.name}
+                      onChange={(e) => updateTask(idx, { name: e.target.value })}
+                      placeholder="Task name"
+                      className="flex-1 min-w-0 px-3 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-sm focus:outline-none focus:border-brand-blue smooth-transition"
+                    />
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <input
+                        type="number"
+                        value={t.daysFromNow}
+                        onChange={(e) => updateTask(idx, { daysFromNow: Number(e.target.value) || 0 })}
+                        className="w-14 px-2 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-sm text-center focus:outline-none focus:border-brand-blue smooth-transition"
+                        min="0"
+                        max="365"
+                      />
+                      <span className="text-[10px] tracking-widest uppercase text-black/40 mr-2">d</span>
+                    </div>
+                    <select
+                      value={t.assigneeGid}
+                      onChange={(e) => updateTask(idx, { assigneeGid: e.target.value })}
+                      className="w-28 flex-shrink-0 px-2 py-2 bg-[#FAFAF7] border border-black/10 rounded-lg text-xs focus:outline-none focus:border-brand-blue smooth-transition"
+                    >
+                      <option value="">unassigned</option>
+                      {(meta?.users || []).map((u) => (
+                        <option key={u.gid} value={u.gid}>
+                          {u.name.split(' ')[0]}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      onClick={() => removeTask(idx)}
+                      className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full text-black/40 hover:text-red-600 hover:bg-red-50 smooth-transition"
+                      aria-label="Remove task"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={addTask}
+                  className="text-xs font-bold tracking-widest uppercase text-brand-blue hover:text-blue-700 smooth-transition mt-2"
+                >
+                  + Add task
+                </button>
+              </div>
+            )}
+          </section>
+
+          {status === 'error' && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+              {errorMsg}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={status === 'sending' || !name.trim()}
+              className="px-6 py-3.5 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed flex-1 shadow-sm shadow-brand-blue/20"
+            >
+              {status === 'sending' ? 'Creating…' : 'Create client'}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-black/60 hover:text-brand-blue smooth-transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 function formatEventTime(e: CalendarEvent): string {
   if (e.allDay) return 'all day';
