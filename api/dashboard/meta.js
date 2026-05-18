@@ -17,11 +17,20 @@ export default async function handler(req, res) {
       asanaFetch(`/workspaces/${workspaceGid}/projects?archived=false&opt_fields=name&limit=100`),
     ]);
 
+    const hideList = (process.env.DASHBOARD_HIDE_PROJECTS || '')
+      .split(',')
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+
+    const projectList = (projects?.data || [])
+      .map((p) => ({ gid: p.gid, name: p.name }))
+      .filter((p) => !hideList.includes((p.name || '').toLowerCase()));
+
     res.status(200).json({
       ok: true,
       workspaceGid,
       users: (users?.data || []).map((u) => ({ gid: u.gid, name: u.name, email: u.email })),
-      projects: (projects?.data || []).map((p) => ({ gid: p.gid, name: p.name })),
+      projects: projectList,
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: String(err.message || err) });

@@ -55,13 +55,28 @@ export default async function handler(req, res) {
     // Combine + dedupe (a task assigned to one user can technically show
     // up only once, but dedupe defensively in case of collaborator queries).
     const seen = new Set();
-    const tasks = [];
+    let tasks = [];
     for (const result of perUser) {
       for (const t of result?.data || []) {
         if (seen.has(t.gid)) continue;
         seen.add(t.gid);
         tasks.push(t);
       }
+    }
+
+    // Optional: hide tasks whose only projects are in DASHBOARD_HIDE_PROJECTS
+    // (comma-separated project names, case-insensitive). Tasks with at least
+    // one visible project — or no projects at all — pass through.
+    const hideList = (process.env.DASHBOARD_HIDE_PROJECTS || '')
+      .split(',')
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+    if (hideList.length) {
+      tasks = tasks.filter((t) => {
+        const projects = t.projects || [];
+        if (projects.length === 0) return true;
+        return projects.some((p) => !hideList.includes((p.name || '').toLowerCase()));
+      });
     }
 
     const today = startOfDay(new Date());
