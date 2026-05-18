@@ -44,25 +44,45 @@ export default async function handler(req, res) {
     );
     const users = usersResp?.data || [];
 
-    // Per-user task fetch in parallel. completed_since=now is the
-    // Asana idiom for "only incomplete tasks."
+    // Two parallel fetches per user:
+    //  - incomplete tasks (completed_since=now)
+    //  - tasks completed in the last 7 days (for the Weekly Review wins list)
+    const sevenDaysAgoIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const perUser = await Promise.all(
-      users.map((u) =>
-        asanaFetch(
-          `/tasks?workspace=${workspaceGid}&assignee=${u.gid}&completed_since=now&limit=100&opt_fields=${fields}`
-        ).catch(() => ({ data: [] }))
-      )
+      users.map(async (u) => {
+        const [openResp, recentResp] = await Promise.all([
+          asanaFetch(
+            `/tasks?workspace=${workspaceGid}&assignee=${u.gid}&completed_since=now&limit=100&opt_fields=${fields}`
+          ).catch(() => ({ data: [] })),
+          asanaFetch(
+            `/tasks?workspace=${workspaceGid}&assignee=${u.gid}&completed_since=${encodeURIComponent(sevenDaysAgoIso)}&limit=100&opt_fields=${fields}`
+          ).catch(() => ({ data: [] })),
+        ]);
+        return { open: openResp?.data || [], recent: recentResp?.data || [] };
+      })
     );
 
-    // Combine + dedupe (a task assigned to one user can technically show
-    // up only once, but dedupe defensively in case of collaborator queries).
-    const seen = new Set();
+    // Combine + dedupe open tasks
+    const seenOpen = new Set();
     let tasks = [];
     for (const result of perUser) {
-      for (const t of result?.data || []) {
-        if (seen.has(t.gid)) continue;
-        seen.add(t.gid);
+      for (const t of result.open || []) {
+        if (t.completed) continue; // safety: skip anything marked completed
+        if (seenOpen.has(t.gid)) continue;
+        seenOpen.add(t.gid);
         tasks.push(t);
+      }
+    }
+
+    // Completed-this-week list for the Weekly Review
+    const seenRecent = new Set();
+    const recentlyCompleted = [];
+    for (const result of perUser) {
+      for (const t of result.recent || []) {
+        if (!t.completed) continue;
+        if (seenRecent.has(t.gid)) continue;
+        seenRecent.add(t.gid);
+        recentlyCompleted.push(t);
       }
     }
 
@@ -184,6 +204,17 @@ export default async function handler(req, res) {
 
     const capacity = Array.from(capacityMap.values()).sort((a, b) => b.total - a.total);
 
+    // Shape the "recently completed" wins list for the Weekly Review
+    const wins = recentlyCompleted
+      .map((t) => ({
+        gid: t.gid,
+        name: t.name,
+        assignee: t.assignee ? { gid: t.assignee.gid, name: t.assignee.name } : null,
+        projects: (t.projects || []).map((p) => ({ gid: p.gid, name: p.name })),
+        url: t.permalink_url,
+      }))
+      .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
     res.status(200).json({
       ok: true,
       me: { gid: me.gid, name: me.name, email: me.email },
@@ -194,10 +225,12 @@ export default async function handler(req, res) {
         thisWeek: buckets.thisWeek.length,
         upcoming: buckets.upcoming.length,
         noDate: buckets.noDate.length,
+        winsThisWeek: wins.length,
       },
       buckets,
       clients,
       capacity,
+      wins,
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: String(err.message || err) });

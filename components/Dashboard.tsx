@@ -44,6 +44,14 @@ interface CapacityRow {
   thisWeek: number;
 }
 
+interface WinTask {
+  gid: string;
+  name: string;
+  assignee: { gid: string; name: string } | null;
+  projects: { gid: string; name: string }[];
+  url: string;
+}
+
 interface TasksResponse {
   ok: boolean;
   me?: { gid: string; name: string; email: string };
@@ -52,6 +60,7 @@ interface TasksResponse {
   buckets?: Buckets;
   clients?: ClientTile[];
   capacity?: CapacityRow[];
+  wins?: WinTask[];
   error?: string;
 }
 
@@ -260,6 +269,7 @@ const DashboardHome: React.FC<{
   const buckets = data?.buckets;
   const counts = data?.counts;
   const viewer = data?.capacity?.find((c) => c.gid === viewerGid) || null;
+  const [weeklyOpen, setWeeklyOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-brand-black">
@@ -271,6 +281,13 @@ const DashboardHome: React.FC<{
             <span className="text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-bold truncate">Dashboard</span>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-medium">
+            <button
+              onClick={() => setWeeklyOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="Weekly review"
+            >
+              Weekly
+            </button>
             {viewer && (
               <button
                 onClick={onChangeViewer}
@@ -322,6 +339,15 @@ const DashboardHome: React.FC<{
           <CapacityStrip rows={data.capacity} viewerGid={viewerGid} />
         )}
 
+        {/* Side by side — who's blocking who */}
+        {buckets && data?.capacity && data.capacity.length >= 2 && (
+          <SideBySide
+            buckets={buckets}
+            people={data.capacity}
+            viewerGid={viewerGid}
+          />
+        )}
+
         {/* Clients */}
         {data?.clients && data.clients.length > 0 && (
           <ClientsGrid clients={data.clients} />
@@ -337,6 +363,15 @@ const DashboardHome: React.FC<{
           </div>
         )}
       </main>
+
+      {/* Weekly review modal */}
+      {weeklyOpen && data && (
+        <WeeklyReview
+          data={data}
+          viewerGid={viewerGid}
+          onClose={() => setWeeklyOpen(false)}
+        />
+      )}
     </div>
   );
 };
@@ -515,6 +550,304 @@ const Stat: React.FC<{ label: string; value: number; accent: 'red' | 'blue' | 'b
     </div>
   );
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// Side by side — "Who's blocking who" for a 2-person team
+//
+// Shows each person's current plate (overdue, today, this week) so you can
+// see at a glance who's holding the ball on what. For a 2-person agency
+// this often answers "what's blocking my work" without explicit dependency
+// tracking — if you need Joe to do X before you can do Y, his column tells
+// you whether X is on his plate.
+
+const SideBySide: React.FC<{
+  buckets: Buckets;
+  people: CapacityRow[];
+  viewerGid: string | null;
+}> = ({ buckets, people, viewerGid }) => {
+  const top2 = people.slice(0, 2);
+  if (top2.length < 2) return null;
+
+  const tasksFor = (gid: string) => {
+    const items = [
+      ...buckets.overdue.filter((t) => t.assignee?.gid === gid),
+      ...buckets.today.filter((t) => t.assignee?.gid === gid),
+      ...buckets.thisWeek.filter((t) => t.assignee?.gid === gid),
+    ];
+    return items.slice(0, 6); // cap so the section stays compact
+  };
+
+  return (
+    <section>
+      <div className="flex items-baseline justify-between mb-4 sm:mb-5">
+        <h2 className="text-base sm:text-lg font-heading font-bold tracking-tight">Side by side</h2>
+        <span className="text-[10px] tracking-widest uppercase font-bold text-black/40 hidden sm:inline">
+          who's holding the ball
+        </span>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+        {top2.map((p) => {
+          const isViewer = p.gid === viewerGid;
+          const list = tasksFor(p.gid);
+          return (
+            <div
+              key={p.gid}
+              className={`bg-white border rounded-2xl p-5 sm:p-6 ${
+                isViewer ? 'border-brand-blue/30 ring-1 ring-brand-blue/20' : 'border-black/5'
+              }`}
+            >
+              <div className="flex items-baseline justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base sm:text-lg font-heading font-bold tracking-tight">
+                    {isViewer ? 'On your plate' : `${p.name.split(' ')[0]}'s plate`}
+                  </h3>
+                  {isViewer && (
+                    <span className="text-[9px] tracking-widest uppercase font-bold text-brand-blue px-1.5 py-0.5 rounded bg-brand-blue/10">
+                      You
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] tracking-wide text-black/50">
+                  {p.overdue > 0 && <span className="text-red-600 font-semibold">{p.overdue} overdue · </span>}
+                  {p.total} open
+                </div>
+              </div>
+
+              {list.length === 0 ? (
+                <p className="text-sm text-black/40 italic">Nothing pressing this week.</p>
+              ) : (
+                <ul className="space-y-2">
+                  {list.map((t) => {
+                    const isOver = !!t.due && parseDateOnlyJs(t.due) < startOfTodayJs();
+                    return (
+                      <li key={t.gid}>
+                        <a
+                          href={t.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-[#FAFAF7] smooth-transition"
+                        >
+                          <div className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
+                            isOver ? 'bg-red-500' :
+                            (t.due && parseDateOnlyJs(t.due).getTime() === startOfTodayJs().getTime()) ? 'bg-brand-blue' :
+                            'bg-black/20'
+                          }`}></div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm leading-snug">{t.name}</div>
+                            <div className="flex items-center gap-2 text-[11px] text-black/45 mt-0.5">
+                              {t.projects?.[0] && <span className="truncate">{t.projects[0].name}</span>}
+                              {t.due && (
+                                <span className={`ml-auto whitespace-nowrap ${isOver ? 'text-red-600 font-semibold' : ''}`}>
+                                  {formatDueDateShort(t.due)}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+function parseDateOnlyJs(yyyymmdd: string): Date {
+  const [y, m, d] = yyyymmdd.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function formatDueDateShort(yyyymmdd: string): string {
+  const d = parseDateOnlyJs(yyyymmdd);
+  const today = startOfTodayJs();
+  const diff = Math.round((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  if (diff === -1) return 'Yesterday';
+  if (diff < 0) return `${-diff}d late`;
+  if (diff < 7) return d.toLocaleDateString(undefined, { weekday: 'short' });
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Weekly Review modal
+
+const WeeklyReview: React.FC<{
+  data: TasksResponse;
+  viewerGid: string | null;
+  onClose: () => void;
+}> = ({ data, viewerGid, onClose }) => {
+  const wins = data.wins || [];
+  const today = startOfTodayJs();
+  const buckets = data.buckets;
+
+  // What's slipping into next week (overdue + due in next 7 days)
+  const slipping = buckets
+    ? [...buckets.overdue, ...buckets.today, ...buckets.thisWeek]
+    : [];
+
+  // Stalled projects: at-risk and oldest age > 30
+  const stalled = (data.clients || []).filter((c) => c.atRisk).slice(0, 6);
+
+  // Wins broken out by person
+  const winsByPerson = new Map<string, WinTask[]>();
+  for (const w of wins) {
+    const key = w.assignee?.gid || 'unassigned';
+    if (!winsByPerson.has(key)) winsByPerson.set(key, []);
+    winsByPerson.get(key)!.push(w);
+  }
+
+  const week = `${addDaysJs(today, -7).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} – ${today.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-3xl bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[88vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-8 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">Weekly review</div>
+            <h2 className="text-xl sm:text-3xl font-heading font-extrabold tracking-tight">{week}</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Scroll body */}
+        <div className="overflow-y-auto flex-1 p-5 sm:p-8 space-y-8">
+          {/* Wins */}
+          <section>
+            <div className="flex items-baseline justify-between mb-4">
+              <h3 className="text-lg sm:text-xl font-heading font-bold tracking-tight">
+                🎉 Wins this week
+              </h3>
+              <span className="text-xs tracking-widest uppercase font-bold text-black/40">
+                {wins.length} done
+              </span>
+            </div>
+            {wins.length === 0 ? (
+              <p className="text-sm text-black/50 italic">No completed tasks recorded in the last 7 days.</p>
+            ) : (
+              <div className="space-y-4">
+                {Array.from(winsByPerson.entries()).map(([key, items]) => (
+                  <div key={key}>
+                    <div className="text-[11px] tracking-widest uppercase font-bold text-black/40 mb-2">
+                      {items[0]?.assignee?.name || 'Unassigned'} · {items.length}
+                    </div>
+                    <ul className="space-y-1">
+                      {items.map((w) => (
+                        <li key={w.gid}>
+                          <a
+                            href={w.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block text-sm text-black/75 hover:text-brand-blue smooth-transition"
+                          >
+                            <span className="text-green-600 mr-2">✓</span>
+                            {w.name}
+                            {w.projects?.[0] && (
+                              <span className="text-black/40 text-xs ml-2">· {w.projects[0].name}</span>
+                            )}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* What's slipping */}
+          <section>
+            <div className="flex items-baseline justify-between mb-4">
+              <h3 className="text-lg sm:text-xl font-heading font-bold tracking-tight">
+                ⚠️ Carrying into next week
+              </h3>
+              <span className="text-xs tracking-widest uppercase font-bold text-black/40">
+                {slipping.length} item{slipping.length === 1 ? '' : 's'}
+              </span>
+            </div>
+            {slipping.length === 0 ? (
+              <p className="text-sm text-black/50 italic">Nothing carried over. Clean slate.</p>
+            ) : (
+              <ul className="space-y-1">
+                {slipping.slice(0, 10).map((t) => {
+                  const isOver = !!t.due && parseDateOnlyJs(t.due) < startOfTodayJs();
+                  return (
+                    <li key={t.gid}>
+                      <a
+                        href={t.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm hover:text-brand-blue smooth-transition"
+                      >
+                        <span className={isOver ? 'text-red-500' : 'text-black/40'}>•</span>
+                        <span className="flex-1">{t.name}</span>
+                        <span className="text-xs text-black/40">
+                          {t.assignee?.name?.split(' ')[0] || '—'}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+                {slipping.length > 10 && (
+                  <li className="text-xs text-black/40 italic pt-1">
+                    + {slipping.length - 10} more
+                  </li>
+                )}
+              </ul>
+            )}
+          </section>
+
+          {/* Stalled projects */}
+          {stalled.length > 0 && (
+            <section>
+              <div className="flex items-baseline justify-between mb-4">
+                <h3 className="text-lg sm:text-xl font-heading font-bold tracking-tight">
+                  🐢 Projects to nudge
+                </h3>
+                <span className="text-xs tracking-widest uppercase font-bold text-black/40">
+                  at risk
+                </span>
+              </div>
+              <ul className="space-y-2">
+                {stalled.map((c) => (
+                  <li key={c.gid} className="flex items-baseline justify-between gap-3 p-3 bg-white border border-black/5 rounded-xl">
+                    <span className="font-semibold text-sm truncate">{c.name}</span>
+                    <span className="text-xs text-black/50 whitespace-nowrap">
+                      {c.overdue > 0 && <span className="text-red-600 font-semibold">{c.overdue} overdue · </span>}
+                      oldest {c.oldestAgeDays}d
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function addDaysJs(d: Date, days: number): Date {
+  const x = new Date(d);
+  x.setDate(x.getDate() + days);
+  return x;
+}
 
 const CapacityStrip: React.FC<{ rows: CapacityRow[]; viewerGid: string | null }> = ({ rows, viewerGid }) => {
   return (
