@@ -291,6 +291,7 @@ const DashboardHome: React.FC<{
   const counts = data?.counts;
   const viewer = data?.capacity?.find((c) => c.gid === viewerGid) || null;
   const [weeklyOpen, setWeeklyOpen] = useState(false);
+  const [allClientsOpen, setAllClientsOpen] = useState(false);
 
   // Google Calendar state — fetched per viewer
   const [calendar, setCalendar] = useState<CalendarResponse | null>(null);
@@ -363,6 +364,13 @@ const DashboardHome: React.FC<{
             <span className="text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-bold truncate">Dashboard</span>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs tracking-widest uppercase text-black/50 font-medium">
+            <button
+              onClick={() => setAllClientsOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="All clients"
+            >
+              Clients
+            </button>
             <button
               onClick={() => setWeeklyOpen(true)}
               className="hover:text-brand-blue smooth-transition"
@@ -477,6 +485,14 @@ const DashboardHome: React.FC<{
           data={data}
           viewerGid={viewerGid}
           onClose={() => setWeeklyOpen(false)}
+        />
+      )}
+
+      {/* All Clients modal */}
+      {allClientsOpen && data && (
+        <AllClientsView
+          data={data}
+          onClose={() => setAllClientsOpen(false)}
         />
       )}
     </div>
@@ -1498,6 +1514,167 @@ function addDaysJs(d: Date, days: number): Date {
   x.setDate(x.getDate() + days);
   return x;
 }
+
+// ───────────────────────────────────────────────────────────────────────────
+// All Clients view — every client expanded with their tasks
+//
+// Used when you want to see the full agency picture at once instead of the
+// compact tile grid on the home page. Sorted by risk (overdue first, then
+// stalled, then by total open).
+
+const AllClientsView: React.FC<{
+  data: TasksResponse;
+  onClose: () => void;
+}> = ({ data, onClose }) => {
+  const buckets = data.buckets;
+  const clients = data.clients || [];
+
+  // Build a flat list of all open tasks so we can filter per project
+  const allOpen = buckets
+    ? [...buckets.overdue, ...buckets.today, ...buckets.thisWeek, ...buckets.upcoming, ...buckets.noDate]
+    : [];
+
+  const tasksForProject = (projectGid: string) =>
+    allOpen
+      .filter((t) => t.projects?.some((p) => p.gid === projectGid))
+      .sort((a, b) => {
+        // overdue first, then due date asc, then no-date last
+        const aDue = a.due || '9999-12-31';
+        const bDue = b.due || '9999-12-31';
+        return aDue.localeCompare(bDue);
+      });
+
+  // Roll up assignees per project for the "Working on it" line
+  const assigneesForProject = (projectGid: string) => {
+    const set = new Map<string, string>();
+    for (const t of allOpen) {
+      if (t.projects?.some((p) => p.gid === projectGid) && t.assignee) {
+        set.set(t.assignee.gid, t.assignee.name);
+      }
+    }
+    return Array.from(set.values());
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-5xl bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[92vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-8 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">
+              All clients · {clients.length}
+            </div>
+            <h2 className="text-xl sm:text-3xl font-heading font-extrabold tracking-tight">
+              Every project at a glance
+            </h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="overflow-y-auto flex-1 p-4 sm:p-8">
+          {clients.length === 0 ? (
+            <p className="text-sm text-black/50 italic">No active projects with open tasks.</p>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+              {clients.map((c) => {
+                const tasks = tasksForProject(c.gid);
+                const assignees = assigneesForProject(c.gid);
+                const ringTone =
+                  c.overdue > 0 ? 'border-l-red-500' :
+                  c.today > 0 ? 'border-l-brand-blue' :
+                  c.atRisk ? 'border-l-amber-500' :
+                  'border-l-black/10';
+                return (
+                  <div
+                    key={c.gid}
+                    className={`bg-white border border-black/5 ${ringTone} border-l-4 rounded-2xl p-5 sm:p-6`}
+                  >
+                    <div className="flex items-baseline justify-between gap-3 mb-3">
+                      <h3 className="font-heading font-bold text-base sm:text-lg tracking-tight leading-snug truncate" title={c.name}>
+                        {c.name}
+                      </h3>
+                      <div className="text-2xl font-heading font-extrabold text-brand-black flex-shrink-0">
+                        {c.total}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] tracking-wide mb-3">
+                      {c.overdue > 0 && <span className="text-red-600 font-semibold">{c.overdue} overdue</span>}
+                      {c.today > 0 && <span className="text-brand-blue font-semibold">{c.today} today</span>}
+                      {c.upcoming > 0 && <span className="text-black/55">{c.upcoming} upcoming</span>}
+                      {c.atRisk && c.overdue === 0 && (
+                        <span className="text-amber-600 font-semibold">stalled · {c.oldestAgeDays}d</span>
+                      )}
+                    </div>
+
+                    {assignees.length > 0 && (
+                      <div className="text-[11px] tracking-wide text-black/45 mb-4">
+                        Working on it: <span className="text-black/65 font-medium">{assignees.join(', ')}</span>
+                      </div>
+                    )}
+
+                    {tasks.length === 0 ? (
+                      <p className="text-sm text-black/40 italic">No open tasks.</p>
+                    ) : (
+                      <ul className="space-y-2 border-t border-black/5 pt-3">
+                        {tasks.slice(0, 8).map((t) => {
+                          const isOver = !!t.due && parseDateOnlyJs(t.due) < startOfTodayJs();
+                          return (
+                            <li key={t.gid}>
+                              <a
+                                href={t.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start gap-3 p-2 -mx-2 rounded-lg hover:bg-[#FAFAF7] smooth-transition"
+                              >
+                                <div className={`flex-shrink-0 w-1.5 h-1.5 rounded-full mt-1.5 ${
+                                  isOver ? 'bg-red-500' :
+                                  (t.due && parseDateOnlyJs(t.due).getTime() === startOfTodayJs().getTime()) ? 'bg-brand-blue' :
+                                  'bg-black/20'
+                                }`}></div>
+                                <div className="min-w-0 flex-1">
+                                  <div className="text-sm leading-snug">{t.name}</div>
+                                  <div className="flex items-center gap-2 text-[11px] text-black/45 mt-0.5">
+                                    {t.assignee && <span>{t.assignee.name.split(' ')[0]}</span>}
+                                    {t.due && (
+                                      <span className={`ml-auto whitespace-nowrap ${isOver ? 'text-red-600 font-semibold' : ''}`}>
+                                        {formatDueDateShort(t.due)}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </a>
+                            </li>
+                          );
+                        })}
+                        {tasks.length > 8 && (
+                          <li className="text-[11px] text-black/40 italic pl-4">
+                            + {tasks.length - 8} more
+                          </li>
+                        )}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const CapacityStrip: React.FC<{ rows: CapacityRow[]; viewerGid: string | null }> = ({ rows, viewerGid }) => {
   return (
