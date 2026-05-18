@@ -13,6 +13,7 @@ interface Task {
   projects: { gid: string; name: string }[];
   url: string;
   notes: string;
+  ageDays?: number;
 }
 
 interface Buckets {
@@ -23,12 +24,34 @@ interface Buckets {
   noDate: Task[];
 }
 
+interface ClientTile {
+  gid: string;
+  name: string;
+  total: number;
+  overdue: number;
+  today: number;
+  upcoming: number;
+  oldestAgeDays: number;
+  atRisk: boolean;
+}
+
+interface CapacityRow {
+  gid: string;
+  name: string;
+  total: number;
+  overdue: number;
+  today: number;
+  thisWeek: number;
+}
+
 interface TasksResponse {
   ok: boolean;
   me?: { gid: string; name: string; email: string };
   workspaceGid?: string;
   counts?: Record<string, number>;
   buckets?: Buckets;
+  clients?: ClientTile[];
+  capacity?: CapacityRow[];
   error?: string;
 }
 
@@ -238,6 +261,16 @@ const DashboardHome: React.FC<{
           </div>
         )}
 
+        {/* Team capacity */}
+        {data?.capacity && data.capacity.length > 0 && (
+          <CapacityStrip rows={data.capacity} />
+        )}
+
+        {/* Clients */}
+        {data?.clients && data.clients.length > 0 && (
+          <ClientsGrid clients={data.clients} />
+        )}
+
         {/* Quick-add */}
         {meta && <QuickAdd meta={meta} onCreated={onRefresh} />}
 
@@ -269,6 +302,92 @@ const Stat: React.FC<{ label: string; value: number; accent: 'red' | 'blue' | 'b
       <div className="text-[10px] tracking-widest uppercase font-bold text-black/40 mb-2">{label}</div>
       <div className={`text-4xl font-heading font-extrabold ${valueClass}`}>{value}</div>
     </div>
+  );
+};
+
+const CapacityStrip: React.FC<{ rows: CapacityRow[] }> = ({ rows }) => {
+  return (
+    <section className="bg-white border border-black/5 rounded-2xl p-6">
+      <div className="flex items-baseline justify-between mb-5">
+        <h2 className="text-lg font-heading font-bold tracking-tight">Team capacity</h2>
+        <span className="text-[10px] tracking-widest uppercase font-bold text-black/40">
+          open tasks per person
+        </span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {rows.map((r) => (
+          <div key={r.gid} className="flex items-center justify-between p-4 rounded-xl bg-[#FAFAF7] border border-black/5">
+            <div className="min-w-0">
+              <div className="text-sm font-bold tracking-tight truncate">{r.name}</div>
+              <div className="text-[11px] tracking-wide text-black/50 mt-1">
+                {r.overdue > 0 && <span className="text-red-600 font-semibold">{r.overdue} overdue</span>}
+                {r.overdue > 0 && (r.today > 0 || r.thisWeek > 0) && <span> · </span>}
+                {r.today > 0 && <span className="text-brand-blue font-semibold">{r.today} today</span>}
+                {r.today > 0 && r.thisWeek > 0 && <span> · </span>}
+                {r.thisWeek > 0 && <span>{r.thisWeek} this week</span>}
+                {r.overdue === 0 && r.today === 0 && r.thisWeek === 0 && (
+                  <span className="text-black/40">on track</span>
+                )}
+              </div>
+            </div>
+            <div className="text-3xl font-heading font-extrabold text-brand-black ml-3 flex-shrink-0">
+              {r.total}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const ClientsGrid: React.FC<{ clients: ClientTile[] }> = ({ clients }) => {
+  return (
+    <section>
+      <div className="flex items-baseline justify-between mb-5">
+        <h2 className="text-lg font-heading font-bold tracking-tight">Clients · Projects</h2>
+        <span className="text-[10px] tracking-widest uppercase font-bold text-black/40">
+          at-risk first
+        </span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {clients.map((c) => {
+          const ringTone =
+            c.overdue > 0 ? 'border-l-red-500' :
+            c.today > 0 ? 'border-l-brand-blue' :
+            c.atRisk ? 'border-l-amber-500' :
+            'border-l-black/10';
+          return (
+            <div
+              key={c.gid}
+              className={`bg-white border border-black/5 ${ringTone} border-l-4 rounded-2xl p-5`}
+            >
+              <div className="flex items-baseline justify-between gap-3 mb-3">
+                <div className="text-sm font-bold tracking-tight leading-snug truncate" title={c.name}>
+                  {c.name}
+                </div>
+                <div className="text-2xl font-heading font-extrabold text-brand-black flex-shrink-0">
+                  {c.total}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] tracking-wide">
+                {c.overdue > 0 && (
+                  <span className="text-red-600 font-semibold">{c.overdue} overdue</span>
+                )}
+                {c.today > 0 && (
+                  <span className="text-brand-blue font-semibold">{c.today} today</span>
+                )}
+                {c.upcoming > 0 && (
+                  <span className="text-black/55">{c.upcoming} upcoming</span>
+                )}
+                {c.atRisk && c.overdue === 0 && (
+                  <span className="text-amber-600 font-semibold">stalled · {c.oldestAgeDays}d old</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 

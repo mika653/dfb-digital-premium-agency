@@ -28,6 +28,8 @@ export default async function handler(req, res) {
       'completed',
       'due_on',
       'due_at',
+      'created_at',
+      'modified_at',
       'assignee.name',
       'assignee.gid',
       'projects.name',
@@ -80,13 +82,19 @@ export default async function handler(req, res) {
     }
 
     const today = startOfDay(new Date());
-    const tomorrow = addDays(today, 1);
     const endOfWeek = addDays(today, 7);
+    const STALE_DAYS = 30; // a project is "at risk" if its oldest open task is older than this
 
     const buckets = { overdue: [], today: [], thisWeek: [], upcoming: [], noDate: [] };
+    // Aggregations
+    const projectMap = new Map(); // gid → client tile
+    const capacityMap = new Map(); // assignee gid → capacity row
 
     for (const task of tasks) {
       const due = task.due_on || (task.due_at ? task.due_at.slice(0, 10) : null);
+      const createdAtMs = task.created_at ? new Date(task.created_at).getTime() : Date.now();
+      const ageDays = Math.floor((Date.now() - createdAtMs) / (1000 * 60 * 60 * 24));
+
       const item = {
         gid: task.gid,
         name: task.name,
@@ -95,18 +103,86 @@ export default async function handler(req, res) {
         projects: (task.projects || []).map((p) => ({ gid: p.gid, name: p.name })),
         url: task.permalink_url,
         notes: task.notes || '',
+        ageDays,
       };
 
+      // Bucket by due date
+      let isOverdue = false;
       if (!due) {
         buckets.noDate.push(item);
-        continue;
+      } else {
+        const dueDate = parseDateOnly(due);
+        if (dueDate < today) {
+          buckets.overdue.push(item);
+          isOverdue = true;
+        } else if (dueDate.getTime() === today.getTime()) {
+          buckets.today.push(item);
+        } else if (dueDate < endOfWeek) {
+          buckets.thisWeek.push(item);
+        } else {
+          buckets.upcoming.push(item);
+        }
       }
-      const dueDate = parseDateOnly(due);
-      if (dueDate < today) buckets.overdue.push(item);
-      else if (dueDate.getTime() === today.getTime()) buckets.today.push(item);
-      else if (dueDate < endOfWeek) buckets.thisWeek.push(item);
-      else buckets.upcoming.push(item);
+
+      // Per-project aggregation (client tiles)
+      for (const p of task.projects || []) {
+        const key = p.gid;
+        if (!projectMap.has(key)) {
+          projectMap.set(key, {
+            gid: p.gid,
+            name: p.name,
+            total: 0,
+            overdue: 0,
+            today: 0,
+            upcoming: 0,
+            oldestAgeDays: 0,
+          });
+        }
+        const proj = projectMap.get(key);
+        proj.total += 1;
+        if (isOverdue) proj.overdue += 1;
+        if (due && parseDateOnly(due).getTime() === today.getTime()) proj.today += 1;
+        if (due && parseDateOnly(due) > today) proj.upcoming += 1;
+        if (ageDays > proj.oldestAgeDays) proj.oldestAgeDays = ageDays;
+      }
+
+      // Per-person aggregation (capacity)
+      if (task.assignee && task.assignee.gid) {
+        const key = task.assignee.gid;
+        if (!capacityMap.has(key)) {
+          capacityMap.set(key, {
+            gid: key,
+            name: task.assignee.name,
+            total: 0,
+            overdue: 0,
+            today: 0,
+            thisWeek: 0,
+          });
+        }
+        const cap = capacityMap.get(key);
+        cap.total += 1;
+        if (isOverdue) cap.overdue += 1;
+        if (due && parseDateOnly(due).getTime() === today.getTime()) cap.today += 1;
+        if (due) {
+          const dd = parseDateOnly(due);
+          if (dd > today && dd < endOfWeek) cap.thisWeek += 1;
+        }
+      }
     }
+
+    // Convert maps to sorted arrays. Show riskiest projects first.
+    const clients = Array.from(projectMap.values())
+      .map((p) => ({
+        ...p,
+        atRisk: p.overdue > 0 || p.oldestAgeDays >= STALE_DAYS,
+      }))
+      .sort((a, b) => {
+        if (b.overdue !== a.overdue) return b.overdue - a.overdue;
+        if (b.oldestAgeDays !== a.oldestAgeDays) return b.oldestAgeDays - a.oldestAgeDays;
+        return b.total - a.total;
+      });
+
+    const capacity = Array.from(capacityMap.values()).sort((a, b) => b.total - a.total);
 
     res.status(200).json({
       ok: true,
@@ -120,6 +196,8 @@ export default async function handler(req, res) {
         noDate: buckets.noDate.length,
       },
       buckets,
+      clients,
+      capacity,
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: String(err.message || err) });

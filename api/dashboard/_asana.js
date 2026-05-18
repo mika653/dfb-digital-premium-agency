@@ -26,14 +26,30 @@ export async function asanaFetch(path, options = {}) {
   return response.json();
 }
 
-// Returns the workspace GID for the authenticated user.
-// Cached per cold start.
+// Returns the workspace GID to operate against.
+// If ASANA_WORKSPACE_NAME is set, picks the workspace with that name
+// (case-insensitive). Otherwise falls back to the first workspace
+// the authenticated user belongs to. Cached per cold start.
 let cachedWorkspaceGid = null;
 export async function getWorkspaceGid() {
   if (cachedWorkspaceGid) return cachedWorkspaceGid;
   const me = await asanaFetch('/users/me');
   const workspaces = me?.data?.workspaces || [];
   if (!workspaces.length) throw new Error('No Asana workspaces found for this user');
+
+  const wanted = (process.env.ASANA_WORKSPACE_NAME || '').trim().toLowerCase();
+  if (wanted) {
+    const match = workspaces.find((w) => (w.name || '').toLowerCase() === wanted);
+    if (match) {
+      cachedWorkspaceGid = match.gid;
+      return cachedWorkspaceGid;
+    }
+    const available = workspaces.map((w) => w.name).join(', ');
+    throw new Error(
+      `ASANA_WORKSPACE_NAME="${process.env.ASANA_WORKSPACE_NAME}" not found. Available workspaces: ${available}`
+    );
+  }
+
   cachedWorkspaceGid = workspaces[0].gid;
   return cachedWorkspaceGid;
 }
