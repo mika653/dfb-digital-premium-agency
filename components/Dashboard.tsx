@@ -2348,8 +2348,8 @@ const NotesDrawer: React.FC<{
         </div>
 
         {/* Save status strip */}
-        <div className="px-5 sm:px-6 py-2 border-b border-black/5 bg-white text-[11px] tracking-wide flex items-center justify-between">
-          <span className="text-black/45">
+        <div className="px-5 sm:px-6 py-2 border-b border-black/5 bg-white text-[11px] tracking-wide flex items-center justify-between gap-2">
+          <span className="text-black/45 min-w-0 truncate">
             {status === 'loading' && 'Loading…'}
             {status === 'saving' && 'Saving…'}
             {status === 'saved' && <span className="text-green-700 font-semibold">✓ Saved</span>}
@@ -2359,14 +2359,31 @@ const NotesDrawer: React.FC<{
             )}
             {status === 'idle' && !updatedAt && 'Start typing — saves on blur.'}
           </span>
-          {isDirty && status !== 'saving' && (
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
-              onClick={save}
-              className="px-3 py-1 text-[10px] tracking-widest uppercase font-bold text-white bg-brand-blue rounded-full hover:bg-blue-600 smooth-transition"
+              onClick={async () => {
+                const url = `${window.location.origin}/status/${project.gid}`;
+                try {
+                  await navigator.clipboard.writeText(url);
+                  alert(`Status URL copied: ${url}`);
+                } catch {
+                  prompt('Copy this URL:', url);
+                }
+              }}
+              className="text-[10px] tracking-widest uppercase font-bold text-black/55 hover:text-brand-blue smooth-transition"
+              title="Copy the client-facing status page URL"
             >
-              Save now
+              📤 Share status
             </button>
-          )}
+            {isDirty && status !== 'saving' && (
+              <button
+                onClick={save}
+                className="px-3 py-1 text-[10px] tracking-widest uppercase font-bold text-white bg-brand-blue rounded-full hover:bg-blue-600 smooth-transition"
+              >
+                Save now
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Editor */}

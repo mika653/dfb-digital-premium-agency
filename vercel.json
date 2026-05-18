@@ -17,6 +17,7 @@
     { "source": "/instasite/elite", "destination": "/api/render-page" },
     { "source": "/pmasev", "destination": "/api/render-page" },
     { "source": "/dashboard", "destination": "/api/render-page" },
-    { "source": "/intake", "destination": "/api/render-page" }
+    { "source": "/intake", "destination": "/api/render-page" },
+    { "source": "/status/:gid*", "destination": "/api/render-page" }
   ]
 }

@@ -30,6 +30,7 @@ import { InstaSiteElite } from './components/InstaSiteElite';
 import { PMASEV } from './components/PMASEV';
 import { Dashboard } from './components/Dashboard';
 import { Intake } from './components/Intake';
+import { ClientStatus } from './components/ClientStatus';
 
 const defaultMeta = {
   title: 'DFB Digital | Boutique Digital Consultancy for Web Development & Marketing Strategy',
@@ -112,7 +113,8 @@ const pageMeta: Record<string, { title: string; description: string }> = {
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard' | 'intake'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard' | 'intake' | 'status'>('home');
+  const [statusProjectGid, setStatusProjectGid] = useState<string>('');
 
   // Update document title and OG meta tags based on current page
   useEffect(() => {
@@ -156,6 +158,14 @@ const App: React.FC = () => {
 
     const handleRouteChange = () => {
       const pathname = window.location.pathname;
+      // Dynamic /status/<gid> route — public client status page
+      const statusMatch = pathname.match(/^\/status\/([A-Za-z0-9_-]+)$/);
+      if (statusMatch) {
+        setStatusProjectGid(statusMatch[1]);
+        setCurrentPage('status');
+        window.scrollTo(0, 0);
+        return;
+      }
       const page = pageRoutes[pathname];
       if (page) {
         setCurrentPage(page);
@@ -200,6 +210,7 @@ const App: React.FC = () => {
     switch (currentPage) {
       case 'dashboard': return <Dashboard onBack={goToHome} />;
       case 'intake': return <Intake onBack={goToHome} />;
+      case 'status': return <ClientStatus projectGid={statusProjectGid} onBack={goToHome} />;
       case 'pmasev': return <PMASEV onBack={goToHome} />;
       case 'vip': return <VIPAccess onBack={goToHome} />;
       case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
