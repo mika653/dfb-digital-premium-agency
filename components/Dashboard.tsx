@@ -681,7 +681,12 @@ const DashboardHome: React.FC<{
       {timeOpen && (
         <TimeTrackerModal
           viewer={viewer}
+          timesheet={timesheet}
+          viewerGid={viewerGid}
           onClose={() => setTimeOpen(false)}
+          onCounterChanged={() => {
+            if (viewerGid) loadTimesheet(viewerGid);
+          }}
         />
       )}
     </div>
@@ -2654,12 +2659,16 @@ const TIME_TRACKER_URL = 'https://docs.google.com/spreadsheets/d/1ZKQfXSTa6lKwA-
 
 const TimeTrackerModal: React.FC<{
   viewer: CapacityRow | null;
+  timesheet: TimesheetResponse | null;
+  viewerGid: string | null;
   onClose: () => void;
-}> = ({ viewer, onClose }) => {
+  onCounterChanged: () => void;
+}> = ({ viewer, timesheet, viewerGid, onClose, onCounterChanged }) => {
   const [hours, setHours] = useState(6);
   const [note, setNote] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [resetStatus, setResetStatus] = useState<'idle' | 'sending' | 'done'>('idle');
 
   const pingJoe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -2810,6 +2819,80 @@ const TimeTrackerModal: React.FC<{
             </div>
             <span className="text-[10px] tracking-widest uppercase text-black/40">Open</span>
           </a>
+
+          {/* Invoice counter controls */}
+          {timesheet?.ok && timesheet.connected && viewerGid && (
+            <div className="bg-white border border-black/10 rounded-2xl p-5 space-y-3">
+              <div className="flex items-baseline justify-between">
+                <div className="text-[11px] tracking-widest uppercase font-bold text-black/55">
+                  Invoice counter
+                </div>
+                {timesheet.lastPingedAt && (
+                  <div className="text-[10px] tracking-wide text-black/40">
+                    Last reset: {formatPingedAt(timesheet.lastPingedAt)}
+                  </div>
+                )}
+              </div>
+              <div className="text-sm text-black/65 leading-snug">
+                Currently tracking{' '}
+                <strong className="text-brand-blue">
+                  {(timesheet.cumulativeSincePing || 0).toFixed(1)}h
+                </strong>{' '}
+                of unbilled work toward the next 6h auto-ping.
+              </div>
+              <div className="flex flex-wrap gap-2 pt-1">
+                <button
+                  onClick={async () => {
+                    if (!viewerGid) return;
+                    setResetStatus('sending');
+                    try {
+                      await fetch('/api/dashboard/timesheet', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ viewerGid, action: 'reset-to-zero' }),
+                      });
+                      setResetStatus('done');
+                      onCounterChanged();
+                      setTimeout(() => setResetStatus('idle'), 2000);
+                    } catch {
+                      setResetStatus('idle');
+                    }
+                  }}
+                  className="px-3 py-2 text-[11px] font-bold tracking-widest uppercase text-brand-blue border border-brand-blue/30 rounded-full hover:bg-brand-blue/5 smooth-transition"
+                >
+                  {resetStatus === 'sending' ? 'Resetting…' : resetStatus === 'done' ? '✓ Done' : 'Count all hours as unbilled'}
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!viewerGid) return;
+                    if (!window.confirm('Mark everything in your sheet as paid? The counter resets to 0 and only new hours will count toward the next ping.')) return;
+                    setResetStatus('sending');
+                    try {
+                      await fetch('/api/dashboard/timesheet', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                          viewerGid,
+                          action: 'mark-paid',
+                          lifetimeHours: timesheet.lifetimeHours,
+                        }),
+                      });
+                      setResetStatus('done');
+                      onCounterChanged();
+                      setTimeout(() => setResetStatus('idle'), 2000);
+                    } catch {
+                      setResetStatus('idle');
+                    }
+                  }}
+                  className="px-3 py-2 text-[11px] font-bold tracking-widest uppercase text-black/55 border border-black/15 rounded-full hover:bg-black/5 smooth-transition"
+                >
+                  Mark all paid
+                </button>
+              </div>
+            </div>
+          )}
 
           <p className="text-[11px] text-black/40 text-center">
             Email goes to joe@dfbdigital.com via the same formsubmit pipe used for PMASEV leads.

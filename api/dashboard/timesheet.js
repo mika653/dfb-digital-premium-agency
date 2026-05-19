@@ -157,8 +157,11 @@ export default async function handler(req, res) {
       // KV down — fall back to no state (cumulative = 0)
     }
     if (!state) {
+      // Default baseline = 0 so the cumulative counter reflects all the
+      // unbilled hours in the sheet. The user can press "Mark all paid"
+      // later if they want to stamp a fresh start.
       state = {
-        lifetimeAtLastPing: lifetimeHours,
+        lifetimeAtLastPing: 0,
         lastPingedAt: null,
         initialized: Date.now(),
       };
@@ -231,13 +234,47 @@ function startOfDay(d) {
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// POST handler — ping Joe about cumulative hours since last ping.
-// Bumps the lifetimeAtLastPing baseline so the cumulative counter
-// resets to 0 and the next 6h triggers the next invoice.
+// POST handler — supports three actions:
+//   - { action: "reset-to-zero" }    → set baseline to 0, count all hours as unbilled
+//   - { action: "mark-paid", lifetimeHours }  → stamp baseline = current lifetime (treat all current as paid)
+//   - default                         → ping Joe about cumulative hours
 async function handlePing(req, res) {
-  const { viewerGid, viewerName, cumulativeHours, lifetimeHours, note } = req.body || {};
-  if (!viewerGid || !viewerName) {
-    res.status(400).json({ ok: false, error: 'viewerGid and viewerName required' });
+  const { viewerGid, viewerName, cumulativeHours, lifetimeHours, note, action } = req.body || {};
+  if (!viewerGid) {
+    res.status(400).json({ ok: false, error: 'viewerGid required' });
+    return;
+  }
+
+  // === Reset actions ===
+  if (action === 'reset-to-zero' || action === 'mark-paid') {
+    const stateKey = `timesheet:state:${viewerGid}`;
+    let prevState = null;
+    try {
+      prevState = await kvGet(stateKey);
+    } catch {
+      // ignore
+    }
+    const newBaseline =
+      action === 'reset-to-zero'
+        ? 0
+        : Number(lifetimeHours) || prevState?.lifetimeAtLastPing || 0;
+    const newState = {
+      lifetimeAtLastPing: newBaseline,
+      lastPingedAt: action === 'reset-to-zero' ? null : Date.now(),
+      initialized: prevState?.initialized || Date.now(),
+    };
+    try {
+      await kvSet(stateKey, newState);
+    } catch (err) {
+      res.status(500).json({ ok: false, error: String(err.message || err) });
+      return;
+    }
+    res.status(200).json({ ok: true, action, ...newState });
+    return;
+  }
+
+  if (!viewerName) {
+    res.status(400).json({ ok: false, error: 'viewerName required for ping' });
     return;
   }
 
