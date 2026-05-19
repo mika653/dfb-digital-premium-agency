@@ -347,7 +347,7 @@ const DashboardHome: React.FC<{
     let cancelled = false;
     (async () => {
       try {
-        const resp = await fetch('/api/dashboard/timesheet-ping', {
+        const resp = await fetch('/api/dashboard/timesheet', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',

@@ -9,7 +9,7 @@
 //   works out of the box.
 import { isAuthenticated } from './auth.js';
 import { getValidAccessToken } from './calendar/_helpers.js';
-import { kvGet } from './_upstash.js';
+import { kvGet, kvSet } from './_upstash.js';
 
 const DEFAULT_SPREADSHEET_ID = '1ZKQfXSTa6lKwA-P9qQzeIu9X--RgIRMXkc_oQnbsvPk';
 
@@ -22,6 +22,13 @@ export default async function handler(req, res) {
   if (!isAuthenticated(req)) {
     res.status(401).json({ ok: false, error: 'Not authenticated' });
     return;
+  }
+
+  // POST = ping Joe about today's hours (consolidated from former
+  // /api/dashboard/timesheet-ping endpoint to stay under Vercel's
+  // Hobby-tier 12-function cap)
+  if (req.method === 'POST') {
+    return handlePing(req, res);
   }
 
   const viewerGid = String(req.query.viewerGid || '').trim();
@@ -196,4 +203,67 @@ function startOfDay(d) {
   const x = new Date(d);
   x.setHours(0, 0, 0, 0);
   return x;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// POST handler — ping Joe about today's hours
+async function handlePing(req, res) {
+  const { viewerGid, viewerName, todayHours, note } = req.body || {};
+  if (!viewerGid || !viewerName) {
+    res.status(400).json({ ok: false, error: 'viewerGid and viewerName required' });
+    return;
+  }
+
+  const today = new Date();
+  const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const kvKey = `timesheet:ping:${dateKey}:${viewerGid}`;
+
+  // Already pinged today?
+  try {
+    const existing = await kvGet(kvKey);
+    if (existing?.timestamp) {
+      res.status(200).json({ ok: true, alreadyPinged: true, pingedAt: existing.timestamp });
+      return;
+    }
+  } catch {
+    // ignore — if KV is down we still try to send
+  }
+
+  const hours = Number(todayHours) || 0;
+  const todayLabel = today.toLocaleDateString(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  try {
+    const resp = await fetch('https://formsubmit.co/ajax/joe@dfbdigital.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        from_dashboard: 'DFB Dashboard · Auto Time Ping',
+        who: viewerName,
+        hours,
+        date: todayLabel,
+        note: String(note || '').trim() || '(no note — auto-ping at 6h threshold)',
+        _subject: `${viewerName} hit ${hours} hours today — ${todayLabel}`,
+      }),
+    });
+    if (!resp.ok) {
+      const body = await resp.text().catch(() => '');
+      throw new Error(`formsubmit returned ${resp.status}: ${body.slice(0, 200)}`);
+    }
+  } catch (err) {
+    res.status(500).json({ ok: false, error: String(err.message || err) });
+    return;
+  }
+
+  // Mark as pinged so we don't double-ping later in the day
+  try {
+    await kvSet(kvKey, { timestamp: Date.now(), hours, note: String(note || '').trim() });
+  } catch {
+    // non-fatal
+  }
+
+  res.status(200).json({ ok: true, alreadyPinged: false, pingedAt: Date.now() });
 }
