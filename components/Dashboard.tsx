@@ -306,6 +306,7 @@ const DashboardHome: React.FC<{
   const [notesProject, setNotesProject] = useState<ClientTile | null>(null);
   const [dates, setDates] = useState<DateEntry[]>([]);
   const [datesOpen, setDatesOpen] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(false);
 
   const loadDates = useCallback(async () => {
     try {
@@ -412,6 +413,13 @@ const DashboardHome: React.FC<{
               title="Birthdays + anniversaries"
             >
               Dates
+            </button>
+            <button
+              onClick={() => setTimeOpen(true)}
+              className="hover:text-brand-blue smooth-transition"
+              title="Log hours + ping Joe"
+            >
+              Time
             </button>
             <button
               onClick={() => setAllClientsOpen(true)}
@@ -581,6 +589,14 @@ const DashboardHome: React.FC<{
           dates={dates}
           onClose={() => setDatesOpen(false)}
           onChanged={loadDates}
+        />
+      )}
+
+      {/* Time tracker / ping Joe modal */}
+      {timeOpen && (
+        <TimeTrackerModal
+          viewer={viewer}
+          onClose={() => setTimeOpen(false)}
         />
       )}
     </div>
@@ -2500,6 +2516,179 @@ const NotesDrawer: React.FC<{
         {/* Footer hint */}
         <div className="px-5 sm:px-6 py-3 border-t border-black/5 bg-white text-[10px] tracking-widest uppercase text-black/35 text-center">
           Shared with the team · Visible to anyone with dashboard access
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ───────────────────────────────────────────────────────────────────────────
+// Time tracker + ping-Joe modal
+
+const TIME_TRACKER_URL = 'https://docs.google.com/spreadsheets/d/1ZKQfXSTa6lKwA-P9qQzeIu9X--RgIRMXkc_oQnbsvPk/edit?gid=1585261867#gid=1585261867';
+
+const TimeTrackerModal: React.FC<{
+  viewer: CapacityRow | null;
+  onClose: () => void;
+}> = ({ viewer, onClose }) => {
+  const [hours, setHours] = useState(6);
+  const [note, setNote] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const pingJoe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!hours || hours <= 0) return;
+    setStatus('sending');
+    setErrorMsg('');
+
+    const today = new Date().toLocaleDateString(undefined, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+    const viewerName = viewer?.name || 'Mika';
+
+    try {
+      const resp = await fetch('https://formsubmit.co/ajax/joe@dfbdigital.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          from_dashboard: 'DFB Dashboard · Time Log',
+          who: viewerName,
+          hours: hours,
+          date: today,
+          note: note.trim() || '(no note)',
+          time_tracker: TIME_TRACKER_URL,
+          _subject: `${viewerName} logged ${hours} hours today — ${today}`,
+        }),
+      });
+      if (!resp.ok) throw new Error('Email service returned an error');
+      setStatus('success');
+      setNote('');
+      setTimeout(() => setStatus('idle'), 3500);
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to send');
+    }
+  };
+
+  const presets = [4, 6, 8];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-6">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="relative w-full max-w-lg bg-[#FAFAF7] sm:rounded-3xl overflow-hidden flex flex-col max-h-screen sm:max-h-[92vh] shadow-2xl">
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 sm:p-7 border-b border-black/5 bg-white">
+          <div>
+            <div className="text-xs tracking-widest uppercase font-bold text-brand-blue mb-1">Time + work log</div>
+            <h2 className="text-xl sm:text-2xl font-heading font-extrabold tracking-tight">Log hours · Ping Joe</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 smooth-transition"
+            aria-label="Close"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div className="overflow-y-auto flex-1 p-5 sm:p-7 space-y-6">
+          {/* Quick log + ping */}
+          <form onSubmit={pingJoe} className="bg-white border border-black/5 rounded-2xl p-5 space-y-4">
+            <div>
+              <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+                Hours logged today
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="24"
+                  value={hours}
+                  onChange={(e) => setHours(Number(e.target.value) || 0)}
+                  className="w-20 px-3 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-lg sm:text-base text-center font-bold focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition"
+                />
+                <span className="text-sm text-black/55">hours</span>
+                <div className="flex gap-1 ml-auto">
+                  {presets.map((h) => (
+                    <button
+                      key={h}
+                      type="button"
+                      onClick={() => setHours(h)}
+                      className={`px-3 py-1.5 text-[11px] font-bold tracking-widest uppercase rounded-full smooth-transition ${
+                        hours === h
+                          ? 'bg-brand-blue text-white'
+                          : 'text-black/55 border border-black/10 hover:border-brand-blue hover:text-brand-blue'
+                      }`}
+                    >
+                      {h}h
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold tracking-widest uppercase text-black/55 mb-2">
+                What you worked on
+              </label>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+                placeholder={`e.g. "Finished Reyes Medical homepage. Pushed PMASEV slide tweaks. Drafted Acme contract."`}
+                className="w-full px-4 py-3 bg-[#FAFAF7] border border-black/10 rounded-xl text-base sm:text-sm focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue smooth-transition resize-none"
+              />
+              <p className="text-[11px] text-black/45 mt-2">
+                Optional but recommended — Joe sees this in the email subject.
+              </p>
+            </div>
+
+            {status === 'success' && (
+              <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl px-4 py-3 text-sm">
+                ✓ Joe pinged. Email sent.
+              </div>
+            )}
+            {status === 'error' && (
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+                {errorMsg}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === 'sending' || !hours}
+              className="w-full px-6 py-3.5 bg-brand-blue text-white font-bold text-xs uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shadow-brand-blue/20"
+            >
+              {status === 'sending'
+                ? 'Sending…'
+                : `📬 Ping Joe — I hit ${hours} hours today`}
+            </button>
+          </form>
+
+          {/* Link to the full tracker */}
+          <a
+            href={TIME_TRACKER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between gap-3 p-4 bg-white border border-black/10 hover:border-brand-blue hover:bg-brand-blue/[0.03] rounded-2xl smooth-transition"
+          >
+            <div>
+              <div className="font-bold text-sm">📊 Open my time tracker</div>
+              <div className="text-[11px] text-black/45 mt-0.5">Google Sheet · opens in new tab</div>
+            </div>
+            <span className="text-[10px] tracking-widest uppercase text-black/40">Open</span>
+          </a>
+
+          <p className="text-[11px] text-black/40 text-center">
+            Email goes to joe@dfbdigital.com via the same formsubmit pipe used for PMASEV leads.
+          </p>
         </div>
       </div>
     </div>
