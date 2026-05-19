@@ -58,8 +58,11 @@ interface TimesheetResponse {
   needsReconnect?: boolean;
   todayHours?: number;
   weekHours?: number;
+  lifetimeHours?: number;
+  cumulativeSincePing?: number;
+  lifetimeAtLastPing?: number;
+  lastPingedAt?: number | null;
   todayEntries?: { task: string; duration: string; hours: number }[];
-  pingedAt?: number | null;
   crossedThreshold?: boolean;
   error?: string;
 }
@@ -337,12 +340,15 @@ const DashboardHome: React.FC<{
     if (viewerGid) loadTimesheet(viewerGid);
   }, [viewerGid, loadTimesheet]);
 
-  // Auto-ping Joe when 6 hours is crossed and we haven't already pinged today
+  // Auto-ping Joe when 6 cumulative unbilled hours has been crossed.
+  // After ping, the backend bumps the baseline → cumulativeSincePing resets
+  // to 0 → next 6h triggers the next ping.
   useEffect(() => {
     if (!viewerGid || !viewer) return;
     if (!timesheet?.ok || !timesheet.connected) return;
     if (!timesheet.crossedThreshold) return;
-    if (timesheet.pingedAt) return; // already pinged today
+    const cumulative = Number(timesheet.cumulativeSincePing || 0);
+    if (cumulative < 6) return;
 
     let cancelled = false;
     (async () => {
@@ -354,16 +360,25 @@ const DashboardHome: React.FC<{
           body: JSON.stringify({
             viewerGid,
             viewerName: viewer.name,
-            todayHours: timesheet.todayHours,
+            cumulativeHours: cumulative,
+            lifetimeHours: timesheet.lifetimeHours,
           }),
         });
         const json = await resp.json();
         if (cancelled) return;
-        if (json.ok && !json.alreadyPinged) {
-          // Reflect the ping locally so the UI updates immediately
-          setTimesheet((prev) => prev ? { ...prev, pingedAt: json.pingedAt } : prev);
-        } else if (json.ok && json.alreadyPinged) {
-          setTimesheet((prev) => prev ? { ...prev, pingedAt: json.pingedAt } : prev);
+        if (json.ok) {
+          // Reset cumulative locally so the UI matches the new baseline
+          setTimesheet((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  cumulativeSincePing: 0,
+                  lifetimeAtLastPing: json.newLifetimeAtLastPing ?? prev.lifetimeHours,
+                  lastPingedAt: json.pingedAt,
+                  crossedThreshold: false,
+                }
+              : prev
+          );
         }
       } catch {
         // best-effort
@@ -783,23 +798,27 @@ const Greeting: React.FC<{
         )}
       </div>
 
-      {/* Today's hours from the time tracker */}
-      {timesheet?.ok && timesheet.connected && typeof timesheet.todayHours === 'number' && (
+      {/* Time tracker — cumulative since last invoice ping */}
+      {timesheet?.ok && timesheet.connected && typeof timesheet.cumulativeSincePing === 'number' && (
         <div className="mb-5 flex flex-wrap items-center gap-3 text-sm">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-blue/5 border border-brand-blue/20 rounded-full text-brand-blue font-bold">
-            ⏱&nbsp; {timesheet.todayHours.toFixed(1)}h today
-            {typeof timesheet.weekHours === 'number' && (
-              <span className="text-brand-blue/70 font-medium">· {timesheet.weekHours.toFixed(1)}h this week</span>
+          <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-bold border ${
+            timesheet.cumulativeSincePing >= 6
+              ? 'bg-amber-50 border-amber-200 text-amber-800'
+              : 'bg-brand-blue/5 border-brand-blue/20 text-brand-blue'
+          }`}>
+            💰&nbsp; {timesheet.cumulativeSincePing.toFixed(1)}h since last invoice
+            {typeof timesheet.todayHours === 'number' && timesheet.todayHours > 0 && (
+              <span className="text-brand-blue/70 font-medium">· {timesheet.todayHours.toFixed(1)}h today</span>
             )}
           </span>
-          {timesheet.crossedThreshold && timesheet.pingedAt && (
-            <span className="text-[11px] tracking-wide text-green-700 font-semibold">
-              ✓ Joe pinged at {new Date(timesheet.pingedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
+          {timesheet.crossedThreshold && timesheet.cumulativeSincePing >= 6 && (
+            <span className="text-[11px] tracking-wide text-amber-700 font-semibold">
+              🎉 Hit 6 unbilled hours — pinging Joe…
             </span>
           )}
-          {timesheet.crossedThreshold && !timesheet.pingedAt && (
-            <span className="text-[11px] tracking-wide text-amber-700 font-semibold">
-              🎉 You hit 6 hours — sending the ping…
+          {timesheet.lastPingedAt && timesheet.cumulativeSincePing < 6 && (
+            <span className="text-[11px] tracking-wide text-black/45">
+              Last invoice ping: {formatPingedAt(timesheet.lastPingedAt)}
             </span>
           )}
         </div>
@@ -874,6 +893,19 @@ function startOfTodayJs() {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
   return d;
+}
+
+function formatPingedAt(ts: number): string {
+  const d = new Date(ts);
+  const today = startOfTodayJs();
+  const sameDay = d >= today;
+  if (sameDay) {
+    return `today at ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
+  }
+  const diffDays = Math.floor((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays === 1) return 'yesterday';
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 function daysUntilMonthDay(monthDay: string): number {

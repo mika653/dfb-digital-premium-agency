@@ -108,6 +108,7 @@ export default async function handler(req, res) {
     let carriedDate = null;
     let todayHours = 0;
     let weekHours = 0;
+    let lifetimeHours = 0; // sum of all logged hours, ever
     const todayEntries = [];
 
     for (const row of rows) {
@@ -119,6 +120,8 @@ export default async function handler(req, res) {
 
       const hours = parseDurationHours(duration);
       if (hours <= 0) continue;
+
+      lifetimeHours += hours;
 
       // Today match
       const monthName = MONTH_NAMES[effectiveDate.getMonth()];
@@ -140,15 +143,34 @@ export default async function handler(req, res) {
       }
     }
 
-    // 4) Check if Joe was already auto-pinged for today's 6-hour milestone
-    const todayDateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    let pingedAt = null;
+    // 4) Cumulative-since-last-ping logic
+    // Stored in KV at key `timesheet:state:<viewerGid>`:
+    //   { lifetimeAtLastPing: number, lastPingedAt: timestamp|null, initialized: timestamp }
+    // First-time: stamp the baseline = current lifetime so we don't fire on
+    // historical data. Going forward, every 6h above baseline → ping → bump
+    // baseline → repeat.
+    const stateKey = `timesheet:state:${viewerGid}`;
+    let state = null;
     try {
-      const pingRecord = await kvGet(`timesheet:ping:${todayDateKey}:${viewerGid}`);
-      if (pingRecord?.timestamp) pingedAt = pingRecord.timestamp;
+      state = await kvGet(stateKey);
     } catch {
-      // ignore
+      // KV down — fall back to no state (cumulative = 0)
     }
+    if (!state) {
+      state = {
+        lifetimeAtLastPing: lifetimeHours,
+        lastPingedAt: null,
+        initialized: Date.now(),
+      };
+      try {
+        await kvSet(stateKey, state);
+      } catch {
+        // best-effort
+      }
+    }
+
+    const cumulativeSincePing = Math.max(0, lifetimeHours - Number(state.lifetimeAtLastPing || 0));
+    const crossedThreshold = cumulativeSincePing >= 6;
 
     res.status(200).json({
       ok: true,
@@ -157,9 +179,12 @@ export default async function handler(req, res) {
       sheetTitle,
       todayHours,
       weekHours,
+      lifetimeHours,
+      cumulativeSincePing,
+      lifetimeAtLastPing: state.lifetimeAtLastPing,
+      lastPingedAt: state.lastPingedAt,
       todayEntries,
-      pingedAt,
-      crossedThreshold: todayHours >= 6,
+      crossedThreshold,
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: String(err.message || err) });
@@ -206,47 +231,54 @@ function startOfDay(d) {
 }
 
 // ───────────────────────────────────────────────────────────────────────────
-// POST handler — ping Joe about today's hours
+// POST handler — ping Joe about cumulative hours since last ping.
+// Bumps the lifetimeAtLastPing baseline so the cumulative counter
+// resets to 0 and the next 6h triggers the next invoice.
 async function handlePing(req, res) {
-  const { viewerGid, viewerName, todayHours, note } = req.body || {};
+  const { viewerGid, viewerName, cumulativeHours, lifetimeHours, note } = req.body || {};
   if (!viewerGid || !viewerName) {
     res.status(400).json({ ok: false, error: 'viewerGid and viewerName required' });
     return;
   }
 
-  const today = new Date();
-  const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  const kvKey = `timesheet:ping:${dateKey}:${viewerGid}`;
-
-  // Already pinged today?
-  try {
-    const existing = await kvGet(kvKey);
-    if (existing?.timestamp) {
-      res.status(200).json({ ok: true, alreadyPinged: true, pingedAt: existing.timestamp });
-      return;
-    }
-  } catch {
-    // ignore — if KV is down we still try to send
-  }
-
-  const hours = Number(todayHours) || 0;
-  const todayLabel = today.toLocaleDateString(undefined, {
+  const stateKey = `timesheet:state:${viewerGid}`;
+  const now = new Date();
+  const todayLabel = now.toLocaleDateString(undefined, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
   });
+
+  // Pull current state so we can detect rapid duplicate calls (rare but
+  // possible if the dashboard refreshes a few times in quick succession
+  // before the ping has settled).
+  let state = null;
+  try {
+    state = await kvGet(stateKey);
+  } catch {
+    // ignore
+  }
+  if (state?.lastPingedAt && Date.now() - Number(state.lastPingedAt) < 60_000) {
+    // Pinged less than a minute ago — treat as duplicate, don't re-fire email
+    res.status(200).json({ ok: true, alreadyPinged: true, pingedAt: state.lastPingedAt });
+    return;
+  }
+
+  const cumulative = Number(cumulativeHours) || 0;
+  const lifetimeNow = Number(lifetimeHours) || (state?.lifetimeAtLastPing || 0) + cumulative;
 
   try {
     const resp = await fetch('https://formsubmit.co/ajax/joe@dfbdigital.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
-        from_dashboard: 'DFB Dashboard · Auto Time Ping',
+        from_dashboard: 'DFB Dashboard · Time Invoice Ping',
         who: viewerName,
-        hours,
+        cumulative_hours: cumulative,
+        lifetime_hours: lifetimeNow,
         date: todayLabel,
-        note: String(note || '').trim() || '(no note — auto-ping at 6h threshold)',
-        _subject: `${viewerName} hit ${hours} hours today — ${todayLabel}`,
+        note: String(note || '').trim() || `(auto-ping — ${viewerName} hit ${cumulative}h since the last invoice)`,
+        _subject: `${viewerName} hit ${cumulative.toFixed(1)} unbilled hours — time to invoice`,
       }),
     });
     if (!resp.ok) {
@@ -258,12 +290,22 @@ async function handlePing(req, res) {
     return;
   }
 
-  // Mark as pinged so we don't double-ping later in the day
+  // Bump the baseline so the cumulative counter resets
   try {
-    await kvSet(kvKey, { timestamp: Date.now(), hours, note: String(note || '').trim() });
+    await kvSet(stateKey, {
+      lifetimeAtLastPing: lifetimeNow,
+      lastPingedAt: Date.now(),
+      initialized: state?.initialized || Date.now(),
+    });
   } catch {
-    // non-fatal
+    // non-fatal — worst case we ping again on the next refresh
   }
 
-  res.status(200).json({ ok: true, alreadyPinged: false, pingedAt: Date.now() });
+  res.status(200).json({
+    ok: true,
+    alreadyPinged: false,
+    pingedAt: Date.now(),
+    cumulativeHoursReset: cumulative,
+    newLifetimeAtLastPing: lifetimeNow,
+  });
 }
