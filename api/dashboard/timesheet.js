@@ -81,9 +81,10 @@ export default async function handler(req, res) {
     }
     const sheetTitle = sheet.properties.title;
 
-    // 2) Read the data we care about. Columns A:F covers date, task,
-    //    duration, client, status, and link in Mika's tracker.
-    const range = `${encodeURIComponent(sheetTitle)}!A:F`;
+    // 2) Read the data we care about. Columns A:H covers date, task,
+    //    duration, client, status, link, and two checkbox columns
+    //    (G + H) used in Mika's tracker for completion + billing status.
+    const range = `${encodeURIComponent(sheetTitle)}!A:H`;
     const valuesResp = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}`,
       { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -105,14 +106,22 @@ export default async function handler(req, res) {
     const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - today.getDay()); // back to Sunday
 
+    // The column-letter offset for "billed" — defaults to H (index 7).
+    // Override via TIMESHEET_BILLED_COL env var if Mika's sheet uses a
+    // different column for the billed checkbox.
+    const billedColLetter = (process.env.TIMESHEET_BILLED_COL || 'H').toUpperCase();
+    const billedColIdx = billedColLetter.charCodeAt(0) - 'A'.charCodeAt(0);
+
     let carriedDate = null;
     let todayHours = 0;
     let weekHours = 0;
-    let lifetimeHours = 0; // sum of all logged hours, ever
+    let lifetimeHours = 0;   // sum of ALL logged hours (billed + unbilled)
+    let unbilledHours = 0;   // sum of hours where the "billed" checkbox is unchecked
     const todayEntries = [];
 
     for (const row of rows) {
       const [dateCell, task, duration] = row;
+      const billedCell = row[billedColIdx];
       const parsedDate = parseDateCell(dateCell, today.getFullYear());
       const effectiveDate = parsedDate || carriedDate;
       if (parsedDate) carriedDate = parsedDate;
@@ -122,8 +131,10 @@ export default async function handler(req, res) {
       if (hours <= 0) continue;
 
       lifetimeHours += hours;
+      const isBilled = isCellChecked(billedCell);
+      if (!isBilled) unbilledHours += hours;
 
-      // Today match
+      // Today match (always counts toward today/week regardless of billed)
       const monthName = MONTH_NAMES[effectiveDate.getMonth()];
       const dayKey = `${monthName}-${effectiveDate.getDate()}`;
       if (dayKey === todayKey && effectiveDate.getFullYear() === today.getFullYear()) {
@@ -132,6 +143,7 @@ export default async function handler(req, res) {
           task: String(task || '').trim(),
           duration: String(duration || '').trim(),
           hours,
+          billed: isBilled,
         });
       }
       // Week-to-date (Sunday → today)
@@ -172,7 +184,10 @@ export default async function handler(req, res) {
       }
     }
 
-    const cumulativeSincePing = Math.max(0, lifetimeHours - Number(state.lifetimeAtLastPing || 0));
+    // Cumulative-since-last-ping is now based on UNBILLED hours, not
+    // lifetime. Mika's sheet already tracks billed status in the
+    // checkbox column, so we use it as the source of truth.
+    const cumulativeSincePing = Math.max(0, unbilledHours - Number(state.lifetimeAtLastPing || 0));
     const crossedThreshold = cumulativeSincePing >= 6;
 
     res.status(200).json({
@@ -183,6 +198,8 @@ export default async function handler(req, res) {
       todayHours,
       weekHours,
       lifetimeHours,
+      unbilledHours,
+      billedColumn: billedColLetter,
       cumulativeSincePing,
       lifetimeAtLastPing: state.lifetimeAtLastPing,
       lastPingedAt: state.lastPingedAt,
@@ -231,6 +248,16 @@ function startOfDay(d) {
   const x = new Date(d);
   x.setHours(0, 0, 0, 0);
   return x;
+}
+
+// Google Sheets returns checkbox cells as booleans or 'TRUE'/'FALSE' strings
+// depending on the read flag. Be lenient and accept the common forms.
+function isCellChecked(cell) {
+  if (cell === true) return true;
+  if (cell === false) return false;
+  if (cell == null) return false;
+  const s = String(cell).trim().toLowerCase();
+  return s === 'true' || s === 'yes' || s === '1' || s === 'x' || s === '✓';
 }
 
 // ───────────────────────────────────────────────────────────────────────────
