@@ -6,10 +6,11 @@ import crypto from 'crypto';
 import { isAuthenticated } from '../auth.js';
 
 const OAUTH_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
-// Read + write events on the user's calendars (NOT settings/sharing).
-// Tighter than the broader /auth/calendar scope.
+// Calendar event read/write + read-only access to spreadsheets so the
+// timesheet feature can sum hours from Mika's tracker.
 const SCOPES = [
   'https://www.googleapis.com/auth/calendar.events',
+  'https://www.googleapis.com/auth/spreadsheets.readonly',
   'https://www.googleapis.com/auth/userinfo.email',
 ].join(' ');
 

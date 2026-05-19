@@ -52,6 +52,18 @@ interface WinTask {
   url: string;
 }
 
+interface TimesheetResponse {
+  ok: boolean;
+  connected?: boolean;
+  needsReconnect?: boolean;
+  todayHours?: number;
+  weekHours?: number;
+  todayEntries?: { task: string; duration: string; hours: number }[];
+  pingedAt?: number | null;
+  crossedThreshold?: boolean;
+  error?: string;
+}
+
 interface DateEntry {
   id: string;
   name: string;
@@ -307,6 +319,58 @@ const DashboardHome: React.FC<{
   const [dates, setDates] = useState<DateEntry[]>([]);
   const [datesOpen, setDatesOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
+  const [timesheet, setTimesheet] = useState<TimesheetResponse | null>(null);
+
+  const loadTimesheet = useCallback(async (gid: string) => {
+    try {
+      const resp = await fetch(`/api/dashboard/timesheet?viewerGid=${encodeURIComponent(gid)}`, {
+        credentials: 'include',
+      });
+      const json: TimesheetResponse = await resp.json();
+      setTimesheet(json);
+    } catch {
+      setTimesheet({ ok: false, error: 'Failed to fetch timesheet' });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (viewerGid) loadTimesheet(viewerGid);
+  }, [viewerGid, loadTimesheet]);
+
+  // Auto-ping Joe when 6 hours is crossed and we haven't already pinged today
+  useEffect(() => {
+    if (!viewerGid || !viewer) return;
+    if (!timesheet?.ok || !timesheet.connected) return;
+    if (!timesheet.crossedThreshold) return;
+    if (timesheet.pingedAt) return; // already pinged today
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await fetch('/api/dashboard/timesheet-ping', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            viewerGid,
+            viewerName: viewer.name,
+            todayHours: timesheet.todayHours,
+          }),
+        });
+        const json = await resp.json();
+        if (cancelled) return;
+        if (json.ok && !json.alreadyPinged) {
+          // Reflect the ping locally so the UI updates immediately
+          setTimesheet((prev) => prev ? { ...prev, pingedAt: json.pingedAt } : prev);
+        } else if (json.ok && json.alreadyPinged) {
+          setTimesheet((prev) => prev ? { ...prev, pingedAt: json.pingedAt } : prev);
+        }
+      } catch {
+        // best-effort
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [viewerGid, viewer, timesheet]);
 
   const loadDates = useCallback(async () => {
     try {
@@ -477,7 +541,13 @@ const DashboardHome: React.FC<{
 
         {/* Good morning — personalized greeting */}
         {viewer && buckets && (
-          <Greeting viewer={viewer} buckets={buckets} dates={dates} onChangeViewer={onChangeViewer} />
+          <Greeting
+            viewer={viewer}
+            buckets={buckets}
+            dates={dates}
+            timesheet={timesheet}
+            onChangeViewer={onChangeViewer}
+          />
         )}
 
         {/* Calendar — monthly view */}
@@ -646,8 +716,9 @@ const Greeting: React.FC<{
   viewer: CapacityRow;
   buckets: Buckets;
   dates: DateEntry[];
+  timesheet: TimesheetResponse | null;
   onChangeViewer: () => void;
-}> = ({ viewer, buckets, dates, onChangeViewer }) => {
+}> = ({ viewer, buckets, dates, timesheet, onChangeViewer }) => {
   const firstName = viewer.name.split(' ')[0];
   const hour = new Date().getHours();
   const salute =
@@ -711,6 +782,28 @@ const Greeting: React.FC<{
           </span>
         )}
       </div>
+
+      {/* Today's hours from the time tracker */}
+      {timesheet?.ok && timesheet.connected && typeof timesheet.todayHours === 'number' && (
+        <div className="mb-5 flex flex-wrap items-center gap-3 text-sm">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-blue/5 border border-brand-blue/20 rounded-full text-brand-blue font-bold">
+            ⏱&nbsp; {timesheet.todayHours.toFixed(1)}h today
+            {typeof timesheet.weekHours === 'number' && (
+              <span className="text-brand-blue/70 font-medium">· {timesheet.weekHours.toFixed(1)}h this week</span>
+            )}
+          </span>
+          {timesheet.crossedThreshold && timesheet.pingedAt && (
+            <span className="text-[11px] tracking-wide text-green-700 font-semibold">
+              ✓ Joe pinged at {new Date(timesheet.pingedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
+            </span>
+          )}
+          {timesheet.crossedThreshold && !timesheet.pingedAt && (
+            <span className="text-[11px] tracking-wide text-amber-700 font-semibold">
+              🎉 You hit 6 hours — sending the ping…
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Upcoming dates (birthdays + anniversaries in next 14 days) */}
       {(() => {
