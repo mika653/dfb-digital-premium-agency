@@ -99,7 +99,7 @@ export const InstaSite: React.FC<InstaSiteProps> = ({ onBack, onNavigateDemo }) 
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
-            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
+            <a href="/services" className="text-white/70 hover:text-white smooth-transition">Services</a>
             <a href="/#matchmaker" className="text-white/70 hover:text-white smooth-transition">Find Your Fit</a>
             <a
               href="mailto:hello@dfbdigital.com"

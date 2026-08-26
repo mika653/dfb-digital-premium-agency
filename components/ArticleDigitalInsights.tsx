@@ -1,9 +1,13 @@
 
 import React from 'react';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 
 interface ArticleProps {
   onBack: () => void;
   onBlogClick: () => void;
+  onMatchmakerClick?: () => void;
+  onServiceNavigate?: (route: string) => void;
 }
 
 const packages = [
@@ -66,35 +70,10 @@ const packages = [
   }
 ];
 
-export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogClick }) => {
+export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogClick, onMatchmakerClick, onServiceNavigate }) => {
   return (
     <div className="min-h-screen bg-brand-black">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <button onClick={onBack} className="flex items-center gap-2">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
-          </button>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
-            <button onClick={onBlogClick} className="text-white/70 hover:text-white smooth-transition">Blog</button>
-            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
-            <a
-              href="mailto:hello@dfbdigital.com"
-              className="px-5 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition"
-            >
-              Get in Touch
-            </a>
-          </div>
-
-          <button onClick={onBlogClick} className="md:hidden text-white/70 hover:text-white smooth-transition">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-        </div>
-      </header>
+      <Navbar onHomeClick={onBack} onMatchmakerClick={onMatchmakerClick} onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
 
       {/* Article Content */}
       <article className="pt-32 pb-24 px-6 lg:px-12">
@@ -209,6 +188,8 @@ export const ArticleDigitalInsights: React.FC<ArticleProps> = ({ onBack, onBlogC
           </div>
         </div>
       </article>
+
+      <Footer onMatchmakerClick={onMatchmakerClick} onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
     </div>
   );
 };

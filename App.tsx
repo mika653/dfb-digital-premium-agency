@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { About } from './components/About';
-import { Services } from './components/Services';
+import { AboutPage } from './components/AboutPage';
+import { Trust } from './components/Trust';
+import { ServicesPage } from './components/ServicesPage';
 // import { Reviews } from './components/Reviews';
-import { ClientRoster } from './components/ClientRoster';
+import { FindYourFitPrompt } from './components/FindYourFitPrompt';
+import { OurWorkPage } from './components/OurWorkPage';
 import { WhyDFB } from './components/WhyDFB';
 import { CTA } from './components/CTA';
-import { ComingSoon } from './components/ComingSoon';
 import { Footer } from './components/Footer';
 import { Matchmaker } from './components/Matchmaker';
 import { ChatWidget } from './components/ChatWidget';
@@ -20,9 +21,15 @@ import { DigitalStrategy } from './components/DigitalStrategy';
 import { SocialMediaMarketing } from './components/SocialMediaMarketing';
 import { ContentMarketing } from './components/ContentMarketing';
 import { EmailCRM } from './components/EmailCRM';
+import { AIAutomations } from './components/AIAutomations';
+import { DigitalTransformation } from './components/DigitalTransformation';
 import { Blog } from './components/Blog';
 import { ArticleDigitalInsights } from './components/ArticleDigitalInsights';
 import { ArticleBoutiqueStrategy } from './components/ArticleBoutiqueStrategy';
+import { ArticleDigitalTransformationExplained } from './components/ArticleDigitalTransformationExplained';
+import { ArticleAIAutomationGuide } from './components/ArticleAIAutomationGuide';
+import { ArticleModernMarketing } from './components/ArticleModernMarketing';
+import { RHEventDesign } from './components/RHEventDesign';
 import { VIPAccess } from './components/VIPAccess';
 import { InstaSiteStarter } from './components/InstaSiteStarter';
 import { InstaSitePro } from './components/InstaSitePro';
@@ -74,6 +81,42 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: 'Email & CRM-Based Marketing | DFB Digital',
     description: 'Nurture leads and retain customers with precision email and CRM campaigns.',
   },
+  about: {
+    title: 'About DFB Digital | Founder & Approach',
+    description: 'Meet Daddy FunBuckets, Founder of DFB Digital — 12+ years of digital marketing and strategy experience across Asia, the Middle East, and global markets.',
+  },
+  services: {
+    title: 'All Services | DFB Digital',
+    description: 'Web development, digital marketing, and digital consultancy — built for established businesses who want a plan, not guesswork.',
+  },
+  'our-work': {
+    title: 'Our Work | Client Roster | DFB Digital',
+    description: 'A look at who DFB Digital works with, and what we\'ve built for them.',
+  },
+  aiautomations: {
+    title: 'AI Automations | Save Time on Repetitive Work | DFB Digital',
+    description: 'Automate follow-ups, scheduling, and reporting without hiring or coding. Plain-language AI automation for established businesses.',
+  },
+  digitaltransformation: {
+    title: 'Digital Transformation Consultation | DFB Digital',
+    description: 'A straight-talk audit of your business\'s digital gaps, plus a written, ranked plan to fix them. Start with a no-pressure discovery call.',
+  },
+  'digital-transformation-explained': {
+    title: 'What Is Digital Transformation, Really? A Plain-English Guide | DFB Digital Blog',
+    description: 'What digital transformation actually means, what it isn\'t, signs your business is due for it, and how to start without overhauling everything.',
+  },
+  'ai-automation-guide': {
+    title: 'AI Automation for Established Businesses: What It Actually Means | DFB Digital Blog',
+    description: 'A plain-English guide to AI automation for business owners — what it looks like day to day, what it is not, and where most businesses start.',
+  },
+  'modern-marketing-2026': {
+    title: 'Modern Marketing for Established Businesses: What Actually Works Now | DFB Digital Blog',
+    description: 'What modern marketing looks like for established businesses in the age of AI-powered search, and how to modernize without losing your brand voice.',
+  },
+  'rh-event-design': {
+    title: 'RH Event Design | Strategic Partnership | DFB Digital',
+    description: 'DFB Digital\'s strategic partner for luxury event design and full-service PR — RH Event Design, led by Reyna Harilela in Hong Kong.',
+  },
   'article-digital-insights': {
     title: 'Digital Insights for Modern Businesses | DFB Digital Blog',
     description: 'Practical digital insights for business owners navigating strategy, marketing, and growth.',
@@ -113,7 +156,7 @@ const pageMeta: Record<string, { title: string; description: string }> = {
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard' | 'intake' | 'status'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'matchmaker' | 'eventlab' | 'instasite' | 'launchpad' | 'digitalstrategy' | 'socialmedia' | 'contentmarketing' | 'emailcrm' | 'aiautomations' | 'digitaltransformation' | 'about' | 'services' | 'our-work' | 'blog' | 'article-digital-insights' | 'article-boutique-strategy' | 'digital-transformation-explained' | 'ai-automation-guide' | 'modern-marketing-2026' | 'rh-event-design' | 'vip' | 'instasite-starter' | 'instasite-pro' | 'instasite-elite' | 'pmasev' | 'dashboard' | 'intake' | 'status'>('home');
   const [statusProjectGid, setStatusProjectGid] = useState<string>('');
 
   // Update document title and OG meta tags based on current page
@@ -144,9 +187,18 @@ const App: React.FC = () => {
       '/socialmedia': 'socialmedia',
       '/contentmarketing': 'contentmarketing',
       '/emailcrm': 'emailcrm',
+      '/aiautomations': 'aiautomations',
+      '/digitaltransformation': 'digitaltransformation',
+      '/about': 'about',
+      '/services': 'services',
+      '/our-work': 'our-work',
       '/blog': 'blog',
+      '/rh-event-design': 'rh-event-design',
       '/article-digital-insights': 'article-digital-insights',
       '/article-boutique-strategy': 'article-boutique-strategy',
+      '/digital-transformation-explained': 'digital-transformation-explained',
+      '/ai-automation-guide': 'ai-automation-guide',
+      '/modern-marketing-2026': 'modern-marketing-2026',
       '/vip': 'vip',
       '/instasite/starter': 'instasite-starter',
       '/instasite/pro': 'instasite-pro',
@@ -203,7 +255,7 @@ const App: React.FC = () => {
   };
 
   const goToArticle = (articleId: string) => {
-    navigateTo(`/${articleId}`, articleId as 'article-digital-insights' | 'article-boutique-strategy');
+    navigateTo(`/${articleId}`, articleId as typeof currentPage);
   };
 
   const renderPage = () => {
@@ -213,35 +265,42 @@ const App: React.FC = () => {
       case 'status': return <ClientStatus projectGid={statusProjectGid} onBack={goToHome} />;
       case 'pmasev': return <PMASEV onBack={goToHome} />;
       case 'vip': return <VIPAccess onBack={goToHome} />;
-      case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} />;
-      case 'article-digital-insights': return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} />;
-      case 'blog': return <Blog onBack={goToHome} onArticleClick={goToArticle} />;
-      case 'launchpad': return <LaunchPad onBack={goToHome} />;
+      case 'article-boutique-strategy': return <ArticleBoutiqueStrategy onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'article-digital-insights': return <ArticleDigitalInsights onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'rh-event-design': return <RHEventDesign onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'digital-transformation-explained': return <ArticleDigitalTransformationExplained onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'ai-automation-guide': return <ArticleAIAutomationGuide onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'modern-marketing-2026': return <ArticleModernMarketing onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'blog': return <Blog onBack={goToHome} onArticleClick={goToArticle} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'launchpad': return <LaunchPad onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
       case 'instasite-starter': return <InstaSiteStarter onBack={goToInstaSite} />;
       case 'instasite-pro': return <InstaSitePro onBack={goToInstaSite} />;
       case 'instasite-elite': return <InstaSiteElite onBack={goToInstaSite} />;
       case 'instasite': return <InstaSite onBack={goToHome} onNavigateDemo={goToInstaSiteDemo} />;
-      case 'eventlab': return <EventLab onBack={goToHome} />;
-      case 'digitalstrategy': return <DigitalStrategy onBack={goToHome} />;
-      case 'socialmedia': return <SocialMediaMarketing onBack={goToHome} />;
-      case 'contentmarketing': return <ContentMarketing onBack={goToHome} />;
-      case 'emailcrm': return <EmailCRM onBack={goToHome} />;
-      case 'matchmaker': return <Matchmaker onBack={goToHome} />;
+      case 'eventlab': return <EventLab onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'digitalstrategy': return <DigitalStrategy onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'socialmedia': return <SocialMediaMarketing onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'contentmarketing': return <ContentMarketing onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'emailcrm': return <EmailCRM onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'aiautomations': return <AIAutomations onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'digitaltransformation': return <DigitalTransformation onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'about': return <AboutPage onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'services': return <ServicesPage onBack={goToHome} onNavigate={goToServicePage} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'our-work': return <OurWorkPage onBack={goToHome} onBlogClick={goToBlog} onMatchmakerClick={goToMatchmaker} onServiceNavigate={goToServicePage} />;
+      case 'matchmaker': return <Matchmaker onBack={goToHome} onNavigate={goToServicePage} onBlogClick={goToBlog} onServiceNavigate={goToServicePage} />;
       default:
         return (
           <div className="min-h-screen bg-brand-white selection:bg-brand-blue selection:text-white">
-            <Navbar onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} onHomeClick={goToHome} />
+            <Navbar onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} onHomeClick={goToHome} onServiceNavigate={goToServicePage} />
             <main>
-              <Hero onMatchmakerClick={goToMatchmaker} />
-              <About />
-              <Services onNavigate={goToServicePage} />
+              <Hero />
+              <Trust />
               <WhyDFB />
               {/* <Reviews /> */}
-              <ClientRoster />
+              <FindYourFitPrompt onMatchmakerClick={goToMatchmaker} />
               <CTA />
-              <ComingSoon />
             </main>
-            <Footer onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} />
+            <Footer onMatchmakerClick={goToMatchmaker} onBlogClick={goToBlog} onServiceNavigate={goToServicePage} />
           </div>
         );
     }

@@ -1,5 +1,11 @@
 {
+  "functions": {
+    "api/render-page.js": {
+      "includeFiles": "dist/index.html"
+    }
+  },
   "rewrites": [
+    { "source": "/joe", "destination": "/joe.html" },
     { "source": "/matchmaker", "destination": "/api/render-page" },
     { "source": "/eventlab", "destination": "/api/render-page" },
     { "source": "/instasite", "destination": "/api/render-page" },
@@ -8,9 +14,18 @@
     { "source": "/socialmedia", "destination": "/api/render-page" },
     { "source": "/contentmarketing", "destination": "/api/render-page" },
     { "source": "/emailcrm", "destination": "/api/render-page" },
+    { "source": "/aiautomations", "destination": "/api/render-page" },
+    { "source": "/digitaltransformation", "destination": "/api/render-page" },
     { "source": "/blog", "destination": "/api/render-page" },
     { "source": "/article-digital-insights", "destination": "/api/render-page" },
     { "source": "/article-boutique-strategy", "destination": "/api/render-page" },
+    { "source": "/digital-transformation-explained", "destination": "/api/render-page" },
+    { "source": "/ai-automation-guide", "destination": "/api/render-page" },
+    { "source": "/modern-marketing-2026", "destination": "/api/render-page" },
+    { "source": "/rh-event-design", "destination": "/api/render-page" },
+    { "source": "/about", "destination": "/api/render-page" },
+    { "source": "/services", "destination": "/api/render-page" },
+    { "source": "/our-work", "destination": "/api/render-page" },
     { "source": "/vip", "destination": "/api/render-page" },
     { "source": "/instasite/starter", "destination": "/api/render-page" },
     { "source": "/instasite/pro", "destination": "/api/render-page" },

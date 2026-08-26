@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { DiscoveryCallModal } from './DiscoveryCallModal';
+import { Reveal } from './Reveal';
 
 export const CTA: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -11,9 +12,9 @@ export const CTA: React.FC = () => {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-blue/10 skew-x-12 translate-x-1/2"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="max-w-3xl">
+          <Reveal className="max-w-3xl">
             <h2 className="text-5xl md:text-7xl font-heading font-bold mb-12 tracking-tight">
-              Still Not Sure <br />
+              <em className="italic">Still</em> Not Sure <br />
               <span className="text-[#bdffcf]">What You Need?</span>
             </h2>
 
@@ -27,7 +28,7 @@ export const CTA: React.FC = () => {
             >
               Book a Discovery Call
             </button>
-          </div>
+          </Reveal>
         </div>
       </section>
 

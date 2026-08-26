@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { DiscoveryCallModal } from './DiscoveryCallModal';
+import { Reveal } from './Reveal';
 
 interface ServiceItem {
   title: string;
@@ -96,7 +97,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Email & CRM-Based Marketing",
-        image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=800",
         description: "Nurture leads and retain customers with precision email and CRM campaigns.",
         gradient: "from-green-600 via-emerald-600 to-black",
         accentColor: "bg-green-500",
@@ -112,18 +113,28 @@ const serviceCategories: ServiceCategory[] = [
     subtitle: "Hands-on guidance for leaders navigating the digital landscape.",
     services: [
       {
+        title: "AI Automations",
+        image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+        description: "AI Automations quietly handle the repetitive work in your business — replying, scheduling, follow-ups, data entry.",
+        gradient: "from-blue-700 via-indigo-700 to-black",
+        accentColor: "bg-brand-blue",
+        hoverColor: "#0000FF",
+        action: "navigate",
+        route: "aiautomations"
+      },
+      {
         title: "Digital Transformation",
-        image: "/Digital Consultancy.jpeg",
+        image: "/DFB Picture.png",
         description: "End-to-end guidance for organizations embracing digital at every level.",
         gradient: "from-purple-600 via-violet-600 to-black",
-        accentColor: "bg-[#bdffcf]",
-        hoverColor: "#bdffcf",
-        action: "mailto",
-        mailSubject: "Inquiry about Digital Transformation"
+        accentColor: "bg-violet-500",
+        hoverColor: "#8b5cf6",
+        action: "navigate",
+        route: "digitaltransformation"
       },
       {
         title: "One-on-One Coaching",
-        image: "/Digital Consultancy.jpeg",
+        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
         description: "Personalized sessions to sharpen your digital strategy and execution.",
         gradient: "from-violet-500 via-violet-600 to-black",
         accentColor: "bg-[#f8b18a]",
@@ -133,7 +144,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Speaking Engagements",
-        image: "/Digital Consultancy.jpeg",
+        image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=800",
         description: "Keynotes and talks on digital strategy, innovation, and doing digital better.",
         gradient: "from-fuchsia-500 via-purple-600 to-black",
         accentColor: "bg-[#bdffcf]",
@@ -143,7 +154,7 @@ const serviceCategories: ServiceCategory[] = [
       },
       {
         title: "Podcast Appearances",
-        image: "/Digital Consultancy.jpeg",
+        image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=800",
         description: "Insights on digital marketing, entrepreneurship, and building with intention.",
         gradient: "from-pink-600 via-fuchsia-600 to-black",
         accentColor: "bg-[#f8b18a]",
@@ -158,6 +169,43 @@ const serviceCategories: ServiceCategory[] = [
 interface ServicesProps {
   onNavigate: (route: string) => void;
 }
+
+interface StandardServiceCardProps {
+  service: ServiceItem;
+  onClick: () => void;
+}
+
+const StandardServiceCard: React.FC<StandardServiceCardProps> = ({ service, onClick }) => (
+  <div
+    onClick={onClick}
+    className="relative aspect-[4/5] group overflow-hidden cursor-pointer rounded-2xl"
+  >
+    <img
+      src={service.image}
+      alt={service.title}
+      className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+    />
+    {/* Gradient overlay — always strong enough for the always-visible text below */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10"></div>
+    {/* Colored overlay on hover */}
+    <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
+
+    <div className="absolute inset-0 p-10 flex flex-col justify-end">
+      {/* Accent line */}
+      <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-100 smooth-transition`}></div>
+      <h3 className="text-2xl md:text-3xl font-heading font-bold mb-4 smooth-transition">
+        <span className="text-white group-hover:hidden">{service.title}</span>
+        <span className="hidden group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
+      </h3>
+      <p className="text-white/90 text-base leading-relaxed mb-8 smooth-transition">
+        {service.description}
+      </p>
+      <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-xs font-bold uppercase tracking-widest rounded-full smooth-transition`}>
+        {service.action === 'navigate' ? 'Learn More' : 'Inquire'}
+      </button>
+    </div>
+  </div>
+);
 
 export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
   const [showForm, setShowForm] = useState(false);
@@ -184,11 +232,11 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
               : 'bg-brand-black texture-noise texture-gradient-dark'
           }`}
         >
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             {/* Category Header */}
             <div className="text-center mb-24">
               <p className={`text-sm font-medium tracking-widest uppercase mb-4 ${
-                catIndex % 2 === 0 ? 'text-black/40' : 'text-white/40'
+                catIndex % 2 === 0 ? 'text-black/60' : 'text-white/70'
               }`}>
                 {category.subtitle}
               </p>
@@ -212,11 +260,11 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                     />
                   </div>
                   <div>
-                    <p className="text-black/60 leading-relaxed text-sm md:text-base mb-6">
-                      Daddy FunBuckets brings real-world digital experience to every engagement—from boardrooms to podcasts.
+                    <p className="text-black/60 leading-relaxed text-base mb-6">
+                      Daddy FunBuckets, Founder, brings real-world digital experience to every engagement — from boardrooms to podcasts.
                     </p>
-                    <p className="text-black/60 leading-relaxed text-sm md:text-base mb-10">
-                      Whether you need strategic transformation guidance, personalized coaching, or a compelling voice for your next podcast—DFB delivers with clarity, energy, and intention.
+                    <p className="text-black/60 leading-relaxed text-base mb-10">
+                      Need coaching, or a voice for your next stage or podcast? See the cards below. Looking for a structured digital plan instead? See Digital Transformation below.
                     </p>
                     <div className="flex flex-wrap gap-4">
                       <a
@@ -241,26 +289,46 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                   </div>
                 </div>
 
-                {/* Compact service cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {category.services.map((service, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleCardClick(service)}
-                      className="group cursor-pointer bg-white rounded-2xl border border-black/5 p-8 hover:shadow-xl smooth-transition hover:-translate-y-1"
-                    >
-                      <div className={`w-12 h-1 ${service.accentColor} mb-6`}></div>
-                      <h3 className="text-lg font-heading font-bold text-brand-black mb-3 group-hover:text-brand-blue smooth-transition">
-                        {service.title}
-                      </h3>
-                      <p className="text-black/50 text-sm leading-relaxed mb-6">
-                        {service.description}
-                      </p>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-brand-blue">
-                        Inquire →
-                      </span>
-                    </div>
-                  ))}
+                {/* AI Automations + Digital Transformation: full navigable service cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                  {category.services
+                    .filter((service) => service.action === 'navigate')
+                    .map((service, index) => (
+                      <StandardServiceCard key={index} service={service} onClick={() => handleCardClick(service)} />
+                    ))}
+                </div>
+
+                {/* Coaching, Speaking, Podcast: compact inquiry cards with distinct imagery */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {category.services
+                    .filter((service) => service.action === 'mailto')
+                    .map((service, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleCardClick(service)}
+                        className="group cursor-pointer bg-white rounded-2xl border border-black/5 overflow-hidden hover:shadow-xl smooth-transition hover:-translate-y-1"
+                      >
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <img
+                            src={service.image}
+                            alt={service.title}
+                            className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
+                          />
+                        </div>
+                        <div className="p-8">
+                          <div className={`w-12 h-1 ${service.accentColor} mb-6`}></div>
+                          <h3 className="text-lg font-heading font-bold text-brand-black mb-3 group-hover:text-brand-blue smooth-transition">
+                            {service.title}
+                          </h3>
+                          <p className="text-black/60 text-base leading-relaxed mb-6">
+                            {service.description}
+                          </p>
+                          <span className="text-xs font-bold uppercase tracking-widest text-brand-blue">
+                            Inquire →
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </>
             ) : (
@@ -269,40 +337,11 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                 category.services.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
               } gap-8`}>
                 {category.services.map((service, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleCardClick(service)}
-                    className="relative aspect-[4/5] group overflow-hidden cursor-pointer rounded-2xl"
-                  >
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-105 smooth-transition"
-                    />
-                    {/* Gradient overlay — stronger on mobile */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/40 md:from-black/80 md:via-black/20 md:to-transparent"></div>
-                    {/* Colored overlay on hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-0 group-hover:opacity-30 smooth-transition`}></div>
-
-                    <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                      {/* Accent line */}
-                      <div className={`w-12 h-1 ${service.accentColor} mb-4 transform origin-left scale-x-100 md:scale-x-0 md:group-hover:scale-x-100 smooth-transition`}></div>
-                      <h3 className="text-2xl md:text-3xl font-heading font-bold mb-4 smooth-transition">
-                        <span className="text-white md:group-hover:hidden">{service.title}</span>
-                        <span className="hidden md:group-hover:inline" style={{ color: service.hoverColor }}>{service.title}</span>
-                      </h3>
-                      <p className="text-white text-sm leading-relaxed mb-8 opacity-100 md:text-white/80 md:opacity-0 md:group-hover:opacity-100 smooth-transition">
-                        {service.description}
-                      </p>
-                      <button className={`self-start px-6 py-3 ${service.accentColor} text-white text-[10px] font-bold uppercase tracking-widest rounded-full translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 smooth-transition`}>
-                        {service.action === 'navigate' ? 'Learn More' : 'Inquire'}
-                      </button>
-                    </div>
-                  </div>
+                  <StandardServiceCard key={index} service={service} onClick={() => handleCardClick(service)} />
                 ))}
               </div>
             )}
-          </div>
+          </Reveal>
         </div>
       ))}
       <DiscoveryCallModal

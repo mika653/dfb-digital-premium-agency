@@ -1,41 +1,30 @@
 
 import React from 'react';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 
 interface EventLabProps {
   onBack: () => void;
+  onBlogClick?: () => void;
+  onMatchmakerClick?: () => void;
+  onServiceNavigate?: (route: string) => void;
 }
 
 const eventPhases = [
   {
+    number: "01",
     title: "Pre-event",
-    description: "Build excitement till the big day",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="12 6 12 12 16 14"></polyline>
-      </svg>
-    )
+    description: "Build excitement till the big day"
   },
   {
+    number: "02",
     title: "Event Proper",
-    description: "Guide guests in real time and keep things running smoothly",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-      </svg>
-    )
+    description: "Guide guests in real time and keep things running smoothly"
   },
   {
+    number: "03",
     title: "Post-event",
-    description: "Relive the experience over and over again",
-    icon: (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 2v6h6"></path>
-        <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
-        <path d="M21 22v-6h-6"></path>
-        <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
-      </svg>
-    )
+    description: "Relive the experience over and over again"
   }
 ];
 
@@ -56,67 +45,24 @@ const keyFeatures = [
 
 const benefits = [
   {
-    title: "Up-to-the-Minute Event Info",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="12 6 12 12 16 14"></polyline>
-      </svg>
-    )
+    number: "01",
+    title: "Up-to-the-Minute Event Info"
   },
   {
-    title: "24/7 Availability",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M12 2a10 10 0 0 1 0 20"></path>
-        <path d="M12 6v6l4 2"></path>
-      </svg>
-    )
+    number: "02",
+    title: "24/7 Availability"
   },
   {
-    title: "Sponsorship Opportunities",
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-      </svg>
-    )
+    number: "03",
+    title: "Sponsorship Opportunities"
   }
 ];
 
-export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
+export const EventLab: React.FC<EventLabProps> = ({ onBack, onBlogClick, onMatchmakerClick, onServiceNavigate }) => {
   return (
     <div className="min-h-screen bg-brand-black">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2"
-          >
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
-          </button>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
-            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
-            <a href="/#matchmaker" className="text-white/70 hover:text-white smooth-transition">Find Your Fit</a>
-            <a
-              href="mailto:hello@dfbdigital.com"
-              className="px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:from-pink-600 hover:to-purple-700 smooth-transition"
-            >
-              Get in Touch
-            </a>
-          </div>
-
-          <button onClick={onBack} className="md:hidden text-white/70 hover:text-white smooth-transition">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-        </div>
-      </nav>
+      <Navbar onHomeClick={onBack} onMatchmakerClick={onMatchmakerClick} onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -134,24 +80,17 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500"></div>
         </div>
 
-        {/* Floating light effects */}
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-pink-500/20 rounded-full blur-[100px] md:blur-[128px] animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-purple-500/20 rounded-full blur-[100px] md:blur-[128px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-
         {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
-            <span className="w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
-            <span className="text-white/80 text-sm font-medium tracking-wide">Premium Event Solutions</span>
-          </div>
+          {/* Eyebrow */}
+          <p className="text-sm uppercase tracking-widest text-pink-300/80 font-medium mb-6">Premium Event Solutions</p>
 
           <p className="text-xl md:text-2xl text-white/80 font-light tracking-wide mb-4">
             Websites built for moments that matter.
           </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.05] mb-8">
             <span className="text-white">Event</span>
-            <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"> Lab</span>
+            <span className="text-[#bdffcf]"> Lab</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto font-light">
@@ -187,21 +126,19 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Your Event, <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Every Step</span>
+              Your Event, <span className="text-[#bdffcf]">Every Step</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {eventPhases.map((phase, index) => (
               <div
                 key={index}
-                className="group text-center p-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:border-pink-500/50 hover:bg-white/10 smooth-transition"
+                className="border-t-2 border-pink-500/40 pt-6"
               >
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
-                  {phase.icon}
-                </div>
+                <div className="text-5xl font-heading font-bold text-pink-500/30 mb-4">{phase.number}</div>
                 <h3 className="text-2xl font-heading font-bold text-white mb-3">{phase.title}</h3>
-                <p className="text-white/60 leading-relaxed">{phase.description}</p>
+                <p className="text-white/70 leading-relaxed">{phase.description}</p>
               </div>
             ))}
           </div>
@@ -213,7 +150,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              Key <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Features</span>
+              Key <span className="text-[#bdffcf]">Features</span>
             </h2>
           </div>
 
@@ -236,19 +173,17 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
-              The <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Benefits</span>
+              The <span className="text-[#bdffcf]">Benefits</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="group text-center"
+                className="border-t-2 border-pink-500/40 pt-6 text-center"
               >
-                <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white mb-6 group-hover:scale-110 smooth-transition">
-                  {benefit.icon}
-                </div>
+                <div className="text-5xl font-heading font-bold text-pink-500/30 mb-4">{benefit.number}</div>
                 <h3 className="text-lg font-heading font-bold text-white">{benefit.title}</h3>
               </div>
             ))}
@@ -318,7 +253,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
-            Ready to Create Something <span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Unforgettable</span>?
+            Ready to Create Something <span className="text-[#bdffcf]">Unforgettable</span>?
           </h2>
           <p className="text-xl text-white/60 mb-12 max-w-2xl mx-auto">
             Let's discuss your vision and bring it to life with precision and creativity.
@@ -336,21 +271,7 @@ export const EventLab: React.FC<EventLabProps> = ({ onBack }) => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-10 px-6 border-t border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto opacity-50" />
-          <p className="text-white/30 text-sm">
-            &copy; {new Date().getFullYear()} DFB Digital. All rights reserved.
-          </p>
-          <button
-            onClick={onBack}
-            className="text-white/50 hover:text-white text-sm smooth-transition"
-          >
-            Back to Home
-          </button>
-        </div>
-      </footer>
+      <Footer onMatchmakerClick={onMatchmakerClick} onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
     </div>
   );
 };

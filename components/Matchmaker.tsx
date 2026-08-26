@@ -1,5 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 
 interface Message {
   id: number;
@@ -26,49 +28,55 @@ const services = {
     title: "Event Lab",
     description: "Operational infrastructure for high-stakes environments. Perfect for conferences, launches, and corporate gatherings.",
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800",
-    route: "#eventlab"
+    route: "eventlab"
   },
   instaSite: {
     title: "InstaSite",
     description: "Precision-engineered digital properties for instant credibility. Get online fast with a professional presence.",
     image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&q=80&w=800",
-    route: "#instasite"
+    route: "instasite"
   },
   launchPad: {
     title: "LaunchPad",
     description: "Systematic framework for new initiative market entry. Ideal for product launches and new business ventures.",
     image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
-    route: "#launchpad"
+    route: "launchpad"
   },
   digitalStrategy: {
     title: "Digital Strategy & Campaign Planning",
     description: "Comprehensive strategies for online presence, customer acquisition, and long-term digital growth.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-    route: "#digitalstrategy"
+    route: "digitalstrategy"
   },
   socialMedia: {
     title: "Social Media Marketing",
     description: "Strategic social media management that builds audience and drives engagement.",
     image: "https://images.unsplash.com/photo-1687008943553-f7560ffea8db?auto=format&fit=crop&q=80&w=800",
-    route: "#socialmedia"
+    route: "socialmedia"
   },
   contentMarketing: {
     title: "Content Marketing",
     description: "Compelling content strategies that tell your brand story and attract your ideal audience.",
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=800",
-    route: "#contentmarketing"
+    route: "contentmarketing"
   },
   emailCRM: {
     title: "Email & CRM-Based Marketing",
     description: "Nurture leads and retain customers through precision email sequences and CRM-driven campaigns.",
-    image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?auto=format&fit=crop&q=80&w=800",
-    route: "#emailcrm"
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=800",
+    route: "emailcrm"
+  },
+  aiAutomations: {
+    title: "AI Automations",
+    description: "Automations that quietly handle repetitive admin work — replying, scheduling, follow-ups, data entry — so your team spends time on customers, not busywork.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+    route: "aiautomations"
   },
   digitalTransformation: {
     title: "Digital Transformation",
     description: "End-to-end guidance for organizations embracing digital at every level of operations.",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
-    route: null
+    route: "digitaltransformation"
   },
   coaching: {
     title: "One-on-One Coaching",
@@ -130,7 +138,13 @@ const questions = [
   }
 ];
 
-export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+export const Matchmaker: React.FC<{
+  onBack: () => void;
+  onNavigate?: (route: string) => void;
+  onMatchmakerClick?: () => void;
+  onBlogClick?: () => void;
+  onServiceNavigate?: (route: string) => void;
+}> = ({ onBack, onNavigate, onBlogClick, onServiceNavigate }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -138,6 +152,8 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [showResults, setShowResults] = useState(false);
   const [recommendations, setRecommendations] = useState<ServiceMatch[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const nextMessageId = useRef(0);
+  const getMessageId = () => nextMessageId.current++;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -159,7 +175,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setTimeout(() => {
       setIsTyping(false);
       setMessages(prev => [...prev, {
-        id: Date.now(),
+        id: getMessageId(),
         type: 'bot',
         content,
         options
@@ -176,6 +192,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       socialMedia: 0,
       contentMarketing: 0,
       emailCRM: 0,
+      aiAutomations: 0,
       digitalTransformation: 0,
       coaching: 0,
       speaking: 0,
@@ -199,6 +216,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.instaSite += 20;
       scores.emailCRM += 30;
       scores.contentMarketing += 15;
+      scores.aiAutomations += 15;
     }
 
     // Presence-based scoring
@@ -221,6 +239,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.contentMarketing += 20;
       scores.emailCRM += 20;
       scores.digitalTransformation += 20;
+      scores.aiAutomations += 25;
     }
 
     // Timeline-based scoring
@@ -234,6 +253,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.digitalStrategy += 20;
       scores.emailCRM += 15;
       scores.contentMarketing += 15;
+      scores.aiAutomations += 20;
     }
     if (timeline === 'longterm') {
       scores.socialMedia += 20;
@@ -255,6 +275,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       scores.launchPad += 20;
       scores.emailCRM += 15;
       scores.contentMarketing += 10;
+      scores.aiAutomations += 20;
     }
     if (budget === 'enterprise') {
       scores.eventLab += 25;
@@ -285,7 +306,7 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const handleOptionClick = (option: Option) => {
     // Add user message
     setMessages(prev => [...prev, {
-      id: Date.now(),
+      id: getMessageId(),
       type: 'user',
       content: option.label
     }]);
@@ -326,38 +347,10 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-brand-black">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2"
-          >
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
-          </button>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
-            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
-            <span className="text-white">Find Your Fit</span>
-            <a
-              href="mailto:hello@dfbdigital.com"
-              className="px-5 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition"
-            >
-              Get in Touch
-            </a>
-          </div>
-
-          <button onClick={onBack} className="md:hidden text-white/70 hover:text-white smooth-transition">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-        </div>
-      </header>
+      <Navbar onHomeClick={onBack} onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
 
       {/* Chat Container */}
-      <main className="pt-24 pb-32 px-6">
+      <main className="pt-32 md:pt-36 lg:pt-40 pb-32 px-6">
         <div className="max-w-2xl mx-auto">
           {/* Messages */}
           <div className="space-y-6">
@@ -432,15 +425,15 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         </div>
                         <p className="text-white/60 text-sm leading-relaxed mb-4">{service.description}</p>
                         {service.route ? (
-                          <a
-                            href={service.route}
+                          <button
+                            onClick={() => onNavigate && onNavigate(service.route!)}
                             className="inline-flex items-center gap-2 text-[#bdffcf] hover:text-white text-sm font-semibold smooth-transition"
                           >
                             View {service.title}
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="9 6 15 12 9 18"></polyline>
                             </svg>
-                          </a>
+                          </button>
                         ) : (
                           <a
                             href={`mailto:hello@dfbdigital.com?subject=Inquiry about ${service.title}`}
@@ -475,6 +468,8 @@ export const Matchmaker: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
         </div>
       </main>
+
+      <Footer onBlogClick={onBlogClick} onServiceNavigate={onServiceNavigate} />
     </div>
   );
 };

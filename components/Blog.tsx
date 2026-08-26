@@ -1,13 +1,47 @@
 
 import React from 'react';
 import { NewsletterForm } from './NewsletterForm';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
 
 interface BlogProps {
   onBack: () => void;
   onArticleClick: (articleId: string) => void;
+  onMatchmakerClick?: () => void;
+  onServiceNavigate?: (route: string) => void;
 }
 
 const articles = [
+  {
+    id: 'digital-transformation-explained',
+    title: "What Is Digital Transformation, Really?",
+    subtitle: "A Plain-English Guide",
+    excerpt: "\"Digital transformation\" gets used to sell almost anything. Here's what it actually means, what it isn't, and how to start without overhauling everything.",
+    category: "Digital Transformation",
+    readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800",
+    gradient: "from-violet-500 to-purple-700"
+  },
+  {
+    id: 'ai-automation-guide',
+    title: "AI Automation for Established Businesses",
+    subtitle: "What It Actually Means",
+    excerpt: "Not robots. Not hype. Just the repetitive parts of your day — replying, scheduling, data entry — handled quietly in the background.",
+    category: "AI & Automation",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+    gradient: "from-blue-600 to-indigo-700"
+  },
+  {
+    id: 'modern-marketing-2026',
+    title: "Modern Marketing for Established Businesses",
+    subtitle: "What Actually Works Now",
+    excerpt: "The channels changed. What earns trust didn't. Including why AI-powered search is starting to matter for how customers find you.",
+    category: "Marketing",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&q=80&w=800",
+    gradient: "from-emerald-500 to-teal-600"
+  },
   {
     id: 'article-digital-insights',
     title: "DFB's Digital Insights",
@@ -30,35 +64,21 @@ const articles = [
   }
 ];
 
-export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
+const comingSoonItems = [
+  {
+    title: "Podcast",
+    description: "Conversations with thought leaders on where digital marketing, AI, and emerging technologies are headed—with real-world implications for businesses that want to stay ahead."
+  },
+  {
+    title: "DFB Digital Academy",
+    description: "Courses, templates and training that help you make smarter digital decisions—at your own pace."
+  }
+];
+
+export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick, onMatchmakerClick, onServiceNavigate }) => {
   return (
     <div className="min-h-screen bg-brand-black">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <button onClick={onBack} className="flex items-center gap-2">
-            <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
-          </button>
-
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <button onClick={onBack} className="text-white/70 hover:text-white smooth-transition">Home</button>
-            <a href="/#services" className="text-white/70 hover:text-white smooth-transition">Services</a>
-            <span className="text-white">Blog</span>
-            <a
-              href="mailto:hello@dfbdigital.com"
-              className="px-5 py-2 bg-brand-blue text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-blue-600 smooth-transition"
-            >
-              Get in Touch
-            </a>
-          </div>
-
-          <button onClick={onBack} className="md:hidden text-white/70 hover:text-white smooth-transition">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-        </div>
-      </header>
+      <Navbar onHomeClick={onBack} onMatchmakerClick={onMatchmakerClick} onServiceNavigate={onServiceNavigate} />
 
       {/* Hero */}
       <section className="pt-32 pb-16 px-6 lg:px-12">
@@ -132,12 +152,36 @@ export const Blog: React.FC<BlogProps> = ({ onBack, onArticleClick }) => {
             ))}
           </div>
 
+          {/* On the Horizon */}
+          <div className="mt-32 pt-20 border-t border-white/10">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+                On the <span className="text-[#bdffcf]">Horizon</span>
+              </h2>
+              <p className="text-white/50 max-w-xl mx-auto">
+                New ways to learn, grow, and approach digital with intention.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {comingSoonItems.map((item, index) => (
+                <div key={index} className="p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <div className="text-5xl font-heading font-bold text-white/20 mb-4">0{index + 1}</div>
+                  <h3 className="text-2xl font-heading font-bold text-white mb-3">{item.title}</h3>
+                  <p className="text-white/70 leading-relaxed mb-4">{item.description}</p>
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/40">Coming Soon</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Newsletter CTA */}
           <div className="mt-20 max-w-xl mx-auto">
             <NewsletterForm variant="dark" />
           </div>
         </div>
       </section>
+
+      <Footer onMatchmakerClick={onMatchmakerClick} onServiceNavigate={onServiceNavigate} />
     </div>
   );
 };

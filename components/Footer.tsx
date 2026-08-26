@@ -4,14 +4,15 @@ import React from 'react';
 interface FooterProps {
   onMatchmakerClick?: () => void;
   onBlogClick?: () => void;
+  onServiceNavigate?: (route: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onMatchmakerClick, onBlogClick }) => {
+export const Footer: React.FC<FooterProps> = ({ onMatchmakerClick, onBlogClick, onServiceNavigate }) => {
   return (
     <footer className="py-20 px-6 lg:px-12 bg-white border-t border-black/5">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-20">
-          <div className="col-span-1 md:col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 mb-20">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1">
             <div className="mb-6">
               <img src="/DFB Blue Logomark.png" alt="DFB Digital" className="w-[130px] md:w-[160px] lg:w-[200px] h-auto" />
             </div>
@@ -23,8 +24,11 @@ export const Footer: React.FC<FooterProps> = ({ onMatchmakerClick, onBlogClick }
           <div>
             <h4 className="font-heading font-bold text-xs uppercase tracking-widest mb-8">Navigation</h4>
             <ul className="space-y-4 text-sm text-black/60">
-              <li><a href="#services" className="hover:text-brand-blue smooth-transition">Services</a></li>
+              <li><a href="/services" className="hover:text-brand-blue smooth-transition">Services</a></li>
+              <li><button onClick={() => onServiceNavigate && onServiceNavigate('about')} className="hover:text-brand-blue smooth-transition text-left">About</button></li>
+              <li><button onClick={() => onServiceNavigate && onServiceNavigate('our-work')} className="hover:text-brand-blue smooth-transition text-left">Our Work</button></li>
               <li><button onClick={onBlogClick} className="hover:text-brand-blue smooth-transition text-left">Blog</button></li>
+              <li><button onClick={() => onServiceNavigate && onServiceNavigate('rh-event-design')} className="hover:text-brand-blue smooth-transition text-left">Partners</button></li>
               <li><button onClick={onMatchmakerClick} className="hover:text-brand-blue smooth-transition text-left">Get Matched</button></li>
               <li><a href="mailto:hello@dfbdigital.com" className="hover:text-brand-blue smooth-transition">Contact</a></li>
             </ul>
@@ -48,6 +52,15 @@ export const Footer: React.FC<FooterProps> = ({ onMatchmakerClick, onBlogClick }
                 </a>
               </li>
             </ul>
+          </div>
+
+          <div>
+            <h4 className="font-heading font-bold text-xs uppercase tracking-widest mb-8">Office</h4>
+            <address className="text-sm text-black/60 not-italic leading-relaxed">
+              Unit B, 11/F Yam Tze Comm Bldg<br />
+              23 Thomson Rd, Wan Chai<br />
+              Hong Kong
+            </address>
           </div>
         </div>
 
