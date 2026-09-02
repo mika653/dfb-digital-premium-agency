@@ -6,6 +6,14 @@
   },
   "rewrites": [
     {
+      "source": "/enquire",
+      "destination": "https://rh-discovery.vercel.app/enquire"
+    },
+    {
+      "source": "/enquire/:path*",
+      "destination": "https://rh-discovery.vercel.app/enquire/:path*"
+    },
+    {
       "source": "/joe",
       "destination": "/joe.html"
     },
