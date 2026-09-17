@@ -191,56 +191,6 @@ def pixel_mark_svg(n=26, start=3.8, span=1.3, seed=7):
     return f'<svg class="px" viewBox="0 0 {n} {n}" fill="#0000FF" aria-hidden="true">{rects}</svg>', len(cells)
 
 # ── pages ──
-def calling_card():
-    """Embed Joe's DFB calling card (public/joe.html) as-is: its sections and its CSS, scoped under .jcard."""
-    src = open(f'{ROOT}/../public/joe.html', encoding='utf-8').read()
-    css = re.search(r'<style[^>]*>(.*?)</style>', src, re.S).group(1)
-    css = re.sub(r'@import\s+url\([^)]*\)[^;]*;', '', css)
-    css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
-    DROP = ('html', 'header', 'nav', '.logo', '.nav-cta')
-    def scope_sel(sel):
-        sel = sel.strip()
-        if not sel: return None
-        if sel == ':root' or sel == 'body': return '.jcard'
-        if sel == '*': return '.jcard *'
-        if any(sel == d or sel.startswith(d + ' ') or sel.startswith(d + ':') or sel.startswith(d + '.') for d in DROP): return None
-        return '.jcard ' + sel
-    def scope(block):
-        out, i, n = [], 0, len(block)
-        while i < n:
-            j = block.find('{', i)
-            if j < 0: break
-            head = block[i:j].strip()
-            depth, k = 1, j + 1
-            while k < n and depth:
-                depth += (block[k] == '{') - (block[k] == '}'); k += 1
-            inner = block[j+1:k-1]
-            if head.startswith('@media'):
-                out.append(f'{head}{{{scope(inner)}}}')
-            elif head.startswith('@'):
-                out.append(f'{head}{{{inner}}}')
-            else:
-                sels = [x for x in (scope_sel(t) for t in head.split(',')) if x]
-                if sels: out.append(f'{",".join(sels)}{{{inner}}}')
-            i = k
-        return ''.join(out)
-    scoped = scope(css) + """
-.jcard{padding:0;background:transparent}
-.jcard .hero{min-height:0;padding:96px 0 72px}
-.jcard section{scroll-margin-top:84px}
-.jcard .foot-bottom{display:none}
-.jcard footer{padding-bottom:56px}
-"""
-    open(f'{ROOT}/assets/jcard.css', 'w', encoding='utf-8').write(scoped)
-    body = re.search(r'<body[^>]*>(.*)</body>', src, re.S).group(1)
-    body = body[body.index('<section'):body.rindex('</footer>') + len('</footer>')]
-    for old, new in [('id="top"', 'id="jc-top"'), ('id="about"', 'id="jc-about"'), ('id="services"', 'id="jc-services"'), ('id="contact"', 'id="jc-contact"'),
-                     ('href="#about"', 'href="#jc-about"'), ('href="#services"', 'href="#jc-services"'), ('href="#contact"', 'href="#jc-contact"'), ('href="#top"', 'href="#about"')]:
-        body = body.replace(old, new)
-    body = re.sub(r'src="data:image/jpeg;base64,[^"]+"', 'src="/assets/joe-original.jpg"', body)
-    body = re.sub(r'<img src="data:image/png;base64,[^"]+"[^>]*>', '', body)
-    return body
-
 def notfound():
     body = f'''<section class="sec" style="min-height:60vh;display:grid;align-items:center"><div class="wrap"><div class="sec-h rv"><div class="lbl">404</div><h2>That page isn’t&nbsp;here.</h2><p class="lead">It may have moved when the site was rebuilt. The services, work and blog are all one click&nbsp;away.</p></div>
 <div class="cta-row rv d2"><a class="pill blue" href="/">{I("arrow-left")}Back to the start</a><a class="pill ghost" href="/services">Services{I("arrow-right")}</a><a class="pill ghost" href="/contact">Contact{I("arrow-right")}</a></div></div></section>'''
@@ -260,11 +210,9 @@ def home():
 <section id="work"><div class="wrap"><div class="sec-h rv"><div class="lbl">Selected work <em>four live sites</em></div><h2>Proof, not&nbsp;promises.</h2><p class="lead">A boutique is only as good as what it ships. Every one of these is live. Click through and judge for&nbsp;yourself.</p></div>{work_grid()}
 <p class="rv" style="margin-top:32px"><a class="more" href="/work">What we did on each{I("arrow-right")}</a></p></div></section>
 {quotes_section("What it's like to work with&nbsp;us.")}
-<section id="about" class="jcard">{calling_card()}</section>
 <div class="wrap" style="padding:72px 0 96px">{PARTNER_CARD}</div>
 {cta_band()}'''
-    page('/', 'DFB Digital — Do Digital Better.', 'Boutique digital consultancy for established business owners. Websites, digital strategy and systems, with a plain-English reason behind every recommendation.', body,
-         head='<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/jcard.css">')
+    page('/', 'DFB Digital — Do Digital Better.', 'Boutique digital consultancy for established business owners. Websites, digital strategy and systems, with a plain-English reason behind every recommendation.', body)
 
 def services_index():
     pr = ''.join(f'<div class="practice rv"><div class="ph"><h3>{p}</h3><span class="k">0{i+1} · {len(ss)} services</span></div><p class="lead" style="margin:0 0 22px">{esc(d)}</p><div class="svc-cards">{"".join(svc_card(s) for s in ss)}</div></div>' for i,(p,d,ss) in enumerate(PRACTICES))
@@ -298,18 +246,34 @@ def work():
     page('/work', 'Work — DFB Digital', 'Selected work by DFB Digital: RH Event Design, Prof. Derek Burton Collins, Dante Alighieri Society, Aldeon Luxury Suites.', body, 'work')
 
 def about():
-    body = f'''<div class="phero"><div class="wrap phero-grid"><div><div class="crumb"><a href="/">Home</a>{I("chevron-right")}<b>About</b></div><h1 style="max-width:16ch">Twelve years inside the agencies. Now on your side of the&nbsp;table.</h1>
-<p class="lead">DFB Digital is a boutique digital consultancy, registered in Hong Kong and delivered from Manila, led by founder Joe&nbsp;Flores.</p></div>
+    CARD_SERVICES = [
+        ('Digital Transformation Consulting', 'A clear-eyed audit of your current operations and a practical roadmap to modernize them — no jargon, no bloated frameworks.', 'digital-transformation'),
+        ('Digital Marketing Strategy', 'Agency-level positioning, channel strategy, and campaign planning, sized to your budget and built to be executed by your own team.', 'digital-strategy'),
+        ('Web Development', 'Fast, mobile-first websites and landing pages designed to convert — not just look good on a pitch deck.', 'launchpad'),
+        ('AI & Business Automation', 'Practical AI systems that cut busywork out of marketing, sales follow-up, and operations — implemented, not just recommended.', 'ai-automations'),
+    ]
+    four = ''.join(f'<a class="card svc rv" href="/services/{slug}"><div class="num">0{i+1}</div><h3>{esc(t)}</h3><p class="d">{esc(p)}</p></a>' for i,(t,p,slug) in enumerate(CARD_SERVICES))
+    body = f'''<div class="phero"><div class="wrap phero-grid"><div><div class="crumb"><a href="/">Home</a>{I("chevron-right")}<b>About</b></div>
+<div class="lbl rv" style="margin:18px 0 14px">Digital Marketing &amp; Transformation Consultant</div>
+<h1 class="rv" style="max-width:15ch">I help CEOs and decision-makers <em>Do Digital Better.</em></h1>
+<p class="lead rv d1">{esc("With 13+ years of global agency experience and expertise, I partner with executives to bridge critical knowledge gaps, replace outdated tactics, and position companies as innovators in their industry.")}</p>
+<div class="cta-row rv d2"><a class="pill blue" href="https://wa.me/85266470247" target="_blank" rel="noopener">{I("message-circle")}Chat on WhatsApp</a><a class="pill ghost" href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">{I("linkedin")}Connect on LinkedIn</a></div>
+<ul class="did rv d3" style="margin-top:28px"><li>Digital Transformation</li><li>AI &amp; Automation</li><li>Web Development</li><li>Marketing &amp; Business Solutions</li></ul></div>
 <div class="rv d1"><div class="portrait"><img src="/assets/joe-original.jpg" alt="Joe Flores, Founder of DFB Digital"><div class="badge"><b>Joe Flores</b><span>Founder · aka Daddy FunBuckets</span></div></div></div></div></div>
-<section><div class="wrap about" style="max-width:760px"><div class="lbl rv">The founder</div>
-<p class="rv" style="margin-top:22px">{esc("Joe Flores spent over a decade in digital marketing and strategy across Asia, the Middle East and global markets, including inside global agency social teams, before founding DFB Digital to work directly with the business owners those agencies never quite served.")}</p>
-<p class="rv">{esc("Most of those owners don't need more marketing. They need someone to look at how the business actually runs, say plainly what's costing them time or customers, and fix that first. That's the job. Websites, digital strategy and the systems behind them, explained in plain English, with the reasoning shown.")}</p>
-<div class="lbl rv" style="margin-top:44px">{HAT}About the name</div>
-<p class="rv" style="margin-top:22px">{esc("DFB is Daddy FunBuckets, the nickname Joe has answered to for years and the handle he's built his work under. The bucket hat is the shorthand for how the place works: serious about the outcome, unserious about the ceremony. It's why the blog is called Into the Bucket, and why there's a hat on the browser tab.")}</p></div></section>
-{quotes_section("Two clients, in full.", full=True)}
-<div class="wrap" style="padding-top:96px;padding-bottom:96px">{PARTNER_CARD}</div>
-{cta_band()}'''
-    page('/about', 'About — DFB Digital', 'DFB Digital is led by founder Joe Flores, with 12+ years of digital marketing and strategy across Asia, the Middle East and global markets.', body, 'about')
+
+<section><div class="wrap about-grid" style="align-items:start"><div class="sec-h rv" style="margin:0"><div class="lbl">Who you’d be working with</div><h2>A digital-first architect, not a traditional&nbsp;marketer.</h2></div>
+<div class="about rv d1"><p>{esc("Most executive teams aren’t doing digital — they’re just running print-era playbooks on shiny new platforms.")}</p>
+<p>I’m <b>Joe Flores</b> (aka Daddy FunBuckets), and I help founders and CEOs dismantle traditional marketing habits to instill a true digital-first infrastructure. Together, we arm your business with the AI, funnels, and foundational frameworks needed to lead markets rather than constantly play&nbsp;catch-up.</p>
+<blockquote>{esc("From idea to strategy to digital execution in B2B or B2C cycles, he will work with you to achieve and exceed your targeted outcomes… One of the biggest mistakes you can make is leaving your digital plan for later — work with him sooner rather than later.")}<cite><a href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">Read the full recommendation on LinkedIn{I("arrow-right")}</a></cite></blockquote></div></div></section>
+
+<section class="alt"><div class="wrap"><div class="sec-h rv"><div class="lbl">What I help with</div><h2>Four ways I move your business&nbsp;forward.</h2></div><div class="svc-grid four">{four}</div></div></section>
+
+<section><div class="wrap"><div class="cta-band rv"><div class="k">Let’s talk</div><h2>Direct access. Zero&nbsp;friction.</h2><p>{esc("Message me directly — no forms, no gatekeepers. I read and answer everything myself.")}</p>
+<div class="cta-row" style="justify-content:center"><a class="pill blue" href="https://wa.me/85266470247" target="_blank" rel="noopener">{I("message-circle")}Message me on WhatsApp</a><a class="pill ghost" href="mailto:joe@dfbdigital.com?subject=Digital%20Transformation%20Consultation">{I("mail")}Email me</a></div></div>
+<div class="cinfo-grid rv d1"><div class="cinfo"><div class="k">{I("building-2")}DFB Digital Limited</div><p>Unit B, 11/F Yam Tze Comm Bldg<br>23 Thomson Rd, Wan Chai<br>Hong Kong</p></div>
+<div class="cinfo"><div class="k">{I("mail")}Email</div><a href="mailto:joe@dfbdigital.com">joe@dfbdigital.com</a><div class="k">{I("phone")}Phone / WhatsApp</div><a href="tel:+85266470247">+852 6647 0247</a><div class="k">{I("linkedin")}LinkedIn</div><a href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">linkedin.com/in/daddyfunbuckets</a></div></div></div></section>
+'''
+    page('/about', 'About Joe Flores — DFB Digital', 'Joe Flores, founder of DFB Digital, helps CEOs and decision-makers do digital better: 13+ years of global agency experience, a digital-first architect, not a traditional marketer.', body, 'about')
 
 def blog_index():
     body = f'''<div class="phero center"><div class="wrap"><div class="crumb"><a href="/">Home</a>{I("chevron-right")}<b style="display:inline-flex;align-items:center;gap:8px">{HAT}Into the Bucket</b></div><h1>Clear thinking on digital, <br class=lg>for decision&#8209;makers.</h1>

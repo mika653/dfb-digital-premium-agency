@@ -328,3 +328,14 @@ footer{border-top:1px solid var(--line-soft)}
 .card-contact .role{font-size:14px;color:var(--ink-50);font-weight:500;margin:10px 0 0}
 .contact-row{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 18px}
 .card-contact .addr{font-size:13px;color:var(--ink-50);line-height:1.7;margin-bottom:18px}
+
+/* about page — the calling card in the new design */
+.phero h1 em{font-style:normal;color:var(--blue)}
+.svc-grid.four{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.svc-grid.four{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.svc-grid.four{grid-template-columns:1fr}}
+.svc-grid.four .card{text-decoration:none;color:inherit}
+.cinfo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:700px){.cinfo-grid{grid-template-columns:1fr}}
+.about blockquote cite a{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-weight:600}
+.about blockquote cite a svg{width:14px;height:14px}
