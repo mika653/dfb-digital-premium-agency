@@ -332,7 +332,7 @@ export default async function handler(req, res) {
   // page instead of the app — which this function would then unknowingly
   // serve to the real visitor as if it were the site.
   try {
-    const html = readFileSync(join(process.cwd(), 'dist', 'index.html'), 'utf-8');
+    const html = readFileSync(join(process.cwd(), 'dist', 'app.html'), 'utf-8');
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(html);
   } catch (err) {

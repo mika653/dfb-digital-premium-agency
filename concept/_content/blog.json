@@ -1,0 +1,42 @@
+[
+ {
+  "id": "digital-transformation-explained",
+  "title": "What Is Digital Transformation, Really?",
+  "subtitle": "A Plain-English Guide",
+  "excerpt": "\"Digital transformation\" gets used to sell almost anything. Here's what it actually means, what it isn't, and how to start without overhauling everything.",
+  "category": "Digital Transformation",
+  "readTime": "6 min read",
+  "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800",
+  "gradient": "from-violet-500 to-purple-700"
+ },
+ {
+  "id": "ai-automation-guide",
+  "title": "AI Automation for Established Businesses",
+  "subtitle": "What It Actually Means",
+  "excerpt": "Not robots. Not hype. Just the repetitive parts of your day — replying, scheduling, data entry — handled quietly in the background.",
+  "category": "AI & Automation",
+  "readTime": "5 min read",
+  "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
+  "gradient": "from-blue-600 to-indigo-700"
+ },
+ {
+  "id": "modern-marketing-2026",
+  "title": "Modern Marketing for Established Businesses",
+  "subtitle": "What Actually Works Now",
+  "excerpt": "The channels changed. What earns trust didn't. Including why AI-powered search is starting to matter for how customers find you.",
+  "category": "Marketing",
+  "readTime": "5 min read",
+  "image": "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&q=80&w=800",
+  "gradient": "from-emerald-500 to-teal-600"
+ },
+ {
+  "id": "article-boutique-strategy",
+  "title": "How Boutique Agencies Think About Digital Strategy",
+  "subtitle": "That Big Agencies Don't",
+  "excerpt": "Digital strategy often gets confused with execution. More channels, more tools, more activity. But strategy isn't about doing more. It's about choosing what not to do.",
+  "category": "Strategy",
+  "readTime": "5 min read",
+  "image": "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?auto=format&fit=crop&q=80&w=800",
+  "gradient": "from-purple-500 to-pink-600"
+ }
+]

@@ -1,0 +1,422 @@
+{
+ "EventLab": {
+  "eventPhases": [
+   {
+    "number": "01",
+    "title": "Pre-event",
+    "description": "Build excitement till the big day"
+   },
+   {
+    "number": "02",
+    "title": "Event Proper",
+    "description": "Guide guests in real time and keep things running smoothly"
+   },
+   {
+    "number": "03",
+    "title": "Post-event",
+    "description": "Relive the experience over and over again"
+   }
+  ],
+  "keyFeatures": [
+   {
+    "title": "Centralized Content Management",
+    "description": "Easily manage schedules, speakers, announcements, and content in one place—so attendees always see the most up-to-date event information."
+   },
+   {
+    "title": "Always-On Accessibility",
+    "description": "A dedicated event site that's accessible anytime, on any device, giving attendees, partners, and speakers constant access to everything they need."
+   },
+   {
+    "title": "Partner & Sponsor Visibility",
+    "description": "Purpose-built sections for sponsors and partners that offer visibility, credibility, and clear value—without distracting from the attendee experience."
+   }
+  ],
+  "benefits": [
+   {
+    "number": "01",
+    "title": "Up-to-the-Minute Event Info"
+   },
+   {
+    "number": "02",
+    "title": "24/7 Availability"
+   },
+   {
+    "number": "03",
+    "title": "Sponsorship Opportunities"
+   }
+  ],
+  "_h1": [
+   "Event    Lab"
+  ],
+  "_lead": [
+   "Websites built for moments that matter.",
+   "A dedicated event website that does the work before, during and after the day: schedules, speakers, registration and post-event content, all in one focused place your guests can actually find.",
+   "Let's discuss your vision and bring it to life with precision and creativity."
+  ]
+ },
+ "InstaSite": {
+  "benefits": [
+   {
+    "title": "Fast Setup",
+    "description": "Your personal website is designed and launched quickly"
+   },
+   {
+    "title": "Zero Tech Stress",
+    "description": "No coding, plugins, or complicated decisions required."
+   },
+   {
+    "title": "Clean, Professional Design",
+    "description": "No clutter, no unnecessary features—just a polished site that makes a strong first impression."
+   }
+  ],
+  "features": [
+   {
+    "title": "Streamlined Process",
+    "description": "Your personal site is built for you using a streamlined process that removes technical complexity."
+   },
+   {
+    "title": "Purpose-Driven Structure",
+    "description": "Clear sections that highlight who you are, what you offer, and what visitors should do next."
+   },
+   {
+    "title": "Easy Updates",
+    "description": "One link for bios, profiles, and emails—with updates that don't require web expertise."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "title": "Instant Credibility"
+   },
+   {
+    "title": "Fast Online Visibility"
+   },
+   {
+    "title": "One Clear Digital Home"
+   }
+  ],
+  "_h1": [
+   "Insta   Site"
+  ],
+  "_lead": [
+   "Your digital presence starts here.",
+   "A polished, professional site that tells the world you're here—built fast, designed to impress, zero complexity.",
+   "Consultants, professionals, small businesses, and personal brands who need a smart digital calling card."
+  ]
+ },
+ "LaunchPad": {
+  "benefits": [
+   {
+    "title": "Scalable Architecture",
+    "description": "Your website grows with your business, supporting new pages and initiatives over time."
+   },
+   {
+    "title": "Easy Management",
+    "description": "Teams can update content and manage the site without relying on technical support."
+   },
+   {
+    "title": "Goal-Oriented Design",
+    "description": "Layouts and flows are structured around engagement, conversion, and long-term objectives."
+   }
+  ],
+  "features": [
+   {
+    "title": "Flexible Structure",
+    "description": "A flexible page and content structure designed to support growth, new sections, and evolving needs."
+   },
+   {
+    "title": "Team-Friendly Updates",
+    "description": "Built so internal teams can update and maintain content without relying on constant technical support."
+   },
+   {
+    "title": "Strategic Layouts",
+    "description": "Layouts and flows are designed around your goals—whether that's engagement, information, conversion, or community building."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "title": "Built to Grow With You"
+   },
+   {
+    "title": "Clarity for Users, Control for Teams"
+   },
+   {
+    "title": "Long-Term Reliability"
+   }
+  ],
+  "_h1": [
+   "Launch   Pad"
+  ],
+  "_lead": [
+   "Your digital foundation, built right from day one.",
+   "A full website solution for businesses and organizations ready to grow. Thoughtfully structured, easy to manage, and designed to evolve.",
+   "Businesses, NGOs, and organizations that want a scalable, future-ready website."
+  ]
+ },
+ "DigitalStrategy": {
+  "benefits": [
+   {
+    "title": "Strategic Audits",
+    "description": "In-depth diagnostics across your website, social channels, funnels, and content to identify what's working and what's not."
+   },
+   {
+    "title": "Campaign Architecture",
+    "description": "End-to-end campaign planning and roadmapping, from awareness through conversion to retention."
+   },
+   {
+    "title": "AI-Powered Insights",
+    "description": "Leverage AI-assisted diagnostics and data analysis to uncover opportunities others miss."
+   }
+  ],
+  "features": [
+   {
+    "title": "Full-Funnel Design",
+    "description": "Structured campaigns that guide your audience from awareness through conversion to long-term retention."
+   },
+   {
+    "title": "Platform & Channel Strategy",
+    "description": "Strategic platform selection and channel optimization so your efforts go where they'll have the most impact."
+   },
+   {
+    "title": "KPI Definition & Success Metrics",
+    "description": "Clear, measurable goals tied directly to your business outcomes—no vanity metrics."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "title": "Clarity"
+   },
+   {
+    "title": "Direction"
+   },
+   {
+    "title": "Results"
+   }
+  ],
+  "_h1": [
+   "Digital    Strategy"
+  ],
+  "_lead": [
+   "Move forward with a plan, not guesswork.",
+   "Comprehensive digital audits, campaign roadmaps, and data-driven strategies that align your digital efforts with real business goals.",
+   "Businesses ready to move beyond guesswork and build a clear, data-driven digital roadmap that connects effort to outcomes."
+  ]
+ },
+ "SocialMediaMarketing": {
+  "benefits": [
+   {
+    "number": "01",
+    "title": "Strategy & Planning",
+    "description": "Data-informed social media strategies, content planning, and brand voice development tailored to your goals."
+   },
+   {
+    "number": "02",
+    "title": "Content & Creative",
+    "description": "Monthly and quarterly content calendars, post copywriting, and creative direction that resonates with your audience."
+   },
+   {
+    "number": "03",
+    "title": "Performance & Growth",
+    "description": "Comprehensive performance tracking, reporting, and community engagement guidelines that drive measurable growth."
+   }
+  ],
+  "features": [
+   {
+    "title": "Platform-Specific Optimization",
+    "description": "Tailored strategies for Instagram, Facebook, LinkedIn, TikTok, and more—because each platform demands a different approach."
+   },
+   {
+    "title": "Brand Voice & Messaging",
+    "description": "A consistent, recognisable voice across all channels that builds trust and sets you apart from the noise."
+   },
+   {
+    "title": "Add-On Capabilities",
+    "description": "Reels and short-form video strategy, event-based social campaigns, and campaign-specific content pushes when you need them."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "number": "01",
+    "title": "Consistency"
+   },
+   {
+    "number": "02",
+    "title": "Engagement"
+   },
+   {
+    "number": "03",
+    "title": "Growth"
+   }
+  ],
+  "_h1": [
+   "Social Media    Marketing"
+  ],
+  "_lead": [
+   "Show up with purpose, not just presence.",
+   "Strategic social media management that builds audience, drives engagement, and turns followers into advocates.",
+   "Brands and businesses that want a consistent, strategic social media presence—without the guesswork or burnout."
+  ]
+ },
+ "ContentMarketing": {
+  "benefits": [
+   {
+    "title": "Editorial Strategy",
+    "description": "Structured content strategy, editorial planning, and calendars that keep your brand publishing with purpose."
+   },
+   {
+    "title": "Brand Content",
+    "description": "Blog posts, thought leadership articles, and website copy that positions you as the authority in your space."
+   },
+   {
+    "title": "Conversion Content",
+    "description": "Campaign landing pages, email sequences, and lead magnets designed to turn readers into leads and leads into clients."
+   }
+  ],
+  "features": [
+   {
+    "title": "Blog & Thought Leadership",
+    "description": "Position your brand as an industry authority with well-researched, strategically crafted content that educates and inspires."
+   },
+   {
+    "title": "Lead Magnet Content",
+    "description": "Guides, checklists, and mini-workshops that provide genuine value and give your audience a reason to engage deeper."
+   },
+   {
+    "title": "Email Content & Sequences",
+    "description": "Value-driven, non-spammy email content and nurture sequences that build trust and move prospects toward action."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "title": "Authority"
+   },
+   {
+    "title": "Attraction"
+   },
+   {
+    "title": "Conversion"
+   }
+  ],
+  "_h1": [
+   "Content    Marketing"
+  ],
+  "_lead": [
+   "Tell your story. Attract your audience. Drive action.",
+   "Compelling content strategies that position your brand, attract your ideal audience, and turn attention into action.",
+   "Businesses and thought leaders who want to attract, educate, and convert their ideal audience through valuable, intentional content."
+  ]
+ },
+ "EmailCRM": {
+  "benefits": [
+   {
+    "title": "Email Strategy",
+    "description": "Full email marketing strategy, newsletter setup, and optimization to keep your audience engaged and informed."
+   },
+   {
+    "title": "Automation",
+    "description": "Onboarding sequences, follow-up workflows, and triggered campaigns that nurture leads on autopilot."
+   },
+   {
+    "title": "CRM Intelligence",
+    "description": "List segmentation, audience targeting, and data-driven campaign strategies that put the right message in front of the right people."
+   }
+  ],
+  "features": [
+   {
+    "title": "Newsletter Setup & Optimization",
+    "description": "Consistent, engaging newsletters that keep your audience connected and your brand top of mind."
+   },
+   {
+    "title": "Automated Sequences",
+    "description": "Onboarding flows, follow-up sequences, and nurture campaigns that work while you focus on what matters."
+   },
+   {
+    "title": "Event & Campaign Emails",
+    "description": "Announcements, launches, and promotional campaigns that drive attendance, awareness, and action."
+   }
+  ],
+  "coreBenefits": [
+   {
+    "title": "Retention"
+   },
+   {
+    "title": "Precision"
+   },
+   {
+    "title": "Growth"
+   }
+  ],
+  "_h1": [
+   "Email &    CRM"
+  ],
+  "_lead": [
+   "The right message. The right time. Every time.",
+   "Nurture leads and retain customers with precision email sequences, CRM-driven campaigns, and automated workflows that scale.",
+   "NGOs, HOAs, professionals, and consultants who need structured, reliable communication with their audience—without the spam."
+  ]
+ },
+ "AIAutomations": {
+  "sections": [
+   {
+    "number": "01",
+    "title": "What This Actually Means",
+    "description": "No new software to learn. No dashboards to check. It runs quietly inside the tools you already use — email, calendar, CRM, invoicing."
+   },
+   {
+    "number": "02",
+    "title": "What It's Built For",
+    "description": "Fewer dropped follow-ups. Hours back in your week. We'll show you the real time cost first, and give you a straight estimate — not a marketing number."
+   },
+   {
+    "number": "03",
+    "title": "How We Build It",
+    "description": "We watch how your business works, map the repetitive parts, then build and test it with you. Nothing goes live until you've seen it work."
+   }
+  ],
+  "outcomes": [
+   {
+    "title": "Fewer Dropped Follow-Ups",
+    "description": "Every lead and every client gets the response they were promised, on time, every time."
+   },
+   {
+    "title": "Time Back for Your Team",
+    "description": "The repetitive parts of the day disappear so your people can focus on customers, not admin."
+   },
+   {
+    "title": "Nothing Goes Live Without You",
+    "description": "You see every automation working before it ever touches a real customer."
+   }
+  ],
+  "_h1": [
+   "Get Your Time  Back."
+  ],
+  "_lead": [
+   "AI Automations quietly handle the repetitive work in your business — replying, scheduling, follow-ups, data entry — so you and your team spend time on customers, not admin.",
+   "Businesses doing the same manual steps every day. Replying. Scheduling. Chasing. Data entry. It's costing you real hours every week.",
+   "On the call, we'll walk through what's eating your time and whether automation is actually the right fix — not assume it is."
+  ]
+ },
+ "DigitalTransformation": {
+  "steps": [
+   {
+    "title": "A Working Session",
+    "description": "A working session directly with Daddy FunBuckets, Founder — not a junior account manager."
+   },
+   {
+    "title": "A Written Roadmap",
+    "description": "A written roadmap, ranked by impact and cost — so you know what matters most first."
+   },
+   {
+    "title": "You Choose What's Next",
+    "description": "You choose what to act on — with us or on your own. Nothing is bundled."
+   }
+  ],
+  "_h1": [
+   "A Clear Plan for Catching Up  — Without Starting Over."
+  ],
+  "_lead": [
+   "A one-on-one review of where your business stands digitally, and a straight-talk roadmap for what to fix first, second, and never.",
+   "Established business owners who know something needs to change but don't have time to sort hype from what's real.",
+   "A written, plain-English assessment of your website, systems, and processes. What's working. What's costing you customers. What to leave alone."
+  ]
+ }
+}

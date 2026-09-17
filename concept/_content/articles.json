@@ -1,0 +1,401 @@
+{
+ "digital-transformation-explained": {
+  "flow": [
+   [
+    "h1",
+    "What Is Digital Transformation, Really?"
+   ],
+   [
+    "p",
+    "A plain-English guide for business owners who are tired of the buzzword and just want a straight answer."
+   ],
+   [
+    "p",
+    "\"Digital transformation\" gets used to sell almost anything — new software, a rebrand, an app nobody asked for. Here's what it actually means, without the sales pitch."
+   ],
+   [
+    "h2",
+    "The Plain Definition"
+   ],
+   [
+    "p",
+    "Digital transformation is using digital tools to run your business with less friction. A clearer website. Fewer manual steps. Decisions based on what's actually happening, not what you assume is happening."
+   ],
+   [
+    "p",
+    "It's not a single project with an end date. It's an ongoing habit of asking: \"is there a better way to do this part of the business?\""
+   ],
+   [
+    "h2",
+    "What It's Not"
+   ],
+   [
+    "li",
+    "It's not buying a new piece of software and hoping it fixes things."
+   ],
+   [
+    "li",
+    "It's not a website redesign for its own sake."
+   ],
+   [
+    "li",
+    "It's not about looking modern for its own sake. It's about running better."
+   ],
+   [
+    "h2",
+    "Signs Your Business Is Due For It"
+   ],
+   [
+    "li",
+    "Your team re-types the same information into more than one system."
+   ],
+   [
+    "li",
+    "You genuinely don't know which marketing efforts are working."
+   ],
+   [
+    "li",
+    "Your website hasn't meaningfully changed in years, but your business has."
+   ],
+   [
+    "h2",
+    "How to Start Without Overhauling Everything"
+   ],
+   [
+    "p",
+    "Start with an honest, written assessment — not a sales pitch. Something that tells you plainly what's working, what's costing you customers, and what to leave alone because it wouldn't move the needle."
+   ],
+   [
+    "p",
+    "You rank what's found by impact and cost, then choose what to act on — with help or on your own. Nothing bundled, nothing assumed."
+   ]
+  ],
+  "faq": [
+   {
+    "q": "What is digital transformation in simple terms?",
+    "a": "It's the process of using digital tools and systems to run your business better — clearer websites, less manual admin, and decisions based on real data instead of guesswork. It's not one product you buy; it's an ongoing way of operating."
+   },
+   {
+    "q": "Do I need to replace all my systems to \\",
+    "a": "No. Most businesses keep 80% of what already works and fix the 20% that's actually costing them time or customers. A good digital transformation plan tells you what to leave alone, not just what to change."
+   },
+   {
+    "q": "How long does digital transformation take?",
+    "a": "A written assessment and roadmap typically takes days, not months. Implementing the roadmap is staged — you act on the highest-impact items first, at a pace that fits your business."
+   },
+   {
+    "q": "Is digital transformation just about AI?",
+    "a": "No. AI and automation are often part of it, but digital transformation also covers your website, your customer data, your marketing systems, and how your team actually works day to day. AI is one tool among several."
+   },
+   {
+    "q": "How much does digital transformation cost?",
+    "a": "It depends entirely on what's found and what you choose to act on — because nothing is bundled. The starting point is a plain-English assessment, not a fixed-price package."
+   }
+  ]
+ },
+ "ai-automation-guide": {
+  "flow": [
+   [
+    "h1",
+    "AI Automation for Established Businesses: What It Actually Means"
+   ],
+   [
+    "p",
+    "Not robots. Not hype. Just the repetitive parts of your day, handled quietly."
+   ],
+   [
+    "p",
+    "For an established business owner, \"AI\" often sounds like either a toy or a threat. In practice, it's neither — it's a way to stop doing the same manual steps every single day."
+   ],
+   [
+    "h2",
+    "What It Looks Like Day-to-Day"
+   ],
+   [
+    "p",
+    "Software that reads, sorts, and responds to routine tasks that would otherwise sit on someone's desk: a lead form that gets an instant reply, a reminder that goes out before a no-show, an invoice that chases itself."
+   ],
+   [
+    "p",
+    "It runs inside tools you already use — email, calendar, CRM, invoicing. No new dashboard for your staff to learn or avoid."
+   ],
+   [
+    "h2",
+    "What It's Not"
+   ],
+   [
+    "li",
+    "It's not a chatbot bolted onto your website for its own sake."
+   ],
+   [
+    "li",
+    "It's not \"set it and forget it\" magic — it's built, tested, and shown to you before it touches a real customer."
+   ],
+   [
+    "li",
+    "It's not a replacement for your team. It's a way to give them their time back."
+   ],
+   [
+    "h2",
+    "Where Most Businesses Start"
+   ],
+   [
+    "li",
+    "Lead and client follow-ups that currently get missed or delayed."
+   ],
+   [
+    "li",
+    "Appointment scheduling and reminders."
+   ],
+   [
+    "li",
+    "Data entry between systems that don't talk to each other."
+   ],
+   [
+    "p",
+    "If a task is identical every time it happens, it's usually a good place to start."
+   ]
+  ],
+  "faq": [
+   {
+    "q": "Will AI automation replace my employees?",
+    "a": "No. Well-built automation removes repetitive admin — replying, scheduling, data entry — so your existing team spends time on customers instead of busywork. It clears the busywork off their plate; it doesn't clear them off the payroll."
+   },
+   {
+    "q": "Is AI automation expensive?",
+    "a": "It scales to what you automate. The right way to start is by finding the specific time cost of your current manual process first, then getting a straight estimate for fixing it — not a marketing number."
+   },
+   {
+    "q": "What's the difference between AI automation and just using ChatGPT?",
+    "a": "Using a chatbot is one person typing questions into a browser tab. Automation is a system that runs in the background of tools you already use — email, calendar, CRM, invoicing — without anyone having to remember to open an app."
+   },
+   {
+    "q": "How do I know what to automate first?",
+    "a": "Start with whatever repeats every single day and never changes: appointment reminders, lead follow-ups, invoice chasing, data entry between systems. If a task is identical every time, it's a good automation candidate."
+   },
+   {
+    "q": "Is my business too small for AI automation?",
+    "a": "No — if anything, small and boutique businesses benefit most, because there's no large admin team to absorb the repetitive work. One or two well-placed automations can return hours a week."
+   }
+  ]
+ },
+ "modern-marketing-2026": {
+  "flow": [
+   [
+    "h1",
+    "Modern Marketing for Established Businesses: What Actually Works Now"
+   ],
+   [
+    "p",
+    "The channels changed. What earns trust didn't."
+   ],
+   [
+    "p",
+    "Most marketing advice is written for startups trying to get noticed. Established businesses have a different problem: staying credible while everything around them moves."
+   ],
+   [
+    "h2",
+    "Why Old Playbooks Are Losing Effectiveness"
+   ],
+   [
+    "p",
+    "Posting more, everywhere, used to be enough to stand out. It isn't anymore — audiences are more skeptical, and attention is split across more places than ever."
+   ],
+   [
+    "p",
+    "What's replaced volume is trust: proof, consistency, and a clear, plain-spoken message."
+   ],
+   [
+    "h2",
+    "What's Actually Working Now"
+   ],
+   [
+    "li",
+    "Consistent content on one or two channels, not scattered effort everywhere."
+   ],
+   [
+    "li",
+    "Real proof — named clients, specific results — over generic claims."
+   ],
+   [
+    "li",
+    "Direct, plain-English messaging instead of jargon."
+   ],
+   [
+    "li",
+    "Email and CRM follow-up that actually nurtures leads, instead of a one-time blast."
+   ],
+   [
+    "h2",
+    "The Rise of AI-Powered Search"
+   ],
+   [
+    "p",
+    "A growing share of people now ask AI tools questions directly instead of searching and clicking through ten links. Those tools answer using content they can clearly read and trust."
+   ],
+   [
+    "p",
+    "If your website doesn't explain, in plain language, what you do and who it's for, you won't show up in those answers — no matter how good the work itself is."
+   ],
+   [
+    "h2",
+    "How to Modernize Without Losing Your Voice"
+   ]
+  ],
+  "faq": [
+   {
+    "q": "Is social media still worth it for established businesses?",
+    "a": "Yes, but as consistency, not volume. A steady, focused presence on one or two platforms beats scattered effort across five. Strategy is about choosing what not to do."
+   },
+   {
+    "q": "What is AI search and why does it matter for marketing?",
+    "a": "More people now ask AI tools like ChatGPT or Perplexity questions instead of typing them into Google. Those tools answer using clear, well-structured content they can find and quote. If your business's website doesn't explain what you do in plain language, you simply won't get mentioned in those answers."
+   },
+   {
+    "q": "Do I need to be on every platform?",
+    "a": "No. Being everywhere thinly is worse than being somewhere consistently. Pick the one or two channels your actual customers use, and do those well."
+   },
+   {
+    "q": "How do I compete with big-budget marketing?",
+    "a": "Established businesses compete on trust and proof, not ad spend. A real testimonial with a real name and a real result outperforms a bigger budget with generic claims."
+   },
+   {
+    "q": "What's the first step to modernizing our marketing?",
+    "a": "An honest audit of what's actually working today versus what you assume is working. Most businesses are surprised by the gap between the two."
+   }
+  ]
+ },
+ "article-boutique-strategy": {
+  "flow": [
+   [
+    "h1",
+    "How Boutique Agencies Think About Digital Strategy"
+   ],
+   [
+    "p",
+    "(That Big Agencies Don't)"
+   ],
+   [
+    "p",
+    "Digital strategy often gets confused with execution. More channels, more tools, more activity. But strategy isn't about doing more. It's about choosing what not to do."
+   ],
+   [
+    "p",
+    "Boutique digital agencies tend to approach strategy differently—not because they have fewer resources, but because they're closer to the problem. That proximity changes how decisions are made."
+   ],
+   [
+    "p",
+    "Below is how boutique agencies typically think about digital strategy, and why that mindset often leads to better outcomes."
+   ],
+   [
+    "h2",
+    "Strategy Starts With Constraints, Not Ideas"
+   ],
+   [
+    "p",
+    "Big agencies often start with possibilities. Boutique agencies start with constraints."
+   ],
+   [
+    "p",
+    "Budget, team capacity, timelines, internal workflows, and decision-making speed all shape what is realistic. Strategy becomes effective when it works within these boundaries instead of ignoring them."
+   ],
+   [
+    "p",
+    "Clear constraints reduce wasted effort and focus resources where they matter most."
+   ],
+   [
+    "h2",
+    "Prioritization Comes Before Channels"
+   ],
+   [
+    "p",
+    "A common mistake in digital planning is starting with platforms: SEO, paid ads, social media, email, AI tools."
+   ],
+   [
+    "p",
+    "Boutique agencies typically reverse this order. They identify:"
+   ],
+   [
+    "li",
+    "The primary business objective"
+   ],
+   [
+    "li",
+    "The biggest bottleneck preventing growth"
+   ],
+   [
+    "li",
+    "The fastest path to measurable improvement"
+   ],
+   [
+    "p",
+    "Only then do channels come into the conversation. Strategy is about sequencing, not stacking."
+   ],
+   [
+    "h2",
+    "Fewer Metrics, Better Decisions"
+   ],
+   [
+    "p",
+    "More data doesn't always lead to better insight."
+   ],
+   [
+    "p",
+    "Boutique agencies often track fewer metrics, but they track the right ones. Metrics are chosen based on decision-making value, not reporting volume."
+   ],
+   [
+    "p",
+    "If a metric doesn't change behaviour, it usually doesn't belong in the strategy."
+   ],
+   [
+    "h2",
+    "Strategy Is a Living System, Not a One-Time Deck"
+   ],
+   [
+    "p",
+    "Digital environments change constantly—algorithms, user behaviour, platforms, and tools evolve."
+   ],
+   [
+    "p",
+    "Boutique agencies treat strategy as a system that adapts over time. Plans are revisited, refined, and challenged regularly rather than locked into static documents."
+   ],
+   [
+    "p",
+    "This flexibility allows for faster learning and course correction."
+   ],
+   [
+    "h2",
+    "Execution and Strategy Are Closely Linked"
+   ],
+   [
+    "p",
+    "In smaller teams, strategists often stay close to execution. That feedback loop matters."
+   ],
+   [
+    "p",
+    "Seeing what actually happens in campaigns, websites, and content informs better strategic decisions. Strategy improves when it's grounded in real-world performance, not assumptions."
+   ],
+   [
+    "h3",
+    "DFB Says"
+   ],
+   [
+    "p",
+    "Effective digital strategy isn't about doing everything. It's about doing the right things in the right order, for the right reasons."
+   ],
+   [
+    "p",
+    "Boutique agencies succeed not by being louder, but by being clearer."
+   ],
+   [
+    "h3",
+    "Want Strategic Clarity?"
+   ],
+   [
+    "p",
+    "Let's have an intentional conversation about your digital strategy—no jargon, no pressure."
+   ]
+  ],
+  "faq": []
+ }
+}

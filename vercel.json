@@ -1,9 +1,98 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "functions": {
     "api/render-page.js": {
-      "includeFiles": "dist/index.html"
+      "includeFiles": "dist/app.html"
     }
   },
+  "redirects": [
+    {
+      "source": "/our-work",
+      "destination": "/work",
+      "permanent": true
+    },
+    {
+      "source": "/eventlab",
+      "destination": "/services/event-lab",
+      "permanent": true
+    },
+    {
+      "source": "/instasite",
+      "destination": "/services/instasite",
+      "permanent": true
+    },
+    {
+      "source": "/launchpad",
+      "destination": "/services/launchpad",
+      "permanent": true
+    },
+    {
+      "source": "/digitalstrategy",
+      "destination": "/services/digital-strategy",
+      "permanent": true
+    },
+    {
+      "source": "/socialmedia",
+      "destination": "/services/social-media",
+      "permanent": true
+    },
+    {
+      "source": "/contentmarketing",
+      "destination": "/services/content-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/emailcrm",
+      "destination": "/services/email-crm",
+      "permanent": true
+    },
+    {
+      "source": "/aiautomations",
+      "destination": "/services/ai-automations",
+      "permanent": true
+    },
+    {
+      "source": "/digitaltransformation",
+      "destination": "/services/digital-transformation",
+      "permanent": true
+    },
+    {
+      "source": "/rh-event-design",
+      "destination": "/partners/rh-event-design",
+      "permanent": true
+    },
+    {
+      "source": "/article-digital-insights",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/article-boutique-strategy",
+      "destination": "/blog/article-boutique-strategy",
+      "permanent": true
+    },
+    {
+      "source": "/digital-transformation-explained",
+      "destination": "/blog/digital-transformation-explained",
+      "permanent": true
+    },
+    {
+      "source": "/ai-automation-guide",
+      "destination": "/blog/ai-automation-guide",
+      "permanent": true
+    },
+    {
+      "source": "/modern-marketing-2026",
+      "destination": "/blog/modern-marketing-2026",
+      "permanent": true
+    },
+    {
+      "source": "/matchmaker",
+      "destination": "/services",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/enquire",
@@ -20,86 +109,6 @@
     {
       "source": "/joe-rh-ed5d55b85741",
       "destination": "/joe-rh-ed5d55b85741.html"
-    },
-    {
-      "source": "/matchmaker",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/eventlab",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/instasite",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/launchpad",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/digitalstrategy",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/socialmedia",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/contentmarketing",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/emailcrm",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/aiautomations",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/digitaltransformation",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/blog",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/article-digital-insights",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/article-boutique-strategy",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/digital-transformation-explained",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/ai-automation-guide",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/modern-marketing-2026",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/rh-event-design",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/about",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/services",
-      "destination": "/api/render-page"
-    },
-    {
-      "source": "/our-work",
-      "destination": "/api/render-page"
     },
     {
       "source": "/vip",
