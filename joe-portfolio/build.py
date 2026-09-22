@@ -101,7 +101,6 @@ doc = f'''<!DOCTYPE html>
     <div class="eyebrow rv">{esc(C['hero']['eyebrow'])}</div>
     <h1 class="rv d1"><span data-px="-0.18">{esc(C['hero']['h1'][0])}</span><span class="blue" data-px="0.18">{esc(C['hero']['h1'][1])}</span></h1>
     <p class="sub rv d2">{esc(C['hero']['sub'])}</p>
-    <div class="stats rv d3">{stats}</div>
   </div>
   <div class="marquee" aria-hidden="true"><div class="row a" data-px="-0.25"><div class="track">{rowA}{rowA}</div></div><div class="row b" data-px="0.25"><div class="track">{rowB}{rowB}</div></div></div>
 </section>
