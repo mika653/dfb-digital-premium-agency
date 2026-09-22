@@ -1,0 +1,374 @@
+[
+ {
+  "brand": "JOSE RIZAL MEMORIAL FOUNDATION",
+  "file": "Website Landing Page Mockup.jpg",
+  "id": "jose-rizal-memorial-foundation--website-landing-page-mockup",
+  "type": "image",
+  "src": "jose-rizal-memorial-foundation--website-landing-page-mockup.webp",
+  "w": 1047,
+  "h": 1600,
+  "kb": 153
+ },
+ {
+  "brand": "CRYPTO",
+  "file": "Crypto Livestream.png",
+  "id": "crypto--crypto-livestream",
+  "type": "image",
+  "src": "crypto--crypto-livestream.webp",
+  "w": 1036,
+  "h": 1034,
+  "kb": 105
+ },
+ {
+  "brand": "CRYPTO",
+  "file": "OKEX.mp4",
+  "id": "crypto--okex",
+  "type": "video",
+  "src": "crypto--okex.mp4",
+  "poster": "crypto--okex-poster.webp",
+  "w": 720,
+  "h": 1280,
+  "dur": 20,
+  "kb": 15563
+ },
+ {
+  "brand": "AGRO SECURITY SERVICES (CONTENT CREATION)",
+  "file": "Snappy Survey",
+  "id": "agro-security-services-content-creation--snappy-survey",
+  "type": "image",
+  "src": "agro-security-services-content-creation--snappy-survey.webp",
+  "w": 1066,
+  "h": 816,
+  "kb": 106
+ },
+ {
+  "brand": "AGRO SECURITY SERVICES (CONTENT CREATION)",
+  "file": "Tindig Agro",
+  "id": "agro-security-services-content-creation--tindig-agro",
+  "type": "image",
+  "src": "agro-security-services-content-creation--tindig-agro.webp",
+  "w": 1024,
+  "h": 768,
+  "kb": 80
+ },
+ {
+  "brand": "PAUL SMITH",
+  "file": "Paul Smith 2.JPG",
+  "id": "paul-smith--paul-smith-2",
+  "type": "image",
+  "src": "paul-smith--paul-smith-2.webp",
+  "w": 960,
+  "h": 731,
+  "kb": 177
+ },
+ {
+  "brand": "PAUL SMITH",
+  "file": "Paul Smith 3.JPG",
+  "id": "paul-smith--paul-smith-3",
+  "type": "image",
+  "src": "paul-smith--paul-smith-3.webp",
+  "w": 960,
+  "h": 580,
+  "kb": 66
+ },
+ {
+  "brand": "PAUL SMITH",
+  "file": "Paul Smith 4.JPG",
+  "id": "paul-smith--paul-smith-4",
+  "type": "image",
+  "src": "paul-smith--paul-smith-4.webp",
+  "w": 754,
+  "h": 754,
+  "kb": 55
+ },
+ {
+  "brand": "PAUL SMITH",
+  "file": "pAUL sMITH 1.JPG",
+  "id": "paul-smith--paul-smith-1",
+  "type": "image",
+  "src": "paul-smith--paul-smith-1.webp",
+  "w": 960,
+  "h": 726,
+  "kb": 105
+ },
+ {
+  "brand": "ACADEMY OF INTERNATIONAL CULINARY ARTS (AICA)",
+  "file": "AICA-071118.png",
+  "id": "academy-of-international-culinary-arts-aica--aica-071118",
+  "type": "image",
+  "src": "academy-of-international-culinary-arts-aica--aica-071118.webp",
+  "w": 500,
+  "h": 500,
+  "kb": 10
+ },
+ {
+  "brand": "ACADEMY OF INTERNATIONAL CULINARY ARTS (AICA)",
+  "file": "AICA.gif",
+  "id": "academy-of-international-culinary-arts-aica--aica",
+  "type": "anim",
+  "src": "academy-of-international-culinary-arts-aica--aica.webp",
+  "w": 720,
+  "h": 405,
+  "frames": 7,
+  "kb": 299
+ },
+ {
+  "brand": "MEMES",
+  "file": "Kim K For Pioneer Subs.JPG",
+  "id": "memes--kim-k-for-pioneer-subs",
+  "type": "image",
+  "src": "memes--kim-k-for-pioneer-subs.webp",
+  "w": 500,
+  "h": 500,
+  "kb": 15
+ },
+ {
+  "brand": "MEMES",
+  "file": "Will Smith Slap Meme.png",
+  "id": "memes--will-smith-slap-meme",
+  "type": "image",
+  "src": "memes--will-smith-slap-meme.webp",
+  "w": 1600,
+  "h": 900,
+  "kb": 71
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "A Clean Place is a Safe Place 2.jpg",
+  "id": "taga-linis-co-startup-business-solutions--a-clean-place-is-a-safe-place-2",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--a-clean-place-is-a-safe-place-2.webp",
+  "w": 1000,
+  "h": 1000,
+  "kb": 89
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "A Clean Place is a Safe Place 3.jpg",
+  "id": "taga-linis-co-startup-business-solutions--a-clean-place-is-a-safe-place-3",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--a-clean-place-is-a-safe-place-3.webp",
+  "w": 1000,
+  "h": 1000,
+  "kb": 91
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "Catriona Gray.jpg",
+  "id": "taga-linis-co-startup-business-solutions--catriona-gray",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--catriona-gray.webp",
+  "w": 892,
+  "h": 1222,
+  "kb": 64
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "Handwash Karaoke.jpg",
+  "id": "taga-linis-co-startup-business-solutions--handwash-karaoke",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--handwash-karaoke.webp",
+  "w": 996,
+  "h": 1000,
+  "kb": 78
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "Heart TLC Symbol.jpg",
+  "id": "taga-linis-co-startup-business-solutions--heart-tlc-symbol",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--heart-tlc-symbol.webp",
+  "w": 1600,
+  "h": 900,
+  "kb": 121
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "Star Wash Day.png",
+  "id": "taga-linis-co-startup-business-solutions--star-wash-day",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--star-wash-day.webp",
+  "w": 700,
+  "h": 700,
+  "kb": 46
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "TLC App.png",
+  "id": "taga-linis-co-startup-business-solutions--tlc-app",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--tlc-app.webp",
+  "w": 1000,
+  "h": 1000,
+  "kb": 46
+ },
+ {
+  "brand": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+  "file": "TLC Website Landing Page.png",
+  "id": "taga-linis-co-startup-business-solutions--tlc-website-landing-page",
+  "type": "image",
+  "src": "taga-linis-co-startup-business-solutions--tlc-website-landing-page.webp",
+  "w": 1600,
+  "h": 769,
+  "kb": 148
+ },
+ {
+  "brand": "COINSTATS (CRYPTO CONTENT CREATION)",
+  "file": "Star Wars GIF.gif",
+  "id": "coinstats-crypto-content-creation--star-wars-gif",
+  "type": "anim",
+  "src": "coinstats-crypto-content-creation--star-wars-gif.webp",
+  "w": 720,
+  "h": 720,
+  "frames": 101,
+  "kb": 3629
+ },
+ {
+  "brand": "COINSTATS (CRYPTO CONTENT CREATION)",
+  "file": "Think BTC.png",
+  "id": "coinstats-crypto-content-creation--think-btc",
+  "type": "image",
+  "src": "coinstats-crypto-content-creation--think-btc.webp",
+  "w": 617,
+  "h": 607,
+  "kb": 27
+ },
+ {
+  "brand": "DER ARMOR",
+  "file": "4 Simple Tools GIF.gif",
+  "id": "der-armor--4-simple-tools-gif",
+  "type": "anim",
+  "src": "der-armor--4-simple-tools-gif.webp",
+  "w": 600,
+  "h": 336,
+  "frames": 125,
+  "kb": 2207
+ },
+ {
+  "brand": "DER ARMOR",
+  "file": "Strong and Durable FB Post.jpg",
+  "id": "der-armor--strong-and-durable-fb-post",
+  "type": "image",
+  "src": "der-armor--strong-and-durable-fb-post.webp",
+  "w": 496,
+  "h": 676,
+  "kb": 50
+ },
+ {
+  "brand": "CRYPTO PANTH",
+  "file": "Screenshot 2026-09-22 154858.png",
+  "id": "crypto-panth--screenshot-2026-09-22-154858",
+  "type": "image",
+  "src": "crypto-panth--screenshot-2026-09-22-154858.webp",
+  "w": 514,
+  "h": 286,
+  "kb": 17
+ },
+ {
+  "brand": "CRYPTO PANTH",
+  "file": "Screenshot 2026-09-22 155027.png",
+  "id": "crypto-panth--screenshot-2026-09-22-155027",
+  "type": "image",
+  "src": "crypto-panth--screenshot-2026-09-22-155027.webp",
+  "w": 514,
+  "h": 372,
+  "kb": 44
+ },
+ {
+  "brand": "KINDER BUENO",
+  "file": "Bueno Game of Thrones.jpg",
+  "id": "kinder-bueno--bueno-game-of-thrones",
+  "type": "image",
+  "src": "kinder-bueno--bueno-game-of-thrones.webp",
+  "w": 1370,
+  "h": 1370,
+  "kb": 56
+ },
+ {
+  "brand": "KINDER BUENO",
+  "file": "KB_070717_v3.png",
+  "id": "kinder-bueno--kb-070717-v3",
+  "type": "image",
+  "src": "kinder-bueno--kb-070717-v3.webp",
+  "w": 800,
+  "h": 800,
+  "kb": 40
+ },
+ {
+  "brand": "KINDER BUENO",
+  "file": "Kinder Bueno May The Fourth Be With You GIF.gif",
+  "id": "kinder-bueno--kinder-bueno-may-the-fourth-be-with-you-gif",
+  "type": "anim",
+  "src": "kinder-bueno--kinder-bueno-may-the-fourth-be-with-you-gif.webp",
+  "w": 480,
+  "h": 480,
+  "frames": 81,
+  "kb": 1530
+ },
+ {
+  "brand": "KINDER BUENO",
+  "file": "Kinder Dark Campaign Star Wars Theme Post.PNG",
+  "id": "kinder-bueno--kinder-dark-campaign-star-wars-theme-post",
+  "type": "image",
+  "src": "kinder-bueno--kinder-dark-campaign-star-wars-theme-post.webp",
+  "w": 595,
+  "h": 595,
+  "kb": 17
+ },
+ {
+  "brand": "KINDER BUENO",
+  "file": "Salt Bae Kinder Mini.PNG",
+  "id": "kinder-bueno--salt-bae-kinder-mini",
+  "type": "image",
+  "src": "kinder-bueno--salt-bae-kinder-mini.webp",
+  "w": 800,
+  "h": 800,
+  "kb": 88
+ },
+ {
+  "brand": "CHUBBY CHICKEN",
+  "file": "Chubby Chicken EXECUTION.jpg",
+  "id": "chubby-chicken--chubby-chicken-execution",
+  "type": "image",
+  "src": "chubby-chicken--chubby-chicken-execution.webp",
+  "w": 817,
+  "h": 818,
+  "kb": 45
+ },
+ {
+  "brand": "CHUBBY CHICKEN",
+  "file": "Getting Chubbyfied!.mp4",
+  "id": "chubby-chicken--getting-chubbyfied",
+  "type": "video",
+  "src": "chubby-chicken--getting-chubbyfied.mp4",
+  "poster": "chubby-chicken--getting-chubbyfied-poster.webp",
+  "w": 720,
+  "h": 720,
+  "dur": 54,
+  "kb": 7485
+ },
+ {
+  "brand": "CVT COMMUNITY",
+  "file": "Supah Delivery.mp4",
+  "id": "cvt-community--supah-delivery",
+  "type": "video",
+  "src": "cvt-community--supah-delivery.mp4",
+  "poster": "cvt-community--supah-delivery-poster.webp",
+  "w": 720,
+  "h": 1280,
+  "dur": 20,
+  "kb": 1817
+ },
+ {
+  "brand": "CVT COMMUNITY",
+  "file": "Suzy Grooming Day.mp4",
+  "id": "cvt-community--suzy-grooming-day",
+  "type": "video",
+  "src": "cvt-community--suzy-grooming-day.mp4",
+  "poster": "cvt-community--suzy-grooming-day-poster.webp",
+  "w": 720,
+  "h": 1280,
+  "dur": 30,
+  "kb": 7304
+ }
+]

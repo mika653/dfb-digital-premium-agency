@@ -156,6 +156,15 @@
           "value": "no-referrer"
         }
       ]
+    },
+    {
+      "source": "/joe/portfolio(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
     }
   ]
 }

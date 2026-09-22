@@ -1,0 +1,233 @@
+{
+  "hero": {
+    "eyebrow": "Joe Flores · Selected work before DFB Digital",
+    "h1": [
+      "Brands I’ve",
+      "made noise for."
+    ],
+    "sub": "Twelve years across FMCG, luxury retail, crypto, startups and a security company with very photogenic dogs. Social, content, campaigns, films, and the odd website — the work that came before DFB Digital."
+  },
+  "stats": [
+    [
+      "14",
+      "brands"
+    ],
+    [
+      "36",
+      "pieces"
+    ],
+    [
+      "4",
+      "films"
+    ],
+    [
+      "26,105",
+      "people reached by one startup post"
+    ]
+  ],
+  "chapters": [
+    {
+      "id": "kinder",
+      "folder": "KINDER BUENO",
+      "name": "Kinder Bueno",
+      "kicker": "FMCG · Social content",
+      "accent": "#e2231a",
+      "blurb": "Pop culture, hijacked. Game of Thrones, Star Wars and Salt Bae, each bent around a chocolate bar — social content built to be shared, not scrolled past.",
+      "order": [
+        "bueno-game-of-thrones",
+        "kinder-dark-campaign-star-wars-theme-post",
+        "kinder-bueno-may-the-fourth-be-with-you-gif",
+        "salt-bae-kinder-mini",
+        "kb-070717-v3"
+      ]
+    },
+    {
+      "id": "tlc",
+      "folder": "TAGA LINIS CO (STARTUP - BUSINESS SOLUTIONS)",
+      "name": "TLC Solutions · Taga Linis Co.",
+      "kicker": "Startup · Brand, campaigns, app, web",
+      "accent": "#1aa3ff",
+      "blurb": "A cleaning startup built from the ground up: the voice, the campaigns, the app, the website. The Handwash Karaoke post reached 26,105 people with 1,002 engagements — on a startup budget, during lockdown.",
+      "order": [
+        "a-clean-place-is-a-safe-place-2",
+        "handwash-karaoke",
+        "heart-tlc-symbol",
+        "star-wash-day",
+        "catriona-gray",
+        "tlc-app",
+        "tlc-website-landing-page",
+        "a-clean-place-is-a-safe-place-3"
+      ],
+      "proof": "26,105 reached · 1,002 engagements"
+    },
+    {
+      "id": "crypto",
+      "folders": [
+        "COINSTATS (CRYPTO CONTENT CREATION)",
+        "CRYPTO",
+        "CRYPTO PANTH"
+      ],
+      "name": "Crypto",
+      "kicker": "CoinStats · OKEX · Crypto Panth",
+      "accent": "#f7931a",
+      "blurb": "Crypto content for people who don’t read whitepapers: a Star Wars market index, livestream panels, short-form film and memes that landed on the day the market did.",
+      "order": [
+        "star-wars-gif",
+        "crypto-livestream",
+        "okex",
+        "think-btc",
+        "screenshot-2026-09-22-154858",
+        "screenshot-2026-09-22-155027"
+      ]
+    },
+    {
+      "id": "paul-smith",
+      "folder": "PAUL SMITH",
+      "name": "Paul Smith",
+      "kicker": "Luxury retail · Product stories",
+      "accent": "#7cb342",
+      "blurb": "Product stories for a luxury retailer — shot, styled and posted. Shoes, wallets and the books they sit on.",
+      "order": [
+        "paul-smith-2",
+        "paul-smith-3",
+        "paul-smith-4",
+        "paul-smith-1"
+      ]
+    },
+    {
+      "id": "agro",
+      "folder": "AGRO SECURITY SERVICES (CONTENT CREATION)",
+      "name": "Agro Security Services",
+      "kicker": "Security · Content creation",
+      "accent": "#2b6cb0",
+      "blurb": "Content that made a security company likeable: the guards, the dogs, and a reaction poll the whole page voted on.",
+      "order": [
+        "snappy-survey",
+        "tindig-agro"
+      ]
+    },
+    {
+      "id": "chubby",
+      "folder": "CHUBBY CHICKEN",
+      "name": "Chubby Chicken",
+      "kicker": "Food · Social + film",
+      "accent": "#ff6a00",
+      "blurb": "A food brand with a sense of humour, and a 54-second film about getting Chubbyfied.",
+      "order": [
+        "getting-chubbyfied",
+        "chubby-chicken-execution"
+      ]
+    },
+    {
+      "id": "cvt",
+      "folder": "CVT COMMUNITY",
+      "name": "CVT Community",
+      "kicker": "Community · Short-form film",
+      "accent": "#35ff7f",
+      "blurb": "Community content for Casa Verde Townhomes — deliveries, grooming day, and the neighbours as the cast.",
+      "order": [
+        "supah-delivery",
+        "suzy-grooming-day"
+      ]
+    },
+    {
+      "id": "der-armor",
+      "folder": "DER ARMOR",
+      "name": "Der Armor Philippines",
+      "kicker": "Automotive · Social",
+      "accent": "#ffcc00",
+      "blurb": "Truck bed covers, sold with a stunt and a four-tool GIF.",
+      "order": [
+        "strong-and-durable-fb-post",
+        "4-simple-tools-gif"
+      ]
+    },
+    {
+      "id": "aica",
+      "folder": "ACADEMY OF INTERNATIONAL CULINARY ARTS (AICA)",
+      "name": "AICA",
+      "kicker": "Education · Social",
+      "accent": "#4caf50",
+      "blurb": "Academy of International Culinary Arts. “Turning Japanese into your expertise.”",
+      "order": [
+        "aica",
+        "aica-071118"
+      ]
+    },
+    {
+      "id": "web",
+      "folder": "JOSE RIZAL MEMORIAL FOUNDATION",
+      "name": "Web",
+      "kicker": "Jose Rizal Memorial Foundation · Landing page",
+      "accent": "#2e7d32",
+      "blurb": "A landing page for a foundation — clear ask, clear path to give.",
+      "order": [
+        "website-landing-page-mockup"
+      ]
+    },
+    {
+      "id": "memes",
+      "folder": "MEMES",
+      "name": "The meme desk",
+      "kicker": "Pioneer · Personal",
+      "accent": "#bdffcf",
+      "blurb": "Memes are a job. Some of them even had clients.",
+      "order": [
+        "kim-k-for-pioneer-subs",
+        "will-smith-slap-meme"
+      ]
+    }
+  ],
+  "close": {
+    "h2": "That was then.",
+    "p": "Now it’s DFB Digital: websites, digital strategy and the systems behind them, with a plain-English reason behind every recommendation.",
+    "links": [
+      [
+        "https://www.dfbdigital.com",
+        "DFB Digital"
+      ],
+      [
+        "https://www.dfbdigital.com/joe",
+        "Joe’s calling card"
+      ],
+      [
+        "https://wa.me/85266470247",
+        "WhatsApp Joe"
+      ]
+    ]
+  },
+  "now": {
+    "eyebrow": "Now · DFB Digital",
+    "h2": "And what it does today.",
+    "p": "Two current DFB Digital clients, with the numbers. Live posts, not screenshots.",
+    "clients": [
+      {
+        "id": "derek",
+        "name": "Prof. Derek Burton Collins",
+        "role": "Art advisor · thederekcollins.com",
+        "platform": "instagram",
+        "profile": "https://www.instagram.com/dbcollin/",
+        "stat": [
+          "+2,700%",
+          "Instagram growth · 75 → 2,100 followers in five months"
+        ],
+        "blurb": "Website, positioning and an Instagram built from 75 followers. Reels below are live from the account.",
+        "posts": []
+      },
+      {
+        "id": "reyna",
+        "name": "Reyna Harilela · RH Event Design",
+        "role": "Luxury events · rheventdesign.com",
+        "platform": "linkedin",
+        "profile": "https://www.linkedin.com/in/reyna-harilela-4775aa4/",
+        "stat": [
+          "—",
+          "LinkedIn reach · to fill in"
+        ],
+        "blurb": "Website, intake system and LinkedIn presence for a luxury events studio. Posts below are live from LinkedIn.",
+        "posts": []
+      }
+    ],
+    "_how": "Instagram: paste reel/post URLs like https://www.instagram.com/reel/XXXXXXXXXXX/ . LinkedIn: open the post → ⋯ → Embed this post → copy the src URL (https://www.linkedin.com/embed/feed/update/urn:li:share:NNNN) or the activity URL (https://www.linkedin.com/posts/...-activity-NNNN-xxxx). Stats: replace the '—'."
+  }
+}

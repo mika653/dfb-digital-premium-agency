@@ -18,6 +18,8 @@ function copy(rel) {
 }
 for (const f of readdirSync(SRC)) if (!SKIP.has(f)) copy(f);
 cpSync(join(SRC, '404', 'index.html'), join(DIST, '404.html'));
+// Joe's personal portfolio — unlisted at /joe/portfolio (noindex in the page + header in vercel.json)
+if (existsSync('joe-portfolio/site/index.html')) { mkdirSync(join(DIST, 'joe', 'portfolio'), { recursive: true }); cpSync('joe-portfolio/site', join(DIST, 'joe', 'portfolio'), { recursive: true }); }
 
 // sitemap + robots for the static pages
 const pages = [];
@@ -31,6 +33,6 @@ const pages = [];
 const skip = new Set(['/404']);
 const urls = pages.filter(u => !skip.has(u)).sort();
 writeFileSync(join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE}${u === '/' ? '/' : u}</loc></url>`).join('\n')}\n</urlset>\n`);
-writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /status/\nDisallow: /joe-rh-ed5d55b85741\nSitemap: ${SITE}/sitemap.xml\n`);
+writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /status/\nDisallow: /joe-rh-ed5d55b85741\nDisallow: /joe/portfolio\nSitemap: ${SITE}/sitemap.xml\n`);
 
 console.log(`composed: ${urls.length} static pages over the app shell` + (collisions.length ? `\n  overwrote: ${collisions.join(', ')}` : ''));
