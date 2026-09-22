@@ -9,11 +9,11 @@
   },
   "stats": [
     [
-      "14",
+      "13",
       "brands"
     ],
     [
-      "36",
+      "33",
       "pieces"
     ],
     [
@@ -55,8 +55,7 @@
         "star-wash-day",
         "catriona-gray",
         "tlc-app",
-        "tlc-website-landing-page",
-        "a-clean-place-is-a-safe-place-3"
+        "tlc-website-landing-page"
       ],
       "proof": "26,105 reached · 1,002 engagements"
     },
@@ -150,8 +149,7 @@
       "accent": "#4caf50",
       "blurb": "Academy of International Culinary Arts. “Turning Japanese into your expertise.”",
       "order": [
-        "aica",
-        "aica-071118"
+        "aica"
       ]
     },
     {
@@ -168,13 +166,12 @@
     {
       "id": "memes",
       "folder": "MEMES",
-      "name": "The meme desk",
-      "kicker": "Pioneer · Personal",
+      "name": "Pioneer",
+      "kicker": "Audio · Meme marketing",
       "accent": "#bdffcf",
-      "blurb": "Memes are a job. Some of them even had clients.",
+      "blurb": "Kim K, repurposed to sell a subwoofer. Memes are a job — this one had a client.",
       "order": [
-        "kim-k-for-pioneer-subs",
-        "will-smith-slap-meme"
+        "kim-k-for-pioneer-subs"
       ]
     }
   ],
@@ -211,8 +208,10 @@
           "+2,700%",
           "Instagram growth · 75 → 2,100 followers in five months"
         ],
-        "blurb": "Website, positioning and an Instagram built from 75 followers. Reels below are live from the account.",
-        "posts": []
+        "blurb": "Website, positioning and an Instagram account built from 75 followers to 2,100 in five months. The reel below is live from the account — his highest-performing one.",
+        "posts": [
+          "https://www.instagram.com/reel/DaynyxYh0Tq/"
+        ]
       },
       {
         "id": "reyna",
