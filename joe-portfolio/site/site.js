@@ -17,7 +17,7 @@
   const px = [...document.querySelectorAll('[data-px]')].map(el => ({ el, k: parseFloat(el.dataset.px) }));
   if (!reduced && px.length) {
     let tick = false;
-    const run = () => { tick = false; const vh = innerHeight; px.forEach(({ el, k }) => { const r = el.getBoundingClientRect(); const p = (r.top + r.height / 2 - vh / 2) / vh; el.style.transform = `translateX(${(-p * k * 320).toFixed(1)}px)`; }); };
+    const run = () => { tick = false; const vh = innerHeight, damp = innerWidth < 900 ? 0.3 : 1; px.forEach(({ el, k }) => { const r = el.getBoundingClientRect(); const p = (r.top + r.height / 2 - vh / 2) / vh; el.style.transform = `translateX(${(-p * k * 320 * damp).toFixed(1)}px)`; }); };
     addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(run); } }, { passive: true }); run();
   }
   // videos: load when near, play in view, pause out of view
