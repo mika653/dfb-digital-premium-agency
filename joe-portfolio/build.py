@@ -1,5 +1,6 @@
 """Joe's personal portfolio — static page generator.  python3 build.py → site/index.html"""
-import json, html as H, re
+import json, html as H, re, os
+BASE = os.environ.get("PF_BASE", "/joe/portfolio/")   # absolute base so /joe/portfolio (no slash) resolves assets
 C = json.load(open('content.json', encoding='utf-8'))
 M = {m['id']: m for m in json.load(open('site/media/manifest.json'))}
 def esc(t): return H.escape(t).replace(' — ', ' — ')
@@ -21,9 +22,9 @@ def piece(m, ch, idx):
     side = 'left' if idx % 2 == 0 else 'right'
     t = esc(title(m)); cap = f'<figcaption><span>{t}</span><small>{esc(ch["name"])}</small></figcaption>'
     if m['type'] == 'video':
-        return f'<figure class="piece {span} video rv" data-side="{side}" data-idx="{idx}" style="--w:{m["w"]};--h:{m["h"]}"><video muted loop playsinline preload="none" poster="media/{m["poster"]}" data-src="media/{m["src"]}" width="{m["w"]}" height="{m["h"]}"></video><span class="dur">{m["dur"]}s</span>{cap}</figure>'
+        return f'<figure class="piece {span} video rv" data-side="{side}" data-idx="{idx}" style="--w:{m["w"]};--h:{m["h"]}"><video muted loop playsinline preload="none" poster="{BASE}media/{m["poster"]}" data-src="{BASE}media/{m["src"]}" width="{m["w"]}" height="{m["h"]}"></video><span class="dur">{m["dur"]}s</span>{cap}</figure>'
     tag = 'anim' if m['type'] == 'anim' else ''
-    return f'<figure class="piece {span} {tag} rv" data-side="{side}" data-idx="{idx}" style="--w:{m["w"]};--h:{m["h"]}"><img src="media/{m["src"]}" width="{m["w"]}" height="{m["h"]}" alt="{t}" loading="lazy" decoding="async">{cap}</figure>'
+    return f'<figure class="piece {span} {tag} rv" data-side="{side}" data-idx="{idx}" style="--w:{m["w"]};--h:{m["h"]}"><img src="{BASE}media/{m["src"]}" width="{m["w"]}" height="{m["h"]}" alt="{t}" loading="lazy" decoding="async">{cap}</figure>'
 
 all_pieces = []; sections = []
 for n, ch in enumerate(C['chapters']):
@@ -42,11 +43,11 @@ for n, ch in enumerate(C['chapters']):
 thumbs = [p['m'] for p in all_pieces if p['m']['type'] != 'video'] + [p['m'] for p in all_pieces if p['m']['type'] == 'video']
 def thumb(m):
     src = m['poster'] if m['type'] == 'video' else m['src']
-    return f'<img src="media/{src}" alt="" loading="eager" decoding="async" style="--r:{m["w"]/m["h"]:.3f}">'
+    return f'<img src="{BASE}media/{src}" alt="" loading="eager" decoding="async" style="--r:{m["w"]/m["h"]:.3f}">'
 rowA = ''.join(thumb(m) for m in thumbs[0::2]); rowB = ''.join(thumb(m) for m in thumbs[1::2])
 stats = ''.join(f'<div><b>{esc(a)}</b><span>{esc(b)}</span></div>' for a, b in C['stats'])
 nav = ''.join(f'<a href="#{ch["id"]}">{esc(ch["name"])}</a>' for ch in C['chapters']) + ('<a href="#now" class="hi">Now · DFB</a>' if C.get('now') else '')
-lb = json.dumps([{'type': p['m']['type'], 'src': 'media/' + p['m']['src'], 'poster': ('media/' + p['m']['poster']) if p['m'].get('poster') else None, 'w': p['m']['w'], 'h': p['m']['h'], 'title': title(p['m']), 'brand': p['ch']} for p in all_pieces])
+lb = json.dumps([{'type': p['m']['type'], 'src': BASE + 'media/' + p['m']['src'], 'poster': (BASE + 'media/' + p['m']['poster']) if p['m'].get('poster') else None, 'w': p['m']['w'], 'h': p['m']['h'], 'title': title(p['m']), 'brand': p['ch']} for p in all_pieces])
 def link(i, u, t):
     ext = '' if u.startswith('https://www.dfbdigital.com') else ' target="_blank" rel="noopener"'
     return f'<a class="pill{" blue" if i == 0 else ""}" href="{u}"{ext}>{esc(t)}</a>'
@@ -73,7 +74,7 @@ if N:
             for i, f in enumerate(sorted(_os.listdir(ldir))):
                 ext = f.lower().rsplit('.', 1)[-1]
                 if ext not in ('mp4', 'mov', 'webm', 'jpg', 'jpeg', 'png', 'webp'): continue
-                dst = f"media/now/{cl['id']}-{i+1}.{ext}"; _sh.copy(_os.path.join(ldir, f), 'site/' + dst)
+                dst = f"{BASE}media/now/{cl['id']}-{i+1}.{ext}"; _sh.copy(_os.path.join(ldir, f), 'site/' + dst[len(BASE):])
                 side = 'left' if i % 2 == 0 else 'right'
                 if ext in ('mp4', 'mov', 'webm'): local += f'<figure class="piece tall video rv" data-side="{side}" style="--w:9;--h:16"><video muted loop playsinline preload="metadata" data-src="{dst}" src="{dst}"></video><span class="dur">story</span></figure>'
                 else: local += f'<figure class="piece rv" data-side="{side}"><img src="{dst}" alt="" loading="lazy"></figure>'
@@ -91,7 +92,7 @@ doc = f'''<!DOCTYPE html>
 <link rel="icon" href="https://www.dfbdigital.com/favicon.ico"><link rel="apple-touch-icon" href="https://www.dfbdigital.com/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;800;900&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css"></head>
+<link rel="stylesheet" href="{BASE}site.css"></head>
 <body>
 <div class="grain" aria-hidden="true"></div>
 <header class="top"><a class="brand" href="https://www.dfbdigital.com/joe">Joe Flores</a><nav class="chips">{nav}</nav><a class="pill sm" href="https://www.dfbdigital.com">DFB Digital →</a></header>
@@ -109,7 +110,7 @@ doc = f'''<!DOCTYPE html>
 <footer class="foot"><span>© 2026 Joe Flores · Work shown was produced for the clients named; all marks belong to their owners.</span><a href="https://www.dfbdigital.com">dfbdigital.com</a></footer>
 <div class="lightbox" id="lb" hidden><button class="lb-x" id="lb-x" aria-label="Close">✕</button><button class="lb-prev" id="lb-prev" aria-label="Previous">‹</button><div class="lb-stage" id="lb-stage"></div><button class="lb-next" id="lb-next" aria-label="Next">›</button><div class="lb-cap" id="lb-cap"></div></div>
 <script>window.PIECES={lb};</script>
-<script src="site.js"></script>
+<script src="{BASE}site.js"></script>
 </body></html>'''
 open('site/index.html', 'w', encoding='utf-8').write(doc)
 print(f'built: {len(all_pieces)} pieces, {len(sections)} chapters')
