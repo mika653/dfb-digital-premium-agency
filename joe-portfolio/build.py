@@ -59,7 +59,7 @@ def embed(platform, url):
         return f'<blockquote class="instagram-media" data-instgrm-permalink="{H.escape(url)}" data-instgrm-version="14" style="margin:0;max-width:540px;width:100%"><a href="{H.escape(url)}" target="_blank" rel="noopener">View on Instagram</a></blockquote>'
     m = _re.search(r'urn:li:(?:share|activity|ugcPost):(\d+)', url) or _re.search(r'activity-(\d+)', url)
     if not m: return f'<a class="pill" href="{H.escape(url)}" target="_blank" rel="noopener">View post on LinkedIn</a>'
-    kind = 'ugcPost' if 'ugcPost' in url else 'share'
+    kind = 'ugcPost' if 'ugcPost' in url else 'activity' if 'activity' in url else 'share'
     return f'<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:{kind}:{m.group(1)}" height="620" width="100%" frameborder="0" allowfullscreen title="LinkedIn post" loading="lazy"></iframe>'
 N = C.get('now'); now_html = ''
 if N:

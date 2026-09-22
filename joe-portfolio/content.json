@@ -221,11 +221,13 @@
         "platform": "linkedin",
         "profile": "https://www.linkedin.com/in/reyna-harilela-4775aa4/",
         "stat": [
-          "—",
-          "LinkedIn reach · to fill in"
+          "151",
+          "reactions and 14 comments on the relaunch post"
         ],
-        "blurb": "Website, intake system and LinkedIn presence for a luxury events studio. Posts below are live from LinkedIn.",
-        "posts": []
+        "blurb": "Website, intake system and LinkedIn presence for a luxury events studio relaunching with PR and digital. The relaunch announcement below is live from LinkedIn.",
+        "posts": [
+          "https://www.linkedin.com/feed/update/urn:li:activity:7493250084936081409/"
+        ]
       }
     ],
     "_how": "Instagram: paste reel/post URLs like https://www.instagram.com/reel/XXXXXXXXXXX/ . LinkedIn: open the post → ⋯ → Embed this post → copy the src URL (https://www.linkedin.com/embed/feed/update/urn:li:share:NNNN) or the activity URL (https://www.linkedin.com/posts/...-activity-NNNN-xxxx). Stats: replace the '—'."
