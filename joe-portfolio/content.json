@@ -113,18 +113,6 @@
       ]
     },
     {
-      "id": "der-armor",
-      "folder": "DER ARMOR",
-      "name": "Der Armor Philippines",
-      "kicker": "Automotive · Social",
-      "accent": "#ffcc00",
-      "blurb": "Truck bed covers, sold with a stunt and a four-tool GIF.",
-      "order": [
-        "strong-and-durable-fb-post",
-        "4-simple-tools-gif"
-      ]
-    },
-    {
       "id": "aica",
       "folder": "ACADEMY OF INTERNATIONAL CULINARY ARTS (AICA)",
       "name": "AICA",
