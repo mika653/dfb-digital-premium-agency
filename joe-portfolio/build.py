@@ -26,6 +26,22 @@ def piece(m, ch, idx):
     tag = 'anim' if m['type'] == 'anim' else ''
     return f'<figure class="piece {span} {tag} rv" data-side="{side}" data-idx="{idx}" style="--w:{m["w"]};--h:{m["h"]}"><img src="{BASE}media/{m["src"]}" width="{m["w"]}" height="{m["h"]}" alt="{t}" loading="lazy" decoding="async">{cap}</figure>'
 
+ARROW = '<svg viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h34M28 4l8 8-8 8"/></svg>'
+
+def pair_block(pairs):
+    out = ''
+    for p in pairs:
+        reach = f'<span class="reach">{esc(p["reach"])}</span>' if p.get('reach') else ''
+        out += f'''<div class="pair rv" data-side="left">
+  <div class="pair-h"><h3>{esc(p['title'])}</h3><p>{esc(p['note'])}</p>{reach}</div>
+  <div class="pair-art">
+    <figure><span class="tag">Ideation</span><img src="{BASE}media/kinder-bueno--{p['slug']}-ideation.webp" alt="{esc(p['title'])} — ideation" loading="lazy"></figure>
+    <span class="arrow" aria-hidden="true">{ARROW}</span>
+    <figure><span class="tag done">Execution</span><img src="{BASE}media/kinder-bueno--{p['slug']}-execution.webp" alt="{esc(p['title'])} — execution" loading="lazy"></figure>
+  </div>
+</div>'''
+    return f'<div class="pairs">{out}</div>'
+
 all_pieces = []; sections = []
 for n, ch in enumerate(C['chapters']):
     items = [find(ch, k) for k in ch['order']]
@@ -34,9 +50,10 @@ for n, ch in enumerate(C['chapters']):
         idx = len(all_pieces); all_pieces.append({'m': m, 'ch': ch['name']})
         figs += piece(m, ch, idx)
     proof = f'<div class="proof">{esc(ch["proof"])}</div>' if ch.get('proof') else ''
-    sections.append(f'''<section class="chapter" id="{ch['id']}" style="--acc:{ch['accent']}">
+    pairs = pair_block(ch['pairs']) if ch.get('pairs') else ''
+    sections.append(f'''<section class="chapter{' has-pairs' if pairs else ''}" id="{ch['id']}" style="--acc:{ch['accent']}">
   <div class="ch-head"><div class="ch-sticky rv" data-side="left"><div class="num">{n+1:02d} / {len(C['chapters']):02d}</div><h2>{esc(ch['name'])}</h2><div class="kicker">{esc(ch['kicker'])}</div><p>{esc(ch['blurb'])}</p>{proof}</div></div>
-  <div class="ch-grid">{figs}</div>
+  <div class="ch-body">{pairs}<div class="ch-grid">{figs}</div></div>
 </section>''')
 
 # marquee: two rows of thumbnails from across the chapters
@@ -46,7 +63,7 @@ def thumb(m):
     return f'<img src="{BASE}media/{src}" alt="" loading="eager" decoding="async" style="--r:{m["w"]/m["h"]:.3f}">'
 rowA = ''.join(thumb(m) for m in thumbs[0::2]); rowB = ''.join(thumb(m) for m in thumbs[1::2])
 stats = ''.join(f'<div><b>{esc(a)}</b><span>{esc(b)}</span></div>' for a, b in C['stats'])
-nav = ''.join(f'<a href="#{ch["id"]}">{esc(ch["name"])}</a>' for ch in C['chapters']) + ('<a href="#now" class="hi">Now · DFB</a>' if C.get('now') else '')
+nav = ''.join(f'<a href="#{ch["id"]}">{esc(ch["name"])}</a>' for ch in C['chapters']) + ('<a href="#reels">Off the clock</a>' if C.get('reels') else '') + ('<a href="#now" class="hi">Now · DFB</a>' if C.get('now') else '')
 lb = json.dumps([{'type': p['m']['type'], 'src': BASE + 'media/' + p['m']['src'], 'poster': (BASE + 'media/' + p['m']['poster']) if p['m'].get('poster') else None, 'w': p['m']['w'], 'h': p['m']['h'], 'title': title(p['m']), 'brand': p['ch']} for p in all_pieces])
 def link(i, u, t):
     ext = '' if u.startswith('https://www.dfbdigital.com') else ' target="_blank" rel="noopener"'
@@ -61,6 +78,13 @@ def embed(platform, url):
     if not m: return f'<a class="pill" href="{H.escape(url)}" target="_blank" rel="noopener">View post on LinkedIn</a>'
     kind = 'ugcPost' if 'ugcPost' in url else 'activity' if 'activity' in url else 'share'
     return f'<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:{kind}:{m.group(1)}" height="620" width="100%" frameborder="0" allowfullscreen title="LinkedIn post" loading="lazy"></iframe>'
+Rl = C.get('reels'); reels_html = ''
+if Rl:
+    cards = ''.join(f'''<figure class="reel rv" data-side="{'left' if i % 2 == 0 else 'right'}">
+  <video muted loop playsinline preload="none" poster="{BASE}media/reels/{r['src']}.jpg" data-src="{BASE}media/reels/{r['src']}.mp4" width="720" height="1280"></video>
+  <figcaption><b>{esc(r['title'])}</b><span>{esc(r['note'])}</span></figcaption></figure>''' for i, r in enumerate(Rl['items']))
+    reels_html = f'''<section class="reels" id="reels"><div class="reels-head rv"><div class="eyebrow">{esc(Rl['eyebrow'])}</div><h2>{esc(Rl['h2'])}</h2><p>{esc(Rl['p'])}</p></div><div class="reel-row">{cards}</div></section>'''
+
 N = C.get('now'); now_html = ''
 if N:
     cards = ''
@@ -101,10 +125,11 @@ doc = f'''<!DOCTYPE html>
     <div class="eyebrow rv">{esc(C['hero']['eyebrow'])}</div>
     <h1 class="rv d1"><span data-px="-0.18">{esc(C['hero']['h1'][0])}</span><span class="blue" data-px="0.18">{esc(C['hero']['h1'][1])}</span></h1>
     <p class="sub rv d2">{esc(C['hero']['sub'])}</p>
+    <a class="jump rv d3" href="#now"><span class="dot"></span><b>Currently:</b> Prof. Derek Burton Collins — <em>+2,700%</em> on Instagram in five months<span class="go">{ARROW}</span></a>
   </div>
   <div class="marquee" aria-hidden="true"><div class="row a" data-px="-0.25"><div class="track">{rowA}{rowA}</div></div><div class="row b" data-px="0.25"><div class="track">{rowB}{rowB}</div></div></div>
 </section>
-<main>{''.join(sections)}{now_html}</main>
+<main>{''.join(sections)}{reels_html}{now_html}</main>
 <section class="close"><div class="close-in rv"><div class="eyebrow">Now</div><h2 data-px="-0.08">{esc(C['close']['h2'])}</h2><p>{esc(C['close']['p'])}</p><div class="cta">{links}</div></div></section>
 <footer class="foot"><span>© 2026 Joe Flores · Work shown was produced for the clients named; all marks belong to their owners.</span><a href="https://www.dfbdigital.com">dfbdigital.com</a></footer>
 <div class="lightbox" id="lb" hidden><button class="lb-x" id="lb-x" aria-label="Close">✕</button><button class="lb-prev" id="lb-prev" aria-label="Previous">‹</button><div class="lb-stage" id="lb-stage"></div><button class="lb-next" id="lb-next" aria-label="Next">›</button><div class="lb-cap" id="lb-cap"></div></div>

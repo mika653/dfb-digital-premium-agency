@@ -32,13 +32,33 @@
       "name": "Kinder Bueno",
       "kicker": "FMCG · Social content",
       "accent": "#e2231a",
-      "blurb": "Pop culture, hijacked. Game of Thrones, Star Wars and Salt Bae, each bent around a chocolate bar — social content built to be shared, not scrolled past.",
+      "blurb": "Pop culture, hijacked — and every piece started on paper. Three ideas below, shown from the first scribble to the post that shipped.",
       "order": [
         "bueno-game-of-thrones",
         "kinder-dark-campaign-star-wars-theme-post",
         "kinder-bueno-may-the-fourth-be-with-you-gif",
         "salt-bae-kinder-mini",
         "kb-070717-v3"
+      ],
+      "pairs": [
+        {
+          "slug": "wolverine",
+          "title": "Wolverine",
+          "note": "Three Bueno sticks, held like claws. Photographed on a phone, then drawn.",
+          "reach": "151,744 people reached"
+        },
+        {
+          "slug": "bbc-kid",
+          "title": "The BBC interview kid",
+          "note": "The video everyone had seen that week, redrawn with a Bueno in the frame.",
+          "reach": "2,152 people reached"
+        },
+        {
+          "slug": "mug",
+          "title": "Buy 2, Take 1",
+          "note": "A biro sketch — two packs plus a mug — handed over as the finished promo.",
+          "reach": null
+        }
       ]
     },
     {
@@ -94,37 +114,21 @@
       ]
     },
     {
-      "id": "agro",
-      "folder": "AGRO SECURITY SERVICES (CONTENT CREATION)",
-      "name": "Agro Security Services",
-      "kicker": "Security · Content creation",
-      "accent": "#2b6cb0",
-      "blurb": "Content that made a security company likeable: the guards, the dogs, and a reaction poll the whole page voted on.",
+      "id": "local",
+      "name": "Localized content",
+      "kicker": "Agro Security · CVT Community · Chubby Chicken",
+      "accent": "#ff9f1c",
+      "folders": [
+        "AGRO SECURITY SERVICES (CONTENT CREATION)",
+        "CVT COMMUNITY",
+        "CHUBBY CHICKEN"
+      ],
+      "blurb": "Filipino brands, Filipino jokes, shot where the audience actually lives — a security company made likeable, a village community page, and a chicken brand with a 54-second film.",
       "order": [
         "snappy-survey",
-        "tindig-agro"
-      ]
-    },
-    {
-      "id": "chubby",
-      "folder": "CHUBBY CHICKEN",
-      "name": "Chubby Chicken",
-      "kicker": "Food · Social + film",
-      "accent": "#ff6a00",
-      "blurb": "A food brand with a sense of humour, and a 54-second film about getting Chubbyfied.",
-      "order": [
+        "tindig-agro",
         "getting-chubbyfied",
-        "chubby-chicken-execution"
-      ]
-    },
-    {
-      "id": "cvt",
-      "folder": "CVT COMMUNITY",
-      "name": "CVT Community",
-      "kicker": "Community · Short-form film",
-      "accent": "#35ff7f",
-      "blurb": "Community content for Casa Verde Townhomes — deliveries, grooming day, and the neighbours as the cast.",
-      "order": [
+        "chubby-chicken-execution",
         "supah-delivery",
         "suzy-grooming-day"
       ]
@@ -150,17 +154,6 @@
       "blurb": "Academy of International Culinary Arts. “Turning Japanese into your expertise.”",
       "order": [
         "aica"
-      ]
-    },
-    {
-      "id": "web",
-      "folder": "JOSE RIZAL MEMORIAL FOUNDATION",
-      "name": "Web",
-      "kicker": "Jose Rizal Memorial Foundation · Landing page",
-      "accent": "#2e7d32",
-      "blurb": "A landing page for a foundation — clear ask, clear path to give.",
-      "order": [
-        "website-landing-page-mockup"
       ]
     },
     {
@@ -195,8 +188,8 @@
   },
   "now": {
     "eyebrow": "Now · DFB Digital",
-    "h2": "And what it does today.",
-    "p": "Two current DFB Digital clients, with the numbers. Live posts, not screenshots.",
+    "h2": "And what it does now.",
+    "p": "DFB Digital's current work, with the numbers.",
     "clients": [
       {
         "id": "derek",
@@ -208,27 +201,54 @@
           "+2,700%",
           "Instagram growth · 75 → 2,100 followers in five months"
         ],
-        "blurb": "Website, positioning and an Instagram account built from 75 followers to 2,100 in five months. The reel below is live from the account — his highest-performing one.",
+        "blurb": "Website, positioning and an Instagram account built from 75 followers to 2,100 in five months. The reel below is live from the account — his best-performing one.",
         "posts": [
           "https://www.instagram.com/reel/DaynyxYh0Tq/"
-        ]
-      },
-      {
-        "id": "reyna",
-        "name": "Reyna Harilela · RH Event Design",
-        "role": "Luxury events · rheventdesign.com",
-        "platform": "linkedin",
-        "profile": "https://www.linkedin.com/in/reyna-harilela-4775aa4/",
-        "stat": [
-          "151",
-          "reactions and 14 comments on the relaunch post"
-        ],
-        "blurb": "Website, intake system and LinkedIn presence for a luxury events studio relaunching with PR and digital. The relaunch announcement below is live from LinkedIn.",
-        "posts": [
-          "https://www.linkedin.com/feed/update/urn:li:activity:7493250084936081409/"
         ]
       }
     ],
     "_how": "Instagram: paste reel/post URLs like https://www.instagram.com/reel/XXXXXXXXXXX/ . LinkedIn: open the post → ⋯ → Embed this post → copy the src URL (https://www.linkedin.com/embed/feed/update/urn:li:share:NNNN) or the activity URL (https://www.linkedin.com/posts/...-activity-NNNN-xxxx). Stats: replace the '—'."
+  },
+  "reels": {
+    "eyebrow": "Off the clock",
+    "h2": "And when nobody's paying.",
+    "p": "Joe shoots and cuts his own reels. Same instincts, no brief.",
+    "items": [
+      {
+        "src": "georgia-on-my-mind",
+        "title": "Georgia On My Mind",
+        "note": "Travel cut"
+      },
+      {
+        "src": "georgia",
+        "title": "Dancing DFB",
+        "note": "Kazbegi, Georgia"
+      },
+      {
+        "src": "wine-ice-cream",
+        "title": "Wine ice cream",
+        "note": "Tbilisi street find"
+      },
+      {
+        "src": "dubai",
+        "title": "48 Hrs in Dubai",
+        "note": "POV cut"
+      },
+      {
+        "src": "everyone-sees",
+        "title": "What everybody sees",
+        "note": "Part one"
+      },
+      {
+        "src": "what-i-see",
+        "title": "What I see",
+        "note": "Part two"
+      },
+      {
+        "src": "halloween",
+        "title": "Halloween Shake",
+        "note": "Casa Verde, last year"
+      }
+    ]
   }
 }

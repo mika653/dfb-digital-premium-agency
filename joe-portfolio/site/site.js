@@ -22,11 +22,11 @@
   }
   // videos: load when near, play in view, pause out of view
   const vio = new IntersectionObserver(es => es.forEach(e => {
-    const v = e.target, fig = v.closest('.piece');
+    const v = e.target, fig = v.closest('.piece, .reel');
     if (e.isIntersecting) { if (!v.src) { v.src = v.dataset.src; v.load(); } if (!reduced) v.play().then(() => fig.classList.add('playing')).catch(() => {}); }
     else { v.pause(); fig.classList.remove('playing'); }
   }), { threshold: .35, rootMargin: '200px 0px' });
-  document.querySelectorAll('.piece video').forEach(v => vio.observe(v));
+  document.querySelectorAll('.piece video, .reel video').forEach(v => vio.observe(v));
   // active chapter chip
   const chips = [...document.querySelectorAll('.chips a')];
   const cio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) chips.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), { rootMargin: '-40% 0px -50% 0px' });
