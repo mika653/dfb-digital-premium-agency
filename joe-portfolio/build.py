@@ -42,19 +42,24 @@ def pair_block(pairs):
 </div>'''
     return f'<div class="pairs">{out}</div>'
 
-all_pieces = []; sections = []
-for n, ch in enumerate(C['chapters']):
-    items = [find(ch, k) for k in ch['order']]
+ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>'
+
+def chapter_section(ch, n, total, pieces, standalone=False):
     figs = ''
-    for m in items:
-        idx = len(all_pieces); all_pieces.append({'m': m, 'ch': ch['name']})
+    for k in ch['order']:
+        m = find(ch, k); idx = len(pieces); pieces.append({'m': m, 'ch': ch['name']})
         figs += piece(m, ch, idx)
     proof = f'<div class="proof">{esc(ch["proof"])}</div>' if ch.get('proof') else ''
     pairs = pair_block(ch['pairs']) if ch.get('pairs') else ''
-    sections.append(f'''<section class="chapter{' has-pairs' if pairs else ''}" id="{ch['id']}" style="--acc:{ch['accent']}">
-  <div class="ch-head"><div class="ch-sticky rv" data-side="left"><div class="num">{n+1:02d} / {len(C['chapters']):02d}</div><h2>{esc(ch['name'])}</h2><div class="kicker">{esc(ch['kicker'])}</div><p>{esc(ch['blurb'])}</p>{proof}</div></div>
+    num = '' if standalone else f'<div class="num">{n:02d} / {total:02d}</div>'
+    return f'''<section class="chapter{' has-pairs' if pairs else ''}" id="{ch['id']}" style="--acc:{ch['accent']}">
+  <div class="ch-head"><div class="ch-sticky rv" data-side="left">{num}<h2>{esc(ch['name'])}</h2><div class="kicker">{esc(ch['kicker'])}</div><p>{esc(ch['blurb'])}</p>{proof}</div></div>
   <div class="ch-body">{pairs}<div class="ch-grid">{figs}</div></div>
-</section>''')
+</section>'''
+
+all_pieces = []; sections = []
+for n, ch in enumerate(C['chapters']):
+    sections.append(chapter_section(ch, n + 1, len(C['chapters']), all_pieces))
 
 # marquee: two rows of thumbnails from across the chapters
 thumbs = [p['m'] for p in all_pieces if p['m']['type'] != 'video'] + [p['m'] for p in all_pieces if p['m']['type'] == 'video']
@@ -63,7 +68,18 @@ def thumb(m):
     return f'<img src="{BASE}media/{src}" alt="" loading="eager" decoding="async" style="--r:{m["w"]/m["h"]:.3f}">'
 rowA = ''.join(thumb(m) for m in thumbs[0::2]); rowB = ''.join(thumb(m) for m in thumbs[1::2])
 stats = ''.join(f'<div><b>{esc(a)}</b><span>{esc(b)}</span></div>' for a, b in C['stats'])
-nav = ''.join(f'<a href="#{ch["id"]}">{esc(ch["name"])}</a>' for ch in C['chapters']) + ('<a href="#reels">Off the clock</a>' if C.get('reels') else '') + ('<a href="#now" class="hi">Now · DFB</a>' if C.get('now') else '')
+def nav_html(active=''):
+    out = ''
+    if active:                                                   # sub-pages get a way home first
+        out += f'<a href="{BASE}" class="home">{ARROW_L}All work</a>'
+    out += ''.join(f'<a href="{BASE}#{ch["id"]}">{esc(ch["name"])}</a>' for ch in C['chapters'])
+    for pg in C.get('pages', []):
+        cls = ' class="on"' if pg['id'] == active else ''
+        out += f'<a href="{BASE}{pg["page"]["slug"]}"{cls}>{esc(pg["page"]["navLabel"])}</a>'
+    if C.get('reels'): out += f'<a href="{BASE}#reels">Off the clock</a>'
+    if C.get('now'):   out += f'<a href="{BASE}#now" class="hi">Now · DFB</a>'
+    return out
+nav = nav_html()
 lb = json.dumps([{'type': p['m']['type'], 'src': BASE + 'media/' + p['m']['src'], 'poster': (BASE + 'media/' + p['m']['poster']) if p['m'].get('poster') else None, 'w': p['m']['w'], 'h': p['m']['h'], 'title': title(p['m']), 'brand': p['ch']} for p in all_pieces])
 def link(i, u, t):
     ext = '' if u.startswith('https://www.dfbdigital.com') else ' target="_blank" rel="noopener"'
@@ -108,6 +124,25 @@ if N:
     ig = any(cl['platform'] == 'instagram' and cl['posts'] for cl in N['clients'])
     now_html = f'''<section class="now" id="now"><div class="now-head rv"><div class="eyebrow">{esc(N['eyebrow'])}</div><h2>{esc(N['h2'])}</h2><p>{esc(N['p'])}</p></div>{cards}{'<script async src="https://www.instagram.com/embed.js"></script>' if ig else ''}</section>'''
 
+HEAD = lambda t, d: f'''<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive"><title>{H.escape(t)}</title>
+<meta name="description" content="{H.escape(d)}">
+<meta property="og:title" content="{H.escape(t)}"><meta property="og:description" content="{H.escape(d)}"><meta property="og:image" content="https://www.dfbdigital.com/joe/portfolio/og.jpg"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://www.dfbdigital.com/favicon.ico"><link rel="apple-touch-icon" href="https://www.dfbdigital.com/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;800;900&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{BASE}site.css"></head>
+<body>
+<div class="grain" aria-hidden="true"></div>'''
+FOOT = lambda pieces: f'''<footer class="foot"><span>© 2026 Joe Flores · Work shown was produced for the clients named; all marks belong to their owners.</span><a href="https://www.dfbdigital.com">dfbdigital.com</a></footer>
+<div class="lightbox" id="lb" hidden><button class="lb-x" id="lb-x" aria-label="Close">✕</button><button class="lb-prev" id="lb-prev" aria-label="Previous">‹</button><div class="lb-stage" id="lb-stage"></div><button class="lb-next" id="lb-next" aria-label="Next">›</button><div class="lb-cap" id="lb-cap"></div></div>
+<script>window.PIECES={pieces};</script>
+<script src="{BASE}site.js"></script>
+</body></html>'''
+def lb_json(pieces):
+    return json.dumps([{'type': p['m']['type'], 'src': BASE + 'media/' + p['m']['src'], 'poster': (BASE + 'media/' + p['m']['poster']) if p['m'].get('poster') else None, 'w': p['m']['w'], 'h': p['m']['h'], 'title': title(p['m']), 'brand': p['ch']} for p in pieces])
+
 doc = f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive"><title>Joe Flores — Selected work</title>
@@ -137,4 +172,20 @@ doc = f'''<!DOCTYPE html>
 <script src="{BASE}site.js"></script>
 </body></html>'''
 open('site/index.html', 'w', encoding='utf-8').write(doc)
+
+# ── standalone pages (linked from the nav, off the main scroll) ─────────────
+for pg in C.get('pages', []):
+    pieces = []
+    body = chapter_section(pg, 0, 0, pieces, standalone=True)
+    meta = pg['page']
+    head = HEAD(f"{pg['name']} — Joe Flores", meta.get('lead', pg['blurb']))
+    page_doc = f'''{head}
+<header class="top"><a class="brand" href="{BASE}">Joe Flores</a><nav class="chips">{nav_html(pg['id'])}</nav><a class="pill sm" href="https://www.dfbdigital.com">DFB Digital →</a></header>
+<main class="subpage">{body}</main>
+<section class="close"><div class="close-in rv"><div class="eyebrow">Back</div><h2>More of the work.</h2><p>{esc(meta.get('lead', ''))}</p><div class="cta"><a class="pill blue" href="{BASE}">All work</a><a class="pill" href="{BASE}#now">The current work</a></div></div></section>
+{FOOT(lb_json(pieces))}'''
+    os.makedirs(f"site/{meta['slug']}", exist_ok=True)
+    open(f"site/{meta['slug']}/index.html", 'w', encoding='utf-8').write(page_doc)
+    print(f"  page: /{meta['slug']} — {len(pieces)} pieces")
+
 print(f'built: {len(all_pieces)} pieces, {len(sections)} chapters')

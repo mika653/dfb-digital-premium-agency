@@ -74,8 +74,7 @@
         "heart-tlc-symbol",
         "star-wash-day",
         "catriona-gray",
-        "tlc-app",
-        "tlc-website-landing-page"
+        "tlc-app"
       ],
       "proof": "26,105 reached · 1,002 engagements"
     },
@@ -114,26 +113,6 @@
       ]
     },
     {
-      "id": "local",
-      "name": "Localized content",
-      "kicker": "Agro Security · CVT Community · Chubby Chicken",
-      "accent": "#ff9f1c",
-      "folders": [
-        "AGRO SECURITY SERVICES (CONTENT CREATION)",
-        "CVT COMMUNITY",
-        "CHUBBY CHICKEN"
-      ],
-      "blurb": "Filipino brands, Filipino jokes, shot where the audience actually lives — a security company made likeable, a village community page, and a chicken brand with a 54-second film.",
-      "order": [
-        "snappy-survey",
-        "tindig-agro",
-        "getting-chubbyfied",
-        "chubby-chicken-execution",
-        "supah-delivery",
-        "suzy-grooming-day"
-      ]
-    },
-    {
       "id": "der-armor",
       "folder": "DER ARMOR",
       "name": "Der Armor Philippines",
@@ -153,18 +132,8 @@
       "accent": "#4caf50",
       "blurb": "Academy of International Culinary Arts. “Turning Japanese into your expertise.”",
       "order": [
-        "aica"
-      ]
-    },
-    {
-      "id": "memes",
-      "folder": "MEMES",
-      "name": "Pioneer",
-      "kicker": "Audio · Meme marketing",
-      "accent": "#bdffcf",
-      "blurb": "Kim K, repurposed to sell a subwoofer. Memes are a job — this one had a client.",
-      "order": [
-        "kim-k-for-pioneer-subs"
+        "aica",
+        "aica-071118"
       ]
     }
   ],
@@ -233,22 +202,34 @@
         "src": "dubai",
         "title": "48 Hrs in Dubai",
         "note": "POV cut"
-      },
-      {
-        "src": "everyone-sees",
-        "title": "What everybody sees",
-        "note": "Part one"
-      },
-      {
-        "src": "what-i-see",
-        "title": "What I see",
-        "note": "Part two"
-      },
-      {
-        "src": "halloween",
-        "title": "Halloween Shake",
-        "note": "Casa Verde, last year"
       }
     ]
-  }
+  },
+  "pages": [
+    {
+      "id": "local",
+      "name": "Localized content",
+      "kicker": "Agro Security · CVT Community · Chubby Chicken",
+      "accent": "#ff9f1c",
+      "folders": [
+        "AGRO SECURITY SERVICES (CONTENT CREATION)",
+        "CVT COMMUNITY",
+        "CHUBBY CHICKEN"
+      ],
+      "blurb": "Filipino brands, Filipino jokes, shot where the audience actually lives — a security company made likeable, a village community page, and a chicken brand with a 54-second film.",
+      "order": [
+        "snappy-survey",
+        "tindig-agro",
+        "getting-chubbyfied",
+        "chubby-chicken-execution",
+        "supah-delivery",
+        "suzy-grooming-day"
+      ],
+      "page": {
+        "slug": "localized",
+        "navLabel": "Localized content",
+        "lead": "Filipino brands, Filipino jokes, shot where the audience actually lives."
+      }
+    }
+  ]
 }

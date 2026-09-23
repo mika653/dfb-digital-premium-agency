@@ -159,3 +159,9 @@ main{position:relative;z-index:1}
 .jump .dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80;flex:none;animation:pulse 2.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 .jump .go{width:26px;color:var(--blue-soft);display:block}.jump .go svg{width:100%;height:auto}
+/* standalone sub-page */
+.subpage{padding-top:clamp(28px,5vh,64px)}
+.subpage .chapter{border-top:0}
+.chips a.home{display:inline-flex;align-items:center;gap:7px;border-color:rgba(77,77,255,.45);color:#c9c9ff}
+.chips a.home svg{width:13px;height:13px}
+.chips a.on{border-color:var(--ink-50);color:var(--ink);background:rgba(243,241,236,.08)}
