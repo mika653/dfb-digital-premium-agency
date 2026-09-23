@@ -165,3 +165,13 @@ main{position:relative;z-index:1}
 .chips a.home{display:inline-flex;align-items:center;gap:7px;border-color:rgba(77,77,255,.45);color:#c9c9ff}
 .chips a.home svg{width:13px;height:13px}
 .chips a.on{border-color:var(--ink-50);color:var(--ink);background:rgba(243,241,236,.08)}
+/* revisions: Derek leads with the visual; "more work" link below */
+.client{grid-template-columns:2.1fr minmax(260px,.9fr)}
+.client-head{align-self:start}
+.more{display:grid;grid-template-columns:1fr auto;gap:4px 20px;align-items:center;margin-top:clamp(28px,4vh,48px);padding:clamp(20px,3vw,32px);border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.03);transition:border-color .25s,transform .25s}
+.more:hover{border-color:var(--blue-soft);transform:translateY(-2px)}
+.more span{font:500 12px/1 var(--fb);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-50)}
+.more b{font:800 clamp(24px,3vw,36px)/1.1 var(--fh);letter-spacing:-.02em}
+.more small{font-size:14px;color:var(--ink-70)}
+.more i{grid-row:1/4;grid-column:2;width:clamp(30px,3vw,44px);color:var(--blue-soft)}.more i svg{width:100%;height:auto}
+@media (max-width:900px){.client{grid-template-columns:1fr}}

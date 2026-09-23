@@ -54,7 +54,7 @@ def chapter_section(ch, n, total, pieces, standalone=False):
     num = '' if standalone else f'<div class="num">{n:02d} / {total:02d}</div>'
     return f'''<section class="chapter{' has-pairs' if pairs else ''}" id="{ch['id']}" style="--acc:{ch['accent']}">
   <div class="ch-head"><div class="ch-sticky rv" data-side="left">{num}<h2>{esc(ch['name'])}</h2><div class="kicker">{esc(ch['kicker'])}</div><p>{esc(ch['blurb'])}</p>{proof}</div></div>
-  <div class="ch-body">{pairs}<div class="ch-grid">{figs}</div></div>
+  <div class="ch-body"><div class="ch-grid">{figs}</div>{pairs}</div>
 </section>'''
 
 all_pieces = []; sections = []
@@ -101,6 +101,7 @@ if Rl:
   <figcaption><b>{esc(r['title'])}</b><span>{esc(r['note'])}</span></figcaption></figure>''' for i, r in enumerate(Rl['items']))
     reels_html = f'''<section class="reels" id="reels"><div class="reels-head rv"><div class="eyebrow">{esc(Rl['eyebrow'])}</div><h2>{esc(Rl['h2'])}</h2><p>{esc(Rl['p'])}</p></div><div class="reel-row">{cards}</div></section>'''
 
+more_html = ''.join(f'<a class="more rv" href="{BASE}{pg["page"]["slug"]}"><span>Want to see more?</span><b>{esc(pg["page"]["navLabel"])}</b><small>{esc(pg["page"]["lead"])}</small><i>{ARROW}</i></a>' for pg in C.get('pages', []))
 N = C.get('now'); now_html = ''
 if N:
     cards = ''
@@ -120,9 +121,9 @@ if N:
                 else: local += f'<figure class="piece rv" data-side="{side}"><img src="{dst}" alt="" loading="lazy"></figure>'
         posts = local + ''.join(f'<div class="embed rv" data-side="{"left" if i % 2 == 0 else "right"}">{embed(cl["platform"], u)}</div>' for i, u in enumerate(cl['posts']))
         if not posts: posts = f'<a class="soon rv" data-side="right" href="{cl["profile"]}" target="_blank" rel="noopener"><span>Live posts land here</span><small>Open the account →</small></a>'
-        cards += f'''<div class="client" id="{cl['id']}"><div class="client-head rv" data-side="left"><div class="stat-big"><b>{esc(cl['stat'][0])}</b><span>{esc(cl['stat'][1])}</span></div><h3>{esc(cl['name'])}</h3><div class="kicker">{esc(cl['role'])}</div><p>{esc(cl['blurb'])}</p><a class="pill sm" href="{cl['profile']}" target="_blank" rel="noopener">{'Instagram' if cl['platform'] == 'instagram' else 'LinkedIn'} →</a></div><div class="embeds">{posts}</div></div>'''
+        cards += f'''<div class="client" id="{cl['id']}"><div class="embeds">{posts}</div><div class="client-head rv" data-side="right"><div class="stat-big"><b>{esc(cl['stat'][0])}</b><span>{esc(cl['stat'][1])}</span></div><h3>{esc(cl['name'])}</h3><div class="kicker">{esc(cl['role'])}</div><p>{esc(cl['blurb'])}</p><a class="pill sm" href="{cl['profile']}" target="_blank" rel="noopener">{'Instagram' if cl['platform'] == 'instagram' else 'LinkedIn'} →</a></div></div>'''
     ig = any(cl['platform'] == 'instagram' and cl['posts'] for cl in N['clients'])
-    now_html = f'''<section class="now" id="now"><div class="now-head rv"><div class="eyebrow">{esc(N['eyebrow'])}</div><h2>{esc(N['h2'])}</h2><p>{esc(N['p'])}</p></div>{cards}{'<script async src="https://www.instagram.com/embed.js"></script>' if ig else ''}</section>'''
+    now_html = f'''<section class="now" id="now"><div class="now-head rv"><div class="eyebrow">{esc(N['eyebrow'])}</div><h2>{esc(N['h2'])}</h2><p>{esc(N['p'])}</p></div>{cards}{more_html}{'<script async src="https://www.instagram.com/embed.js"></script>' if ig else ''}</section>'''
 
 HEAD = lambda t, d: f'''<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -154,13 +155,12 @@ doc = f'''<!DOCTYPE html>
 <link rel="stylesheet" href="{BASE}site.css"></head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-<header class="top"><a class="brand" href="https://www.dfbdigital.com/joe">Joe Flores</a><nav class="chips">{nav}</nav><a class="pill sm" href="https://www.dfbdigital.com">DFB Digital →</a></header>
+<header class="top"><a class="brand" href="https://www.dfbdigital.com/joe">Joe Flores</a></header>
 <section class="hero">
   <div class="hero-copy">
     <div class="eyebrow rv">{esc(C['hero']['eyebrow'])}</div>
     <h1 class="rv d1"><span data-px="-0.18">{esc(C['hero']['h1'][0])}</span><span class="blue" data-px="0.18">{esc(C['hero']['h1'][1])}</span></h1>
     <p class="sub rv d2">{esc(C['hero']['sub'])}</p>
-    <a class="jump rv d3" href="#now"><span class="dot"></span><b>Currently:</b> Prof. Derek Burton Collins — <em>+2,700%</em> on Instagram in five months<span class="go">{ARROW}</span></a>
   </div>
   <div class="marquee" aria-hidden="true"><div class="row a" data-px="-0.25"><div class="track">{rowA}{rowA}</div></div><div class="row b" data-px="0.25"><div class="track">{rowB}{rowB}</div></div></div>
 </section>
@@ -180,9 +180,9 @@ for pg in C.get('pages', []):
     meta = pg['page']
     head = HEAD(f"{pg['name']} — Joe Flores", meta.get('lead', pg['blurb']))
     page_doc = f'''{head}
-<header class="top"><a class="brand" href="{BASE}">Joe Flores</a><nav class="chips">{nav_html(pg['id'])}</nav><a class="pill sm" href="https://www.dfbdigital.com">DFB Digital →</a></header>
+<header class="top"><a class="brand" href="{BASE}">Joe Flores</a><nav class="chips"><a href="{BASE}" class="home">{ARROW_L}All work</a></nav></header>
 <main class="subpage">{body}</main>
-<section class="close"><div class="close-in rv"><div class="eyebrow">Back</div><h2>More of the work.</h2><p>{esc(meta.get('lead', ''))}</p><div class="cta"><a class="pill blue" href="{BASE}">All work</a><a class="pill" href="{BASE}#now">The current work</a></div></div></section>
+<section class="close"><div class="close-in rv"><div class="eyebrow">Back</div><h2>More of the work.</h2><p>{esc(meta.get('lead', ''))}</p><div class="cta"><a class="pill blue" href="{BASE}">All work</a><a class="pill" href="https://www.dfbdigital.com/work">DFB Digital’s work</a></div></div></section>
 {FOOT(lb_json(pieces))}'''
     os.makedirs(f"site/{meta['slug']}", exist_ok=True)
     open(f"site/{meta['slug']}/index.html", 'w', encoding='utf-8').write(page_doc)

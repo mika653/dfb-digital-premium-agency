@@ -32,7 +32,7 @@
       "name": "Kinder Bueno",
       "kicker": "FMCG · Social content",
       "accent": "#e2231a",
-      "blurb": "Pop culture, hijacked — and every piece started on paper. Three ideas below, shown from the first scribble to the post that shipped.",
+      "blurb": "Pop culture, hijacked — and every piece started on paper. Below: one idea, from the first scribble to the post that shipped.",
       "order": [
         "bueno-game-of-thrones",
         "kinder-dark-campaign-star-wars-theme-post",
@@ -42,22 +42,10 @@
       ],
       "pairs": [
         {
-          "slug": "wolverine",
-          "title": "Wolverine",
-          "note": "Three Bueno sticks, held like claws. Photographed on a phone, then drawn.",
-          "reach": "151,744 people reached"
-        },
-        {
           "slug": "bbc-kid",
           "title": "The BBC interview kid",
           "note": "The video everyone had seen that week, redrawn with a Bueno in the frame.",
           "reach": "2,152 people reached"
-        },
-        {
-          "slug": "mug",
-          "title": "Buy 2, Take 1",
-          "note": "A biro sketch — two packs plus a mug — handed over as the finished promo.",
-          "reach": null
         }
       ]
     },
@@ -73,8 +61,7 @@
         "handwash-karaoke",
         "heart-tlc-symbol",
         "star-wash-day",
-        "catriona-gray",
-        "tlc-app"
+        "catriona-gray"
       ],
       "proof": "26,105 reached · 1,002 engagements"
     },
@@ -86,13 +73,11 @@
         "CRYPTO PANTH"
       ],
       "name": "Crypto",
-      "kicker": "CoinStats · OKEX · Crypto Panth",
+      "kicker": "CoinStats · Crypto Panth",
       "accent": "#f7931a",
-      "blurb": "Crypto content for people who don’t read whitepapers: a Star Wars market index, livestream panels, short-form film and memes that landed on the day the market did.",
+      "blurb": "Crypto content for people who don’t read whitepapers: a Star Wars market index and memes that landed on the day the market did.",
       "order": [
         "star-wars-gif",
-        "crypto-livestream",
-        "okex",
         "think-btc",
         "screenshot-2026-09-22-154858",
         "screenshot-2026-09-22-155027"
@@ -111,18 +96,6 @@
         "paul-smith-4",
         "paul-smith-1"
       ]
-    },
-    {
-      "id": "aica",
-      "folder": "ACADEMY OF INTERNATIONAL CULINARY ARTS (AICA)",
-      "name": "AICA",
-      "kicker": "Education · Social",
-      "accent": "#4caf50",
-      "blurb": "Academy of International Culinary Arts. “Turning Japanese into your expertise.”",
-      "order": [
-        "aica",
-        "aica-071118"
-      ]
     }
   ],
   "close": {
@@ -130,8 +103,8 @@
     "p": "Now it’s DFB Digital: websites, digital strategy and the systems behind them, with a plain-English reason behind every recommendation.",
     "links": [
       [
-        "https://www.dfbdigital.com",
-        "DFB Digital"
+        "https://www.dfbdigital.com/work",
+        "See DFB Digital’s work"
       ],
       [
         "https://www.dfbdigital.com/joe",
@@ -145,7 +118,7 @@
   },
   "now": {
     "eyebrow": "Now · DFB Digital",
-    "h2": "And what it does now.",
+    "h2": "And what he does now.",
     "p": "DFB Digital's current work, with the numbers.",
     "clients": [
       {
@@ -155,13 +128,12 @@
         "platform": "instagram",
         "profile": "https://www.instagram.com/dbcollin/",
         "stat": [
-          "+2,700%",
-          "Instagram growth · 75 → 2,100 followers in five months"
+          "+3,481%",
+          "Instagram growth · 75 → 2,686 followers in five months"
         ],
-        "blurb": "Website, positioning and an Instagram account built from 75 followers to 2,100 in five months. The reels below are live from the account.",
+        "blurb": "Website, positioning and an Instagram account built from 75 followers to 2,686 in five months.",
         "posts": [
-          "https://www.instagram.com/reel/DaynyxYh0Tq/",
-          "https://www.instagram.com/reel/DawC7R1Bytf/"
+          "https://www.instagram.com/p/DawC7R1Bytf/"
         ]
       }
     ],
@@ -173,9 +145,9 @@
     "p": "Joe shoots and cuts his own reels. Same instincts, no brief.",
     "items": [
       {
-        "src": "georgia-on-my-mind",
-        "title": "Georgia On My Mind",
-        "note": "Travel cut"
+        "src": "dubai",
+        "title": "48 Hrs in Dubai",
+        "note": "POV cut"
       },
       {
         "src": "georgia",
@@ -183,14 +155,9 @@
         "note": "Kazbegi, Georgia"
       },
       {
-        "src": "wine-ice-cream",
-        "title": "Wine ice cream",
-        "note": "Tbilisi street find"
-      },
-      {
-        "src": "dubai",
-        "title": "48 Hrs in Dubai",
-        "note": "POV cut"
+        "src": "georgia-on-my-mind",
+        "title": "Georgia On My Mind",
+        "note": "Travel cut"
       }
     ]
   },
@@ -216,7 +183,7 @@
       ],
       "page": {
         "slug": "localized",
-        "navLabel": "Localized content",
+        "navLabel": "More work",
         "lead": "Filipino brands, Filipino jokes, shot where the audience actually lives."
       }
     }
