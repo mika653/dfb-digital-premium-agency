@@ -257,7 +257,7 @@ def about():
 <div class="lbl rv" style="margin:18px 0 14px">Digital Marketing &amp; Transformation Consultant</div>
 <h1 class="rv" style="max-width:15ch">I help CEOs and decision-makers <em>Do Digital Better.</em></h1>
 <p class="lead rv d1">{esc("With 13+ years of global agency experience and expertise, I partner with executives to bridge critical knowledge gaps, replace outdated tactics, and position companies as innovators in their industry.")}</p>
-<div class="cta-row rv d2"><a class="pill blue" href="https://wa.me/85266470247" target="_blank" rel="noopener">{I("message-circle")}Chat on WhatsApp</a><a class="pill ghost" href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">{I("linkedin")}Connect on LinkedIn</a></div>
+<div class="cta-row rv d2"><a class="pill blue" href="https://wa.me/639988865824" target="_blank" rel="noopener">{I("message-circle")}Chat on WhatsApp</a><a class="pill ghost" href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">{I("linkedin")}Connect on LinkedIn</a></div>
 <ul class="did rv d3" style="margin-top:28px"><li>Digital Transformation</li><li>AI &amp; Automation</li><li>Web Development</li><li>Marketing &amp; Business Solutions</li></ul></div>
 <div class="rv d1"><div class="portrait"><img src="/assets/joe-original.jpg" alt="Joe Flores, Founder of DFB Digital"><div class="badge"><b>Joe Flores</b><span>Founder · aka Daddy FunBuckets</span></div></div></div></div></div>
 
@@ -269,9 +269,9 @@ def about():
 <section class="alt"><div class="wrap"><div class="sec-h rv"><div class="lbl">What I help with</div><h2>Four ways I move your business&nbsp;forward.</h2></div><div class="svc-grid four">{four}</div></div></section>
 
 <section><div class="wrap"><div class="cta-band rv"><div class="k">Let’s talk</div><h2>Direct access. Zero&nbsp;friction.</h2><p>{esc("Message me directly — no forms, no gatekeepers. I read and answer everything myself.")}</p>
-<div class="cta-row" style="justify-content:center"><a class="pill blue" href="https://wa.me/85266470247" target="_blank" rel="noopener">{I("message-circle")}Message me on WhatsApp</a><a class="pill ghost" href="mailto:joe@dfbdigital.com?subject=Digital%20Transformation%20Consultation">{I("mail")}Email me</a></div></div>
+<div class="cta-row" style="justify-content:center"><a class="pill blue" href="https://wa.me/639988865824" target="_blank" rel="noopener">{I("message-circle")}Message me on WhatsApp</a><a class="pill ghost" href="mailto:joe@dfbdigital.com?subject=Digital%20Transformation%20Consultation">{I("mail")}Email me</a></div></div>
 <div class="cinfo-grid rv d1"><div class="cinfo"><div class="k">{I("building-2")}DFB Digital Limited</div><p>Unit B, 11/F Yam Tze Comm Bldg<br>23 Thomson Rd, Wan Chai<br>Hong Kong</p></div>
-<div class="cinfo"><div class="k">{I("mail")}Email</div><a href="mailto:joe@dfbdigital.com">joe@dfbdigital.com</a><div class="k">{I("phone")}Phone / WhatsApp</div><a href="tel:+85266470247">+852 6647 0247</a><div class="k">{I("linkedin")}LinkedIn</div><a href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">linkedin.com/in/daddyfunbuckets</a></div></div></div></section>
+<div class="cinfo"><div class="k">{I("mail")}Email</div><a href="mailto:joe@dfbdigital.com">joe@dfbdigital.com</a><div class="k">{I("phone")}Phone / WhatsApp</div><a href="tel:+639988865824">+63 998 886 5824</a><div class="k">{I("linkedin")}LinkedIn</div><a href="https://linkedin.com/in/daddyfunbuckets" target="_blank" rel="noopener">linkedin.com/in/daddyfunbuckets</a></div></div></div></section>
 '''
     page('/about', 'About Joe Flores — DFB Digital', 'Joe Flores, founder of DFB Digital, helps CEOs and decision-makers do digital better: 13+ years of global agency experience, a digital-first architect, not a traditional marketer.', body, 'about')
 
